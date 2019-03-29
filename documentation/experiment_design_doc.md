@@ -104,7 +104,7 @@ The app will handle the following requests from the client:
   - Returns the route for `user_id`.
   - If route not found then return a 404.
 - `task_order()`
-  - Route: `/methods/task_order`, methods: `POST`
+  - Route: `/methods/task_order`, methods: `GET`
   - Identify which task set ordering needs to be attributed to a user based on
     current distribution of task set ordering.
   - We will have 4 task orderings, with `s1, s2` as task set 1 and 2, and `T,
