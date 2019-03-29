@@ -1,0 +1,77 @@
+#!/bin/bash
+# Get the client experiment directory
+REPO_DIR=$PWD
+CMDS="$REPO_DIR/commands"
+
+# Establish tasks directories and related variables
+TASKS_SIZE=22
+TS_SIZE=11 # half of the TASKS_SIZE
+
+TASKS_DIR="$REPO_DIR/tasks"
+TS_1="$TASKS_DIR/t1"
+TS_2="$TASKS_DIR/t2"
+TIME_LIMIT=300
+
+# Establish the helpful commands that we'll use
+
+# Establish the mock file system directory
+FS_DIR="$REPO_DIR/file_system"
+
+# Establish the server configurations
+# TODO: change this to an actual host
+HOST="localhost"
+PORT="8080"
+
+source logging_client/logging_functions.sh
+# Establish experiment variables and functions
+source commands/interface_functions.sh
+
+CURR_RESETS=0
+
+TASK_ORDER=$(get_task_order) # can be 0, 1, 2, or 3
+# Determine the ordering of the task sets and the starting treatment
+# Sets the variables CURR_TS, and TREATMENT
+determine_task_order
+CURR_TASK=1
+TASKS_FINISHED=0
+
+# Establish user related functions and variables
+# Variables created: USER_ID, USER_ROUTE
+create_user
+make_fs
+
+source commands/user_functions.sh
+
+# TODO: Add code for extension set up
+
+# Install Bash preexec.
+curl https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh -o ~/.bash-preexec.sh
+source ~/.bash-preexec.sh
+
+# preexec will send user commands to the server
+preexec_func() {
+  USER_CMD=$1
+  write_log $CURR_RESETS $SECONDS $USER_CMD
+}
+
+precmd_func() {
+  if [ "$USER_CMD" != "abandon" ] && [ "$USER_CMD" != "reset" ] && [ "$USER_CMD" != "help" ] && [ "$USER_CMD" != "task"]; then
+    TASK_NO="${CURR_TS}_${CURR_TASK}"
+    verify_task
+    if [ "$EXIT" = 1 ]; then
+      next_task 1
+    else
+      echo "You've modified the file system, a diff of the changes has been shown."
+      echo "You can continue, or run \"reset\" to restore the file system to its original state."
+    fi
+  fi
+}
+
+# Stuff here
+echo "Welcome to the user study!"
+echo "At any point, run \"help\" to see a list of commands available to you during the study."
+echo "You will have 5 minutes to complete each task. Once the timer is reached, the experiment"
+echo "will move on to the next task."
+echo "Make sure that you are performing the tasks in the $(basename $FS_DIR) directory"
+echo "The experiment interface does not ensure that anything outside of that directory is protected."
+echo "To start performing tasks, run \"start_experiment\""
