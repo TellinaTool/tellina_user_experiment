@@ -215,10 +215,10 @@ The functions are:
   - Returns a number from [0-3] that determines the ordering.
 
 - `write_log()`:
-  - Parameters: `user_id`, `task_no`, `treatment`, `command` (optional), `time`
-    (optional), `status` (optional), `resets` (optional).
-    - Some parameters are optional depending on what situation the user is
-      currently in (not finished, reset, abandoned).
+  - Parameters: `command` (optional), `time` (optional), `status` (optional),
+    `resets` (optional).
+    - All parameters are optional, but each call to write log will use the
+      current user ID, task, and treatment.
   - Sends a `POST` request to the server with the specified parameters.
 
 #### Tracking Browsing History
@@ -254,8 +254,7 @@ accessed by the user and writing it to the `browser_hist.txt` file.
     experiment to introduce them to Tellina and how the system works.
 - Time limit:
   - Each task will have up to **5** minutes to be completed.
-  - Currently, the time limit will be checked once the user has entered a
-    command.
+  - Once the time limit is reached, the user will be interrupted.
   - This will reset the timer, the mock file system, send a `2` status to the
     server, and move on to the next task.
 - Custom commands:
