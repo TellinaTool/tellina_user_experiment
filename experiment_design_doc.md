@@ -205,7 +205,7 @@ act as wrappers around `curl` to send HTTP requests.
 
 The functions are:
 - `create_user()`:
-  - Parameters: machine_name, user_name
+  - Gets the machine name and the user's name.
   - Sends `POST` request to the server to create a user directory.
   - Sends `GET` request to the server to get the user's URL and save it into an
     environment variable.
@@ -215,8 +215,8 @@ The functions are:
   - Returns a number from [0-3] that determines the ordering.
 
 - `write_log()`:
-  - Parameters: `task_no`, `treatment`, `command`, `time` (optional),
-    `status` (optional), `resets`.
+  - Parameters: `user_id`, `task_no`, `treatment`, `command` (optional), `time`
+    (optional), `status` (optional), `resets` (optional).
     - Some parameters are optional depending on what situation the user is
       currently in (not finished, reset, abandoned).
   - Sends a `POST` request to the server with the specified parameters.
