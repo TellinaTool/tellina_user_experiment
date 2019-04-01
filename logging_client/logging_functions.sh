@@ -7,8 +7,8 @@
 ##############################################################################
 
 
-POST="curl -X POST $HOST:$PORT"
-GET="curl $HOST:$PORT"
+POST="curl -s -X POST $HOST:$PORT"
+GET="curl -s $HOST:$PORT"
 
 # Creates a user in the logging server
 # Gets the machine name and user's name and concatenate them for the user_id
@@ -20,8 +20,8 @@ function create_user() {
 
   USER_ID=${USER_NAME}_${MACHINE_NAME}
 
-  $POST /methods/create_user -F "user_id=$USER_ID"
-  USER_ROUTE=$($GET /methods/get_user_route?user_id=$USER_ID)
+  $POST/methods/create_user -F "user_id=$USER_ID" &> /dev/null
+  USER_ROUTE=$($GET/methods/get_user_route?user_id=$USER_ID)
 }
 
 # Signals the server to send back the current task order
