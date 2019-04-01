@@ -26,7 +26,7 @@ function abandon() {
 }
 
 # Prints the available user commands
-function help() {
+function helpme() {
   echo "task: prints the description of the current task."
   echo "reset: restore the file system to its original state."
   echo "abandon: abandon the current task."

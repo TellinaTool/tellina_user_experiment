@@ -31,8 +31,9 @@ function end_experiment() {
 # Creates the mock file system that the user will be working on
 # And moves them to that directory
 function make_fs() {
+  rm -rf $FS_DIR
   mkdir $FS_DIR
-  tar -xzf $REPO_DIR/fs.tgz -C $TASK_DIR
+  tar -xzf $REPO_DIR/fs.tgz -C $FS_DIR
 
   # Moves the user to this directory
   cd $FS_DIR
@@ -71,13 +72,13 @@ function print_treatment() {
 #    |2|`s1 NT`|`s2 T` |
 #    |3|`s2 NT`|`s1 T` |
 function determine_task_order() {
-  if [ $TASK_ORDER -eq 0 ]; then
+  if [ "$TASK_ORDER" == "0" ]; then
     CURR_TS=1
     TREATMENT="T"
-  elif [ $TASK_ORDER -eq 1]; then
+  elif [ "$TASK_ORDER" == "1" ]; then
     CURR_TS=2
     TREATMENT="T"
-  elif [ $TASK_ORDER -eq 2]; then
+  elif [ "$TASK_ORDER" == "2" ]; then
     CURR_TS=1
     TREATMENT="NT"
   else
@@ -113,7 +114,7 @@ function next_task() {
   CURR_TASK=$((CURR_TASK+1))
 
   # If we're done with all the tasks
-  if [ "$TASKS_FINISHED" -eq "$TASKS_SIZE" ]; then;
+  if [ "$TASKS_FINISHED" -eq "$TASKS_SIZE" ]; then
     end_experiment
 
     return 1
@@ -121,7 +122,7 @@ function next_task() {
 
   # otherwise we check if we need to switch the task set and the treatment
   # And go into the second half of the experiment
-  if [ "$CURR_TASK" -eq "$TS_SIZE" ];
+  if [ "$CURR_TASK" -eq "$TS_SIZE" ]; then
     CURR_TASK=0
     # change the task set number
     if [ "$CURR_TS" -eq 1 ]; then

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Get the client experiment directory
 REPO_DIR=$PWD
-CMDS="$REPO_DIR/commands"
+CMDS="$REPO_DIR/functions"
 
 # Establish tasks directories and related variables
 TASKS_SIZE=22
@@ -24,7 +24,7 @@ PORT="8080"
 
 source logging_client/logging_functions.sh
 # Establish experiment variables and functions
-source commands/interface_functions.sh
+source $CMDS/interface_functions.sh
 
 CURR_RESETS=0
 
@@ -40,7 +40,7 @@ TASKS_FINISHED=0
 create_user
 make_fs
 
-source commands/user_functions.sh
+source $CMDS/user_functions.sh
 
 # TODO: Add code for extension set up
 
@@ -50,13 +50,13 @@ source ~/.bash-preexec.sh
 
 # preexec will send user commands to the server
 preexec_func() {
+  TASK_NO="${CURR_TS}_${CURR_TASK}"
   USER_CMD=$1
   write_log $CURR_RESETS $SECONDS $USER_CMD
 }
 
 precmd_func() {
   if [ "$USER_CMD" != "abandon" ] && [ "$USER_CMD" != "reset" ] && [ "$USER_CMD" != "help" ] && [ "$USER_CMD" != "task"]; then
-    TASK_NO="${CURR_TS}_${CURR_TASK}"
     verify_task
     if [ "$EXIT" = 1 ]; then
       next_task 1
@@ -69,7 +69,7 @@ precmd_func() {
 
 # Stuff here
 echo "Welcome to the user study!"
-echo "At any point, run \"help\" to see a list of commands available to you during the study."
+echo "At any point, run \"helpme\" to see a list of commands available to you during the study."
 echo "You will have 5 minutes to complete each task. Once the timer is reached, the experiment"
 echo "will move on to the next task."
 echo "Make sure that you are performing the tasks in the $(basename $FS_DIR) directory"

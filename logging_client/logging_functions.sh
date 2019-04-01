@@ -7,8 +7,8 @@
 ##############################################################################
 
 
-POST="curl -s -X POST $HOST:$PORT"
-GET="curl -s $HOST:$PORT"
+POST="curl -X POST $HOST:$PORT"
+GET="curl $HOST:$PORT"
 
 # Creates a user in the logging server
 # Gets the machine name and user's name and concatenate them for the user_id
@@ -20,7 +20,7 @@ function create_user() {
 
   USER_ID=${USER_NAME}_${MACHINE_NAME}
 
-  $POST/methods/create_user -F "user_id=$USER_ID" &> /dev/null
+  $POST/methods/create_user -F "user_id=$USER_ID"
   USER_ROUTE=$($GET/methods/get_user_route?user_id=$USER_ID)
 }
 
@@ -37,5 +37,5 @@ function write_log() {
   local COMMAND=$3
   local STATUS=$4
 
-  $POST/$USER_ROUTE/log -F "task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS&resets=$RESETS"
+  $POST/$USER_ROUTE/log -d "task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS&resets=$RESETS"
 }
