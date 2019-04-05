@@ -16,46 +16,40 @@ function start_experiment() {
 
   print_treatment
 
+  SECONDS=0
   echo "Task Number: $TOTAL_TASKS/$TASKS_SIZE"
   task
 }
 
 function end_experiment() {
   # Remove bash-preexec
-  rm -f ~/.bash-preexec.sh
+  rm -f $INFRA_DIR/bash-preexec.sh
+  rm -f $INFRA_DIR/.*
+
   echo "Congratulations! You have completed the interactive portion of the experiment!"
   echo "Don't forget to remove the Chrome extension that you installed."
-  echo "Please take some time to fill out the survey here <URL> using the same username you used for the experiment"
+  echo "Please take some time to fill out the survey here <URL> using $USER_NAME as your user name."
+
+  cd $EXP_DIR
+  exec bash
 }
 
 # Creates the mock file system that the user will be working on
 # And moves them to that directory
 function make_fs() {
   rm -rf $FS_DIR
-  mkdir $FS_DIR
-  tar -xzf $REPO_DIR/fs.tgz -C $FS_DIR
+  mkdir $FS_DIR > /dev/null
+  tar -xzf $INFRA_DIR/fs.tgz -C $FS_DIR
 
   # Moves the user to this directory
   cd $FS_DIR
-}
-
-# A simple timer for each task
-function start_timer() {
-  SECONDS=0
-
-  while [ $SECONDS -lt $TIME_LIMIT ]; do
-    sleep 1
-  done
-
-  echo "You've run out of time for the task"
-  next_task 2
 }
 
 # Prints the list of resources that the user is allowed to use based on the
 # current treatment
 function print_treatment() {
   echo -n "For this half of the experiment you can use any online resources, man pages, "
-  if [ "$TREATMENT" == "T" ]; then
+  if [ "$(cat .treatment)" == "T" ]; then
     echo "and Tellina <URL> to help you solve the tasks."
   else
     echo "but you can't use Tellina to help you solve the tasks."
@@ -73,24 +67,24 @@ function print_treatment() {
 #    |3|`s2 NT`|`s1 T` |
 function determine_task_order() {
   if [ "$TASK_ORDER" == "0" ]; then
-    CURR_TS=1
-    TREATMENT="T"
+    echo "1" > $INFRA_DIR/.task_order
+    echo "T" > $INFRA_DIR/.treatment
   elif [ "$TASK_ORDER" == "1" ]; then
-    CURR_TS=2
-    TREATMENT="T"
+    echo "2" > $INFRA_DIR/.task_order
+    echo "T" > $INFRA_DIR/.treatment
   elif [ "$TASK_ORDER" == "2" ]; then
-    CURR_TS=1
-    TREATMENT="NT"
+    echo "1" > $INFRA_DIR/.task_order
+    echo "NT" > $INFRA_DIR/.treatment
   else
-    CURR_TS=2
-    TREATMENT="NT"
+    echo "2" > $INFRA_DIR/.task_order
+    echo "NT" > $INFRA_DIR/.treatment
   fi
 }
 
 # See documentation for scripts/verify_task.py for more details on what it does
 function verify_task() {
   # Verify the output of the previous command.
-  $CMDS/scripts/verify_task.py $CURR_TS $CURR_TASK $PREV_CMD
+  ./verify_task.py $CURR_TASK $COMMAND
   EXIT=$?
 }
 
@@ -100,21 +94,17 @@ function verify_task() {
 # Increments the current task counter and determines if we need to go to the
 # next task set
 function next_task() {
-  # stop the timer
-  kill $TIMER_PID
-  wait $TIMER_PID 2> /dev/null
+  STATUS=$1
 
-  write_log $CURR_RESETS $SECONDS $USER_CMD $1
-
-  # Set the reset counter back to 0 for a new task
-  CURR_RESETS=0
+  # Write everything to the log
+  write_log
 
   # Increment the number of tasks finished by the user
-  TASKS_FINISHED=$((TOTAL_TASKS+1))
-  CURR_TASK=$((CURR_TASK+1))
+  TASK_NO=$((TASK_NO+1))
+  echo $TASK_NO > $INFRA_DIR/.curr_task
 
   # If we're done with all the tasks
-  if [ "$TASKS_FINISHED" -eq "$TASKS_SIZE" ]; then
+  if [ "$TASK_NO" -eq "$TASKS_SIZE" ]; then
     end_experiment
 
     return 1
@@ -122,29 +112,33 @@ function next_task() {
 
   # otherwise we check if we need to switch the task set and the treatment
   # And go into the second half of the experiment
-  if [ "$CURR_TASK" -eq "$TS_SIZE" ]; then
-    CURR_TASK=0
-    # change the task set number
-    if [ "$CURR_TS" -eq 1 ]; then
-      CURR_TS=2
-    else
-      CURR_TS=1
-    fi
-    # change the treatment code
-    if [ "$TREATMENT" == "T" ]; then
-      TREATMENT="NT"
-    else
-      TREATMENT="T"
-    fi
-
+  if [ "$TASK_NO" -eq "$TS_SIZE" ]; then
     echo "Congratulations! You have finished the first half of the experiment!"
     print_treatment
   fi
 
+  SECONDS=0
   echo "Task Number: $TASK_NO"
   task
+}
 
-  # Start the timer
-  start_timer &
-  TIMER_PID=$!
+POST="curl -X POST $HOST:$PORT"
+
+# Creates a user in the logging server
+# Gets the machine name and user's name and concatenate them for the user_id
+# Sends a POST request to the server to create the user, then GET the user's
+# route to communicate with the server
+function create_user() {
+  MACHINE_NAME=$(hostname)
+  read -p "Enter your UW NetID: " USER_NAME
+
+  USER_ID=${USER_NAME}_${MACHINE_NAME}
+
+  $POST/create_user -F "user_id=$USER_ID" 2> /dev/null
+}
+
+# Writes to the user's log file on the server
+# The resets, command, time, and status parameters are optional
+function write_log() {
+  $POST/$USER_ID/log -d "time_stamp=$TIME_STAMP&task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS"
 }
