@@ -21,7 +21,7 @@ import subprocess
 import filecmp
 import tarfile
 
-USER_OUT_DIR = os.path.join(os.environ['INFRA_DIR'], 'user_output')
+USER_OUT_DIR = os.environ['USER_OUT']
 if not os.path.exists(USER_OUT_DIR):
     os.mkdir(USER_OUT_DIR)
 

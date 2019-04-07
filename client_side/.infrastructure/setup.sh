@@ -12,6 +12,8 @@ TS_SIZE=11 # half of the TASKS_SIZE
 TASKS_DIR="$INFRA_DIR/tasks"
 TIME_LIMIT=300
 
+USER_OUT="$INFRA_DIR/user_out"
+
 # Establish the mock file system directory
 FS_DIR="$EXP_DIR/file_system"
 
