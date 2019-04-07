@@ -84,6 +84,14 @@ function determine_task_order() {
 
 # See documentation for scripts/verify_task.py for more details on what it does
 function verify_task() {
+  # Checks to see if meld is installed
+  type meld > /dev/null 2>&1
+  if [ "$?" -eq 0 ]; then
+    MELD=1
+  else
+    MELD=0
+  fi
+
   # Verify the output of the previous command.
   $INFRA_DIR/verify_task.py $TASK_NO $COMMAND
   EXIT=$?
