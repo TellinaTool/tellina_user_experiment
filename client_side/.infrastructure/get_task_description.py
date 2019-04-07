@@ -11,5 +11,6 @@ try:
     print('--------------------------')
     print('You are working on task ' + task_num)
     print(task_json['description'])
-except (OSError, IOError):
+except (OSError, IOError) as e:
+    print(e)
     pass
