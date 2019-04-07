@@ -34,5 +34,5 @@ function task() {
   TASK_NO=$(cat $INFRA_DIR/.curr_task)
   TASK_FILE=$TASKS_DIR/task$TASK_NO/task$TASK_NO.json
 
-  ./get_task_description.py $TASK_FILE $TASK_NO
+  $INFRA_DIR/get_task_description.py $TASK_FILE $TASK_NO
 }

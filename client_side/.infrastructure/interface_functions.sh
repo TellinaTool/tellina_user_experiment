@@ -24,7 +24,8 @@ function start_experiment() {
 function end_experiment() {
   # Remove bash-preexec
   rm -f $INFRA_DIR/bash-preexec.sh
-  rm -f $INFRA_DIR/.*
+  rm -f $INFRA_DIR/.{curr_task,treatment,task_order,prev_cmd}
+  rm -rf $FS_DIR
 
   echo "Congratulations! You have completed the interactive portion of the experiment!"
   echo "Don't forget to remove the Chrome extension that you installed."
@@ -49,7 +50,7 @@ function make_fs() {
 # current treatment
 function print_treatment() {
   echo -n "For this half of the experiment you can use any online resources, man pages, "
-  if [ "$(cat .treatment)" == "T" ]; then
+  if [ "$(cat $INFRA_DIR/.treatment)" == "T" ]; then
     echo "and Tellina <URL> to help you solve the tasks."
   else
     echo "but you can't use Tellina to help you solve the tasks."
@@ -84,7 +85,7 @@ function determine_task_order() {
 # See documentation for scripts/verify_task.py for more details on what it does
 function verify_task() {
   # Verify the output of the previous command.
-  ./verify_task.py $CURR_TASK $COMMAND
+  $INFRA_DIR/verify_task.py $TASK_NO $COMMAND
   EXIT=$?
 }
 
@@ -98,6 +99,8 @@ function next_task() {
 
   # Write everything to the log
   write_log
+
+  reset
 
   # Increment the number of tasks finished by the user
   TASK_NO=$((TASK_NO+1))

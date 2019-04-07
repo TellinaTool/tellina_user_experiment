@@ -1,4 +1,5 @@
 #!/bin/bash
+set -a
 # Get the client experiment directory
 EXP_DIR=$PWD
 # Get the client infrastructure directory
@@ -11,8 +12,6 @@ TS_SIZE=11 # half of the TASKS_SIZE
 TASKS_DIR="$INFRA_DIR/tasks"
 TIME_LIMIT=300
 
-# Establish the helpful commands that we'll use
-
 # Establish the mock file system directory
 FS_DIR="$EXP_DIR/file_system"
 
@@ -24,7 +23,7 @@ PORT="8080"
 # Establish infrastructure variables and functions
 touch $INFRA_DIR/.{curr_task,treatment,task_order,prev_cmd}
 
-echo "0" > $INFRA_DIR/.curr_task
+echo "1" > $INFRA_DIR/.curr_task
 echo "0" > $INFRA_DIR/.task_order
 echo "T" > $INFRA_DIR/.treatment
 
