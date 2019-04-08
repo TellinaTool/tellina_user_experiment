@@ -139,25 +139,45 @@ def verify(norm_out_path, task_num, filesystem_verify):
     files_match = filecmp.cmp(norm_out_path, task_verify_path)
 
     if not files_match:
-        if int(os.environ['MELD']) == 0:
-            print("meld not installed, displaying diff in browser", file=sys.stderr)
+        if os.environ.get('DISPLAY') is not None:
+            if int(os.environ['MELD']) == 0:
+                print("Meld not installed, displaying diff in browser", file=sys.stderr)
 
+                import difflib
+                import webbrowser
+
+                out_lines = open(norm_out_path, 'r').readlines()
+                verify_lines = open(task_verify_path, 'r').readlines()
+
+                diff = difflib.HtmlDiff().make_file(out_lines, verify_lines,
+                                                         fromdesc='Actual',
+                                                         todesc='Expected')
+                out_lines.close()
+                verify_lines.close()
+
+                with open(diff_file, 'w')as f:
+                    f.writelines(diff)
+
+                webbrowser.open('file://' + os.path.realpath(diff_file))
+
+            else:
+                subprocess.call(['meld', norm_out_path, task_verify_path])
+        else:
             import difflib
-            import webbrowser
+
+            print("No display detetected, outputting unified diff", file=sys.stderr)
 
             out_lines = open(norm_out_path, 'r').readlines()
             verify_lines = open(task_verify_path, 'r').readlines()
 
-            diff = difflib.HtmlDiff().make_file(out_lines, verify_lines,
-                                                     fromdesc='Actual',
-                                                     todesc='Expected')
-            with open(diff_file, 'w')as f:
-                f.writelines(diff)
+            diff = difflib.unified_diff(out_lines, verify_lines,
+                                                     fromfile='Actual',
+                                                     tofile='Expected')
+            out_lines.close()
+            verify_lines.close()
+            
+            sys.stdout.writelines(diff)
 
-            webbrowser.open('file://' + os.path.realpath(diff_file))
-
-        else:
-            subprocess.call(['meld', norm_out_path, task_verify_path])
 
     return files_match
 
