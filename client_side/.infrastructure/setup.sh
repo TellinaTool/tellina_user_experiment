@@ -59,7 +59,6 @@ precmd_func() {
   COMMAND=$(cat $INFRA_DIR/.prev_cmd)
 
   if [ $TIME_SPENT -gt $TIME_LIMIT ]; then
-    echo "You've run about of time for task $TASK_NO. Moving on to the next task."
     next_task 2
   elif [ -n "$COMMAND" ] && [ "$COMMAND" != "abandon" ] && [ "$COMMAND" != "reset" ] && [ "$COMMAND" != "helpme" ] && [ "$COMMAND" != "task" ]; then
     verify_task

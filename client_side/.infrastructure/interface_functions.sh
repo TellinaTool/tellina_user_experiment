@@ -127,6 +127,10 @@ function next_task() {
     print_treatment
   fi
 
+  if [ "$STATUS" -eq 2 ]; then
+    echo "You've run about of time for task $TASK_NO. Moving on to the next task."
+  fi
+
   SECONDS=0
   echo "Task Number: $TASK_NO"
   task
@@ -150,7 +154,7 @@ function create_user() {
 # Writes to the user's log file on the server
 # The resets, command, time, and status parameters are optional
 function write_log() {
-  touch $INFRA_DIR/log.log
-  echo "time_stamp=$TIME_STAMP&task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS" >> $INFRA_DIR/log.log
+  echo > $INFRA_DIR/user.log
+  echo "time_stamp=$TIME_STAMP&task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS" >> $INFRA_DIR/user.log
   # $POST/$USER_ID/log -d "time_stamp=$TIME_STAMP&task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS"
 }
