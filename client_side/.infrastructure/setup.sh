@@ -61,7 +61,7 @@ precmd_func() {
   if [ $TIME_SPENT -gt $TIME_LIMIT ]; then
     echo "You've run about of time for task $TASK_NO. Moving on to the next task."
     next_task 2
-  elif [ -z "$COMMAND" ] && [ "$COMMAND" != "abandon" ] && [ "$COMMAND" != "reset" ] && [ "$COMMAND" != "helpme" ] && [ "$COMMAND" != "task" ]; then
+  elif [ -n "$COMMAND" ] && [ "$COMMAND" != "abandon" ] && [ "$COMMAND" != "reset" ] && [ "$COMMAND" != "helpme" ] && [ "$COMMAND" != "task" ]; then
     verify_task
     if [ "$EXIT" = 1 ]; then
       next_task 1
