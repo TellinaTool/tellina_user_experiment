@@ -13,6 +13,8 @@ function reset() {
   cd $REPO_DIR
 
   make_fs
+
+  clear
 }
 
 # Abandons the current task by doing the following
