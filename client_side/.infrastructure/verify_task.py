@@ -175,7 +175,7 @@ def verify(norm_out_path, task_num, filesystem_verify):
                                                      tofile='Expected')
             out_lines.close()
             verify_lines.close()
-            
+
             sys.stdout.writelines(diff)
 
 

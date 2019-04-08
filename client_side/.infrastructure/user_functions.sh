@@ -21,7 +21,7 @@ function abandon() {
   next_task 0
 }
 
-# Prints the available user commands 
+# Prints the available user commands
 function helpme() {
   echo "task: prints the description of the current task."
   echo "reset: restore the file system to its original state."
