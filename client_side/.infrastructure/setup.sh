@@ -61,13 +61,14 @@ precmd_func() {
   if [ $TIME_SPENT -gt $TIME_LIMIT ]; then
     echo "You've run about of time for task $TASK_NO. Moving on to the next task."
     next_task 2
-  elif [ "$COMMAND" != "abandon" ] && [ "$COMMAND" != "reset" ] && [ "$COMMAND" != "help" ] && [ "$COMMAND" != "task" ]; then
+  elif [ "$COMMAND" != "start_experiment" ] && [ "$COMMAND" != "abandon" ] && [ "$COMMAND" != "reset" ] && [ "$COMMAND" != "helpme" ] && [ "$COMMAND" != "task" ]; then
     verify_task
     if [ "$EXIT" = 1 ]; then
       next_task 1
     else
       echo "You've modified the file system, a diff of the changes has been shown."
       echo "You can continue, or run \"reset\" to restore the file system to its original state."
+
       STATUS=3
       write_log
     fi
@@ -81,5 +82,4 @@ echo "You will have 5 minutes to complete each task. Once the timer is reached, 
 echo "will move on to the next task."
 echo "Make sure that you are performing the tasks in the $(basename $FS_DIR) directory"
 echo "The experiment interface does not ensure that anything outside of that directory is protected."
-# echo "To start performing tasks, run \"start_experiment\""
-start_experiment
+echo "To start performing tasks, run \"start_experiment\""
