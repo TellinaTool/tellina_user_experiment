@@ -152,9 +152,6 @@ def verify(norm_out_path, task_num, filesystem_verify):
                 diff = difflib.HtmlDiff().make_file(out_lines, verify_lines,
                                                          fromdesc='Actual',
                                                          todesc='Expected')
-                out_lines.close()
-                verify_lines.close()
-
                 with open(diff_file, 'w')as f:
                     f.writelines(diff)
 
@@ -173,9 +170,6 @@ def verify(norm_out_path, task_num, filesystem_verify):
             diff = difflib.unified_diff(out_lines, verify_lines,
                                                      fromfile='Actual',
                                                      tofile='Expected')
-            out_lines.close()
-            verify_lines.close()
-
             sys.stdout.writelines(diff)
 
 
