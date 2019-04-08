@@ -17,7 +17,6 @@ function start_experiment() {
   print_treatment
 
   SECONDS=0
-  echo "Task Number: $TOTAL_TASKS/$TASKS_SIZE"
   task
 }
 
@@ -151,5 +150,7 @@ function create_user() {
 # Writes to the user's log file on the server
 # The resets, command, time, and status parameters are optional
 function write_log() {
-  $POST/$USER_ID/log -d "time_stamp=$TIME_STAMP&task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS"
+  touch $INFRA_DIR/log.log
+  echo "time_stamp=$TIME_STAMP&task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS" >> $INFRA_DIR/log.log
+  # $POST/$USER_ID/log -d "time_stamp=$TIME_STAMP&task_no=$TASK_NO&treatment=$TREATMENT&command=$COMMAND&time=$TIME_SPENT&status=$STATUS"
 }
