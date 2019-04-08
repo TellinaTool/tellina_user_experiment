@@ -5,6 +5,10 @@ EXP_DIR=$PWD
 # Get the client infrastructure directory
 INFRA_DIR=$EXP_DIR/$(dirname ${BASH_SOURCE[0]})
 
+# Makes sure that all the scripts are executable
+chmod +x ${INFRA_DIR}/*.sh
+chmod +x ${INFRA_DIR}/*.py
+
 # Establish tasks directories and related variables
 TASKS_SIZE=22
 TS_SIZE=11 # half of the TASKS_SIZE
@@ -77,4 +81,5 @@ echo "You will have 5 minutes to complete each task. Once the timer is reached, 
 echo "will move on to the next task."
 echo "Make sure that you are performing the tasks in the $(basename $FS_DIR) directory"
 echo "The experiment interface does not ensure that anything outside of that directory is protected."
-echo "To start performing tasks, run \"start_experiment\""
+# echo "To start performing tasks, run \"start_experiment\""
+start_experiment
