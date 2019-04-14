@@ -1,8 +1,6 @@
 <?php
 if (isset($_POST) && ($_POST)) {
   $filename="../log.csv";
-  $line = date("Y-m-d H:i:s");
-  $line .= ",";
   $line .= implode(",", $_POST);
   $line .= "\n";
   file_put_contents($filename, $line, FILE_APPEND);
