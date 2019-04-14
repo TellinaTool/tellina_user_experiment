@@ -13,7 +13,7 @@ if (isset($_POST) && ($_POST)) {
 <html>
   <head>
     <title>A Generic POST -> CSV handler</title>
-    <h2>Submit a POST request to log the request.</h2>
+    <h2>Submit a POST request to log a request.</h2>
   </head>
 
   <body>
