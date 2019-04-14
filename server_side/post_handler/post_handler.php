@@ -6,11 +6,14 @@ if (isset($_POST) && ($_POST)) {
   $line .= implode(",", $_POST);
   $line .= "\n";
   file_put_contents($filename, $line, FILE_APPEND);
+
+  echo "<h2>Submitted</h2>"
 }
 ?>
 <html>
   <head>
     <title>A Generic POST -> CSV handler</title>
     <h2>Submit a POST request to log the request.</h2>
+    <form action="post_handler.php" method="POST"/>
   </head>
 </html>
