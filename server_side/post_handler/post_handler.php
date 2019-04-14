@@ -7,7 +7,7 @@ if (isset($_POST) && ($_POST)) {
   $line .= "\n";
   file_put_contents($filename, $line, FILE_APPEND);
 
-  echo "<h2>Submitted</h2>"
+  echo "<h2>Submitted</h2>";
 }
 ?>
 <html>
