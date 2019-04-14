@@ -14,6 +14,9 @@ if (isset($_POST) && ($_POST)) {
   <head>
     <title>A Generic POST -> CSV handler</title>
     <h2>Submit a POST request to log the request.</h2>
-    <form action="post_handler.php" method="POST"/>
   </head>
+
+  <body>
+    <form action="post_handler.php" method="POST"/>
+  </body>
 </html>
