@@ -2,7 +2,7 @@
 if (isset($_POST) && ($_POST)) {
   $filename="../log.csv";
   $line = gmdate("Y-m-d\TH:i:s\Z");
-  $line .= ","
+  $line .= ",";
   $line .= implode(",", $_POST);
   $line .= "\n";
   file_put_contents($filename, $line, FILE_APPEND);
