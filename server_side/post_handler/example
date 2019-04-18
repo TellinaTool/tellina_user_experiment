@@ -1,0 +1,21 @@
+HOST="host.cs.washington.edu"
+ROUTE="/path/to/post_hander.php"
+
+USER_ID="jdoe@csevm"
+TASK_ORDER=0
+CLIENT_TIME_STAMP=$(date --utc +%FT%TZ)
+TASK_NO=12
+TREATMENT="NoTellina"
+COMMAND="find . -type f -name \"*.txt\""
+TIME_ELAPSED=$SECONDS
+STATUS="success"
+
+curl -X POST ${HOST}/${ROUTE} \
+  -d a="$USER_ID" \
+  -d b="$TASK_ORDER" \
+  -d c="$CLIENT_TIME_STAMP" \
+  -d d="$TASK_NO" \
+  -d e="$TREATMENT" \
+  -d f="$COMMAND" \
+  -d g="$TIME_ELAPSED" \
+  -d h="$STATUS"
