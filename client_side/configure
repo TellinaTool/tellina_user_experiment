@@ -1,2 +1,6 @@
 #!/bin/bash
-source .infrastructure/setup.sh
+
+# The directory of this script will be the user experiment directory.
+# Calculating this using dirname will make sure that the infrastructure knows
+# the exact user experiment directory no matter where they source this script. 
+source .infrastructure/setup.sh $(dirname ${BASH_SOURCE[0]})
