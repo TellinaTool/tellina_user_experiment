@@ -31,42 +31,49 @@ previous one was buggy.
 ### Experiment Infrastructure
 
 The experiment infrastructure consists of several components:
-- Server side: The server's main purpose is to collect and store data from all
+- Server side: The server's main purpose is to store data from all
   experiments. This includes information about users, issued commands, time
-  spent on tasks, browsing history, etc.
+  spent on tasks, etc.  It will not collect the user's browsing history.
   - The server will only handle POST requests from clients, convert the request
     into CSV format and append them to a single log file.
+- Experiment Instructions (a web page):
+  Information about the experiment.
+
+  Requirements:  which terminal they should use, where to run it (attu or a
+  CSE Home VM are guaranteed to work, other Linux systems with meld
+  installed may work).
+
+  **The client task interface does not guarantee that the user's file system
+  will be safe from misused commands. The only directory that can be rolled
+  back using the interface will be the mock file system directory as well as
+  the interface directory itself.**
+  For example, the interface does not prevent or protect the user from
+  running `rm -rf $HOME`.
+
+  To set up the client side for experimentation, the user will be instructed to
+  run the following commands in a bash session:
+  ```sh
+  wget .../bash_experiment.zip
+  unzip bash_experiment.zip
+  source bash_experiment/configure
+  ```
 - Client side: this contains
-  - Instructions about the experiment, requirements for the client side
-    infrastructure (which terminal they should use, what system they should be
-    on, etc.), and instruction on how to set up the client side infrastructure
-    and begin the experiment.
-  - Initial configuration script that sources infrastructure code to setup the
-    experiment and begin it.
-    - This will also change the user's current directory to be where they will
-      be performing tasks.
+  - Initial configuration script that sources infrastructure code (next
+    bullet point) to setup the experiment and begin it.
+    - Tests that `meld` is available.
+    - Defunes [meta-commands](#user-interface) related to the experiment
+    - Changes the user's current directory to be where they will
+      perform tasks.
   - Infrastructure code: this code will add the following functionality to the
     Bash shell it was sourced in:
+    - After command execution, checks whether the command produces the correct
+      output (w.r.t. the state of the file system or standard output).
+      - Displays a diff if the actual and expected outputs do not match.
+      - (see [Client Side](#client-side) for more details).
     - Logs information about each command from the user for the experiment to
       the server (see [log file format](#logging) on what information is sent).
       - It also [saves some information locally](#variable_files) as well.
-    - After command execution, verifies that the command produces the correct
-      output (w.r.t. the state of the file system, standard output, or both).
-      - Displays a diff if the actual and expected outputs do not match (one for
-        the file system state and one for `stdout` if applicable).
-    - Adds meta-commands and meta-functions:
-      - Helpful user meta-commands to help the user navigate the experiments
-        more easily.
-      - Infrastructure bash functions that manage the experiment as well as
-        communicate with the server.
-        - Example functions include: move to next task, determine task order,
-          send log, extract the directory for the user to perform tasks on, etc.
-      - (see [Client Side](#client-side) for more details).
   - The directory in which the user will perform tasks in.
-- Analysis of experimental data stored in server logs: determine relative
-  performance of subjects using Tellina versus those who are not, via
-  statistical analysis.
-  - This will be done with a post-processing program.
 - Tasks:
   - We will have `N` tasks for each user.
   - Each task has two different labels:
@@ -79,15 +86,19 @@ The experiment infrastructure consists of several components:
       the "true task code" will be "k".
   - Each task will have a corresponding expected output file for both file
     system output and standard output.
+  - The two initial tasks that the user will be doing will be tutorial
+    tasks. The tutorial will print instructions on what to do for each step to the
+    shell as well. Tutorial would also teach users about `abandon`, `task`, and
+    `reset`.
+- Analysis scripts to process server logs: determine relative
+  performance of subjects using Tellina versus those who are not, via
+  statistical analysis.  This will be done with a post-processing program.
 
 ### User Experience
 
-Users are given the client side of the experiment infrastructure as a ZIP file.
-Once they are ready to begin, they will unzip, source the initial configuration
-script in a Bash shell to begin the experiment.
+Users are given the URL to the experiment instructions.
 
-Throughout the experiment, the users will be interacting with the shell where
-they started the experiment in, Meld, and a web browser of their choice.
+Throughout the experiment, the users will be interacting with the bash shell, Meld, and a web browser of their choice.
   - They will use a Bash shell to perform tasks and man page lookups.
   - Meld is displayed to the user when actual output does not match expected
     output for commands they entered. More specifically:
@@ -105,17 +116,13 @@ following differences to the shell's interface (assume print means "print to
 `stdout`" unless specified otherwise):
 - The user will be able to run the following **user meta-commands**:
   - `task`: prints the current task's description and number
-  - `abandon`: abandons the current task and go to the next task.
-  - `reset`: reset the file system
+  - `abandon`: abandons the current task and goes to the next task.
+  - `reset`: reset the file system, without changing the user's current
+    working directory.
     - This command will return the user to the directory where they called it.
   - `helpme`: lists the commands available to the user
 - Prints any messages related to the experiment (prompts, current task
   descriptions, welcome/clean-up messages, warnings, etc.) to `stdout`.
-
-**Note:** the two initial tasks that the user will be doing will be tutorial
-tasks. The tutorial will print instructions on what to do for each step to the
-shell as well. Tutorial would also teach users about `abandon`, `task`, and
-`reset`.
 
 Meld and the web browser are unmodified.
 
@@ -123,8 +130,8 @@ Meld and the web browser are unmodified.
 ### Server side
 The server side should be hosted on the [UW CSE's
 Homes](https://www.cs.washington.edu/lab/web) or any machine maintained by the
-department. This allows the server to be reliable and will significant reduce
-the possibility of the server being overloaded with traffic.
+department. This recudes the likelihood that the server goes down without
+##us noticing, and eliminates the need for us to monitor it.
 
 The server will only handle `POST` requests.  It will log each `POST`
 request to a CSV file.
@@ -156,7 +163,7 @@ server will have the following columns:
   side.
   - ISO-8601 formatted with UTC.
 - **task_code**: the true task code of the current task.
-- **treatment**: Tellina/NoTellina.
+- **treatment** for the current task: Tellina/NoTellina.
 - **time_elapsed** (seconds): time in seconds the user took to formulate the command.
 - **status**: `success` if the user succeeded, `timeout` if the user ran out of time,
   `abandon` if the user abandoned the task, and `incomplete` if the task is
@@ -177,7 +184,7 @@ Example content of what `log.csv` could look like:
 |2019-04-08T18:48:02Z|bcd@machineB|s2Ts1NT|2019-04-05T18:12:00Z|v|Tellina|300|timeout|...|
 
 The start time of a task is the **client_time_stamp** of the row where the
-**command** column is "task started".
+**command** column is "task started".  Its **time_elapsed** is 0.
 
 The total time for a task is the **time_elapsed** of the row where the
 **status** is either "success", "abandon", or "timeout". If the **status** is
@@ -236,12 +243,6 @@ user_experiment/
 #### Setting Up
 The instructions on how to set up the experiment will be on the website where
 the user is also downloading the ZIP archive.
-
-To set up the client side for experimentation, the user will be instructed to
-unzip the downloaded file, and run the following command:
-```sh
-source ./user_experiment/configure
-```
 
 The script will source `.infrastructure/setup.sh`, which will do the following:
 - Set up <a id=variable_files>variable files</a> that will keep track of the
@@ -425,23 +426,10 @@ command is executed
   around freely within it.
 
 ## Risks and Concerns
-- Do we want to enforce one-liners?
-  - What are the benefits of using one-liners?
-    - One idea is that it discourages a series of `rm file...` commands, but
-      this could also be done in one line.
-  - Do we want to teach them how to use the `reset` command?
-    - Enforcing one-liners removes the necessity of the `reset` command. Less
-      things for the user to worry about.
-  - Also this means that the interface will reset the file system every time an
-    output does not match with expected.
-- User file system safety.
-  - **The client task interface does not guarantee that the user's file system
-      will be safe from misused commands. The only directory that can be rolled
-      back using the interface will be the mock file system directory as well as
-      the interface directory itself.**
-    - For example, the interface does not prevent or protect the user from
-      running `rm -rf $HOME`.
-  - Need to display this in the README.txt when the client is distributed.
+- Do we want to automatically reset the file system after each command?
+  - Encourages one-liner solutions.
+     - But, is it necessary to enforce this?
+  - Removes the necessity of the `reset` command. Less things for the user to worry about.
 
 ## Acknowledgements
 - Some of the code used for the infrastructure was imported and modified from
