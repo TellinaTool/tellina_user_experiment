@@ -106,6 +106,8 @@ preexec_func() {
 precmd_func() {
   time_elapsed=${SECONDS}
   if (( time_elapsed >= TIME_LIMIT )); then
+    echo "You have run out of time for task ${curr_task}"
+
     status="timeout"
     time_elapsed=${TIME_LIMIT}
   elif [[ -f "${INFRA_DIR}/.abandon" ]]; then

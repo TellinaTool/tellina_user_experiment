@@ -87,8 +87,8 @@ make_fs() {
 # Prints the list of resources that the user is allowed to use based on the
 # current treatment
 print_treatment() {
-  echo -n "For this half of the experiment you can use any online resources, \
-    man pages, "
+  echo -n "For this half of the experiment you can use any online resources," \
+    "man pages, "
   if [[ "$(cat "${INFRA_DIR}/.treatment")" == "T" ]]; then
     echo "and Tellina <URL> to help you solve the tasks."
   else
@@ -98,6 +98,9 @@ print_treatment() {
 
 print_task() {
   local task_code=$(cat "${INFRA_DIR}/.task_code")
+
+  echo "-----------------------------------------------------------------------"
+  echo "Task: ${curr_task}/${TASKS_SIZE}"
 
   jq -r '.description' "${TASKS_DIR}/task_${task_code}/task_${task_code}.json"
 }
@@ -173,5 +176,5 @@ write_log() {
     -d treatment="$(cat "${INFRA_DIR}/.treatment")" \
     -d time_elapsed="${time_elapsed}" \
     -d status="${status}" \
-    -d command="$(cat "${INFRA_DIR}/.command")" 2> /dev/null
+    -d command="$(cat "${INFRA_DIR}/.command")" &> /dev/null
 }
