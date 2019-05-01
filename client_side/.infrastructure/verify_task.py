@@ -64,6 +64,17 @@ def main():
     command = ' '.join(sys.argv[2:])
 
     try:
+
+        # Always:
+        # - Get the current state of the file system and compare it to the expected
+        #   file system for the current task.  (For a select task, this ensures that
+        #   it was not changed).
+        # If it is a "select" task and the file system was not modified, also:
+        # - Re-execute the user command and capture the `stdout`.
+        # - Check that the captured `stdout` of the user command matches the
+        #   corresponding expected output.
+
+
         devnull = open(os.devnull, 'wb')
 
         with open(USER_FS_FILE, 'w') as user_out:
@@ -72,54 +83,43 @@ def main():
 
         normalize_output(USER_FS_FILE, ACTUAL_FILE)
 
-        # Verify checks whether or not the changes made to the file system is
-        # expected
+        # Verify checks whether or not the file system state is as expected.
         fs_good = verify(ACTUAL_FILE, task_code, True)
 
-        # If it is a "file system" task, the script will:
-        # - Get the current state of the file system and compares it to the expected
-        #   file system for the current task.
-        # Else if it is a "select" task, the script will:
-        # - Get the current state of the file system and compares it to the original
-        #   state to make sure that it was not changed.
-        # - If the file system was not modified:
-        #   - Re-execute the user command and capture the `stdout`.
-        #   - Check that the captured `stdout` of the user command matches the
-        #     corresponding expected output.
-        # - If the file system was modified then the task failed.
-        exit = 0
         if not fs_good:
             if task_code in FILESYSTEM_TASKS:
                 print("incomplete")
-                exit = 1
+                sys.exit(1)
             else:
                 print("incomplete")
-                exit = 2
+                sys.exit(2)
         else:
-            if task_code not in FILESYSTEM_TASKS:
+            if task_code in FILESYSTEM_TASKS:
+                print("success")
+                sys.exit(0)
+            else:
                 with open(USER_STDOUT_FILE, 'w') as user_out:
                     with open(USER_STDERR, 'w') as user_err:
                         stdout = subprocess.run(command, shell=True, stderr=user_err, stdout=user_out)
 
                 normalize_output(USER_STDOUT_FILE, ACTUAL_FILE)
 
-                if not verify(ACTUAL_FILE, task_code, False):
+                if verify(ACTUAL_FILE, task_code, False):
+                    print("success")
+                    sys.exit(0)
+                else:
                     print("incomplete")
-                    exit = 3
-            else:
-                exit = 0
-
-        if exit == 0:
-            print("success")
-        sys.exit(exit)
+                    sys.exit(3)
+        print("This can't happen")
+        sys.exit(4)
     except (OSError, subprocess.CalledProcessError) as e:
         print(e)
-        sys.exit(1)
+        sys.exit(5)
 
 def normalize_output(out_file, norm_file):
     """
-    Reads file output_path, normalizes its contents, and writes the result
-    to file norm_out_path.
+    Normalizes the contents of file output_path (sorts lines, removes
+    leading './') and writes the result to file norm_out_path.
     """
     norm_out = open(norm_file, 'w')
     output = open(out_file)
