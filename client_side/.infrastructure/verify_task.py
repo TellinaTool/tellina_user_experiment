@@ -3,91 +3,126 @@
 """
 Determine whether the user's command has solved the task.
 
-The first two inputs are the current task number and the time elapsed
-since starting the task.  The remaining inputs are the user's command.
+The first input is the current true task code. The remaining inputs are the
+user's command.
 
-There are three exit codes returned from this script.
- * If the user has passed the task, returns 1.
- * If the user does not pass the task but has time remaining, returns 0.
-   - On failure, it also tries to open "meld" to show the diff to the user
-     If "meld" is not installed, it shows the diff in the user's default
-     browser
+This script has the following exit status
+- Prints `success` to `stdout` if the actual output matches expected. Exit code
+  is `0`.
+- Prints `incomplete` to `stdout` if the actual output does not match expected.
+  - If the task is a file system task, exit code is `1`.
+  - If the task is a select task:
+    - If the file system has been changed, exit code is `2`.
+    - Otherwise, exit code is `3`.
+In addition, two files called "task_actual" and "task_expected" will be created
+in /tmp/ if the verification fails.
 """
 
-from __future__ import print_function
 import sys
 import os
+import shutil
 import subprocess
 import filecmp
 import tarfile
+
+FS_DIR = os.environ['FS_DIR']
 
 USER_OUT_DIR = os.environ['USER_OUT']
 if not os.path.exists(USER_OUT_DIR):
     os.mkdir(USER_OUT_DIR)
 
+USER_STDERR = os.path.join(USER_OUT_DIR, 'std_err')
+
 USER_FS_FILE = os.path.join(USER_OUT_DIR, 'fs_out')
 USER_STDOUT_FILE = os.path.join(USER_OUT_DIR, 'std_out')
 
-NORM_FS_FILE = os.path.join(USER_OUT_DIR, 'norm_fs')
-NORM_STDOUT_FILE = os.path.join(USER_OUT_DIR, 'norm_stdout')
+ACT_FILE = os.path.join('/tmp', 'task_actual')
+EXP_FILE = os.path.join('/tmp', 'task_expected')
 
 # There are two types of tasks: those that expect output, and
 # those that expect a modification to the file system.
-FILESYSTEM_TASKS = {2, 3, 4, 5, 6, 11, 12, 15, 17, 20, 22}
+FILESYSTEM_TASKS = {'b', 'c', 'd', 'e', 'f', 'k', 'l', 'o', 'p', 't', 'v'}
 
 def main():
+    class cd:
+        """Context manager for changing the current working directory"""
+        def __init__(self, newPath):
+            self.newPath = os.path.expanduser(newPath)
+
+        def __enter__(self):
+            self.savedPath = os.getcwd()
+            os.chdir(self.newPath)
+
+        def __exit__(self, etype, value, traceback):
+            os.chdir(self.savedPath)
+
     # the current task number, as a str
-    task_num = sys.argv[1]
+    task_code = sys.argv[1]
     # the current command
     command = ' '.join(sys.argv[2:])
 
     try:
-        user_fs_out = open(USER_FS_FILE, 'w')
-
-        user_std_out = open(USER_STDOUT_FILE, 'w')
-
         devnull = open(os.devnull, 'wb')
 
-        # get the files in the current filesystem
-        filesystem = subprocess.call('find .', shell=True, stderr=devnull, stdout=user_fs_out)
-        # get the stdout of the command
-        stdout = subprocess.call(command, shell=True, stderr=devnull, stdout=user_std_out)
+        with open(USER_FS_FILE, 'w') as user_out:
+            with cd(FS_DIR):
+                filesystem = subprocess.run('find .'.format(FS_DIR), shell=True, stderr=devnull, stdout=user_out)
 
-        # close output file for normalization
-        user_fs_out.close()
-        user_std_out.close()
+        normalize_output(USER_FS_FILE, ACT_FILE)
 
-        normalize_output(USER_FS_FILE, NORM_FS_FILE, True)
-        normalize_output(USER_STDOUT_FILE, NORM_STDOUT_FILE, False)
+        # Verify checks whether or not the changes made to the file system is
+        # expected
+        fs_good = verify(ACT_FILE, task_code, True)
 
-        verify_fs = verify(NORM_FS_FILE, task_num, True)
-        if int(task_num) not in FILESYSTEM_TASKS:
-            verify_stdout = verify(NORM_STDOUT_FILE, task_num, False)
+        # - If it is a "file system" task, the script will:
+        #   - Get the current state of the file system and compares it to the expected
+        #     file system for the current task.
+        # - Else if it is a "select" task, the script will:
+        #   - Get the current state of the file system and compares it to the original
+        #     state to make sure that it was not changed.
+        #   - If the file system was not modified:
+        #     - Re-execute the user command and capture the `stdout`.
+        #     - Check that the captured `stdout` of the user command matches the
+        #       corresponding expected output.
+        #   - If the file system was modified then the task failed.
+        exit = 0
+        if not fs_good:
+            if task_code in FILESYSTEM_TASKS:
+                print("incomplete")
+
+                exit = 1
+            else:
+                print("incomplete")
+
+                exit = 2
         else:
-            verify_stdout = False
+            if task_code not in FILESYSTEM_TASKS:
+                with open(USER_STDOUT_FILE, 'w') as user_out:
+                    with open(USER_STDERR, 'w') as user_err:
+                        stdout = subprocess.run(command, shell=True, stderr=user_err, stdout=user_out)
 
-        # if the task was passed
-        if (int(task_num) in FILESYSTEM_TASKS and verify_fs) or verify_stdout:
-            #to_next_task(task_num)
-            # return exit code 1
-            sys.exit(1)
-        else:
-            sys.exit(0)
+                normalize_output(USER_STDOUT_FILE, ACT_FILE)
+
+                if not verify(ACT_FILE, task_code, False):
+                    print("incomplete")
+
+                    exit = 3
+            else:
+                exit = 0
+
+        if exit == 0:
+            print("success")
+        sys.exit(exit)
     except (OSError, subprocess.CalledProcessError) as e:
         print(e)
-        sys.exit(0)
+        sys.exit(1)
 
-
-def normalize_output(out_file, norm_file, filesystem):
-    """Reads file output_path, normalizes its contents, and writes the result
-to file norm_out_path.
+def normalize_output(out_file, norm_file):
+    """
+    Reads file output_path, normalizes its contents, and writes the result
+    to file norm_out_path.
     """
     norm_out = open(norm_file, 'w')
-    if filesystem:
-        print('# Showing diff of task filesystem.', file=norm_out)
-    else:
-        print('# Showing diff of stdout.', file=norm_out)
-
     output = open(out_file)
 
     lines = sorted(output.read().splitlines())
@@ -98,23 +133,21 @@ to file norm_out_path.
             p_line = line.lstrip('./')
 
         print(p_line, file=norm_out)
+
     norm_out.close()
     output.close()
 
 
-def verify(norm_out_path, task_num, filesystem_verify):
+def verify(norm_out_path, task_code, check_fs):
     """Returns 0 if verification succeeded, non-zero if it failed."""
-    task_dir = "task{}".format(task_num)
+    task = "task_{}".format(task_code)
 
-    if filesystem_verify:
-        task_verify_path = os.path.join(os.environ['TASKS_DIR'], "{task}/{task}.fs.out".format(task=task_dir))
-        diff_file = os.path.join(USER_OUT_DIR, 'fs_diff.html')
-    else:
-        task_verify_path = os.path.join(os.environ['TASKS_DIR'], "{task}/{task}.select.out".format(task=task_dir))
-        diff_file = os.path.join(USER_OUT_DIR, 'select_diff.html')
+    task_verify_path = os.path.join(
+        os.environ['TASKS_DIR'], "{task}/{task}.{out_type}.out"
+            .format(task=task, out_type="fs" if check_fs else "select"))
 
-    # special verification for task 2
-    if int(task_num) == 2:
+    # special verification for task b
+    if task_code == 'b':
         files_in_tar = set()
         try:
             tar = tarfile.open(os.path.join(os.environ['FS_DIR'], 'html.tar'))
@@ -137,41 +170,8 @@ def verify(norm_out_path, task_num, filesystem_verify):
 
     # compare normalized output file and task verification file
     files_match = filecmp.cmp(norm_out_path, task_verify_path)
-
     if not files_match:
-        if os.environ.get('DISPLAY') is not None:
-            if int(os.environ['MELD']) == 0:
-                print("Meld not installed, displaying diff in browser", file=sys.stderr)
-
-                import difflib
-                import webbrowser
-
-                out_lines = open(norm_out_path, 'r').readlines()
-                verify_lines = open(task_verify_path, 'r').readlines()
-
-                diff = difflib.HtmlDiff().make_file(out_lines, verify_lines,
-                                                         fromdesc='Actual',
-                                                         todesc='Expected')
-                with open(diff_file, 'w')as f:
-                    f.writelines(diff)
-
-                webbrowser.open('file://' + os.path.realpath(diff_file))
-
-            else:
-                subprocess.call(['meld', norm_out_path, task_verify_path])
-        else:
-            import difflib
-
-            print("No display detetected, outputting unified diff", file=sys.stderr)
-
-            out_lines = open(norm_out_path, 'r').readlines()
-            verify_lines = open(task_verify_path, 'r').readlines()
-
-            diff = difflib.unified_diff(out_lines, verify_lines,
-                                                     fromfile='Actual',
-                                                     tofile='Expected')
-            sys.stdout.writelines(diff)
-
+        shutil.copy(task_verify_path, EXP_FILE)
 
     return files_match
 
