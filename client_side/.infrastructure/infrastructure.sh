@@ -62,12 +62,14 @@ end_experiment() {
   PROMPT_COMMAND=${PROMPT_COMMAND_OG}
   trap - DEBUG
 
+  # Remove all variable files
+  rm -r "${INFRA_DIR}/.*"
+  cd "${EXP_DIR}"
+
   echo "Congratulations! You have completed the interactive portion of the" \
     "experiment!"
   echo "Please take some time to fill out the survey here ${SURVEY_URL} using" \
     "${USER_NAME} as your user name."
-
-  cd "${EXP_DIR}"
 
   return 0
 }
@@ -125,6 +127,7 @@ next_task() {
 
   # Increment the number of tasks finished by the user
   curr_task=$(( curr_task + 1 ))
+  echo "${curr_task}" > "${INFRA_DIR}/.curr_task"
 
   # If we're done with all the tasks
   if (( curr_task == TASKS_SIZE )); then

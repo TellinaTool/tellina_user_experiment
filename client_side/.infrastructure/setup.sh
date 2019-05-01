@@ -59,14 +59,22 @@ chmod +x "${INFRA_DIR}"/*.py
 
 # Establish infrastructure variables and functions
 source "${INFRA_DIR}"/infrastructure.sh
-touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
+touch "${INFRA_DIR}"/.{task_code,curr_task,treatment,task_order,command}
 
 # Initalize variable with default values
 echo "start task" > "${INFRA_DIR}/.command"
 
 status="incomplete"
 time_elapsed=0
-curr_task=1
+
+# If a curr_task file already exists, it means we are trying to resume the
+# experiment
+if [[ -e "${INFRA_DIR}/.curr_task" ]]; then
+  curr_task=$(cat "${INFRA_DIR}/.curr_task")
+else
+  curr_task=1
+  echo "${curr_task}" > "${INFRA_DIR}/.curr_task"
+fi
 
 # Determine the task order based on a truncated md5sum hash of the username.
 # The following table is used to determine the ordering with "s" indicating the
