@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# The directory of this script will be the user experiment directory.
-# Calculating this using dirname will make sure that the infrastructure knows
-# the exact user experiment directory no matter where they source this script. 
+# The directory containing this script will be the user experiment directory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 cd "${DIR}"
