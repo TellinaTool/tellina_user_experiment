@@ -17,10 +17,6 @@ EXP_DIR="$1"
 # Get the full path to the experiment's infrastructure directory
 INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
 
-# Makes sure that all the scripts are executable
-chmod +x "${INFRA_DIR}"/*.sh
-chmod +x "${INFRA_DIR}"/*.py
-
 # Establish tasks directories and related variables
 TASKS_SIZE=22
 
@@ -36,6 +32,18 @@ FS_DIR="${EXP_DIR}/file_system"
 SERVER_HOST="https://homes.cs.washington.edu/~atran35"
 SERVER_ROUTE="/tellina_user_experiment/server_side/post_handler/post_handler.php"
 
+# Establish survey URL
+SURVEY_URL="<URL>"
+
+MACHINE_NAME=$(hostname)
+read -p "Enter your UW NetID: " USER_NAME
+
+USER_ID="${USER_NAME}@${MACHINE_NAME}"
+
+# Makes sure that all the scripts are executable
+chmod +x "${INFRA_DIR}"/*.sh
+chmod +x "${INFRA_DIR}"/*.py
+
 # Establish infrastructure variables and functions
 source "${INFRA_DIR}"/infrastructure.sh
 touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
@@ -45,11 +53,6 @@ echo "start task" > "${INFRA_DIR}/.command"
 time_elapsed=0
 status="incomplete"
 curr_task=1
-
-MACHINE_NAME=$(hostname)
-read -p "Enter your UW NetID: " USER_NAME
-
-USER_ID="${USER_NAME}@${MACHINE_NAME}"
 
 # Determine the task order based on a truncated md5sum hash of the username.
 # The following table is used to determine the ordering with "s" indicating the
@@ -97,16 +100,14 @@ source "${INFRA_DIR}"/bash-preexec.sh
 preexec_func() {
   # Gets all the variables needed by the infrastructure and logs the user's command
   echo "$1" > "${INFRA_DIR}/.command"
-  curr_task=$(cat "${INFRA_DIR}/.curr_task")
-  treatment=$(cat "${INFRA_DIR}/.treatment")
   time_stamp=$(date +%T)
 }
 
 precmd_func() {
   time_elapsed=${SECONDS}
-
   if (( time_elapsed >= TIME_LIMIT )); then
     status="timeout"
+    time_elapsed=${TIME_LIMIT}
   elif [[ -f "${INFRA_DIR}/.abandon" ]]; then
     status="abandon"
 
