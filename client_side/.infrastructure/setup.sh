@@ -207,7 +207,7 @@ precmd_func() {
         echo "Actual output does not match expected. A diff has been shown."
       fi
 
-      meld "/tmp/task_actual" "/tmp/task_expected" &
+      meld "/tmp/actual" "/tmp/expected" &
     elif [[ -z ${status} ]]; then
       status="Verification error!"
     fi

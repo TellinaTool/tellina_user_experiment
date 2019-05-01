@@ -6,7 +6,7 @@ Determine whether the user's command has solved the task.
 The first input is the current true task code. The remaining inputs are the
 user's command.
 
-This script has the following exit status
+This script has the following exit status:
 - Prints `success` to `stdout` if the actual output matches expected. Exit code
   is `0`.
 - Prints `incomplete` to `stdout` if the actual output does not match expected.
@@ -14,7 +14,7 @@ This script has the following exit status
   - If the task is a select task:
     - If the file system has been changed, exit code is `2`.
     - Otherwise, exit code is `3`.
-In addition, two files called "task_actual" and "task_expected" will be created
+In addition, two files called "actual" and "expected" will be created
 in /tmp/ if the verification fails.
 """
 
@@ -38,8 +38,8 @@ USER_STDERR = os.path.join(USER_OUT_DIR, 'std_err')
 USER_FS_FILE = os.path.join(USER_OUT_DIR, 'fs_out')
 USER_STDOUT_FILE = os.path.join(USER_OUT_DIR, 'std_out')
 
-ACT_FILE = os.path.join('/tmp', 'task_actual')
-EXP_FILE = os.path.join('/tmp', 'task_expected')
+ACTUAL_FILE = os.path.join('/tmp', 'actual')
+EXPECTED_FILE = os.path.join('/tmp', 'expected')
 
 # There are two types of tasks: those that expect output, and
 # those that expect a modification to the file system.
@@ -70,11 +70,11 @@ def main():
             with cd(FS_DIR):
                 filesystem = subprocess.run('find .'.format(FS_DIR), shell=True, stderr=devnull, stdout=user_out)
 
-        normalize_output(USER_FS_FILE, ACT_FILE)
+        normalize_output(USER_FS_FILE, ACTUAL_FILE)
 
         # Verify checks whether or not the changes made to the file system is
         # expected
-        fs_good = verify(ACT_FILE, task_code, True)
+        fs_good = verify(ACTUAL_FILE, task_code, True)
 
         # If it is a "file system" task, the script will:
         # - Get the current state of the file system and compares it to the expected
@@ -101,9 +101,9 @@ def main():
                     with open(USER_STDERR, 'w') as user_err:
                         stdout = subprocess.run(command, shell=True, stderr=user_err, stdout=user_out)
 
-                normalize_output(USER_STDOUT_FILE, ACT_FILE)
+                normalize_output(USER_STDOUT_FILE, ACTUAL_FILE)
 
-                if not verify(ACT_FILE, task_code, False):
+                if not verify(ACTUAL_FILE, task_code, False):
                     print("incomplete")
                     exit = 3
             else:
@@ -175,7 +175,7 @@ def verify(norm_out_path, task_code, check_fs):
     # compare normalized output file and task verification file
     files_match = filecmp.cmp(norm_out_path, task_verify_path)
     if not files_match:
-        shutil.copy(task_verify_path, EXP_FILE)
+        shutil.copy(task_verify_path, EXPECTED_FILE)
 
     return files_match
 
