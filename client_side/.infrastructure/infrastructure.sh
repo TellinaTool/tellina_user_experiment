@@ -116,7 +116,6 @@ next_task() {
 
   # Increment the number of tasks finished by the user
   curr_task=$(( curr_task + 1 ))
-  get_task_code
 
   # If we're done with all the tasks
   if (( curr_task == TASKS_SIZE )); then
@@ -128,19 +127,32 @@ next_task() {
   # otherwise we check if we need to switch the task set and the treatment
   # And go into the second half of the experiment
   if (( curr_task == TASKS_SIZE / 2 + 1 )); then
-    echo "Congratulations! You have finished the first half of the experiment!"
+    echo "You have finished the first half of the experiment! The treatment" \
+      "will now switch."
+
+    # Updates the treatment and the task set for the user
+    if [[ "$(cat "${INFRA_DIR}/.treatment")" == "T" ]]; then
+      echo "NT" > "${INFRA_DIR}/.treatment"
+    else
+      echo "T" > "${INFRA_DIR}/.treatment"
+    fi
+    if ((task_set == 1)); then
+      task_set=2
+    else
+      task_set=1
+    fi
+
     print_treatment
   fi
 
+  echo $(get_task_code) > "${INFRA_DIR}/.task_code"
   SECONDS=0
   time_elapsed=0
+  status="incomplete"
 
   echo "start_task" > "${INFRA_DIR}/.command"
 
   write_log
-
-  echo "Task Number: ${curr_task}"
-
   print_task
 }
 
