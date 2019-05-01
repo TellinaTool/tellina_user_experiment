@@ -1,16 +1,22 @@
 #!/bin/bash
 # This script takes 1 argument which is the full path to the user experiment
 # directory.
+if ! xhost &> /dev/null; then
+  echo "No display detected, please make sure that you are" \
+    "setting up the experiment in an environment with a graphical display."
+  return 1
+fi
+
 set -a
 
 # Get the full path to the user experiment directory
-EXP_DIR=$1
+EXP_DIR="$1"
 # Get the full path to the experiment's infrastructure directory
-INFRA_DIR=$EXP_DIR/$(dirname ${BASH_SOURCE[0]})
+INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
 
 # Makes sure that all the scripts are executable
-chmod +x ${INFRA_DIR}/*.sh
-chmod +x ${INFRA_DIR}/*.py
+chmod +x "${INFRA_DIR}"/*.sh
+chmod +x "${INFRA_DIR}"/*.py
 
 # Establish tasks directories and related variables
 TASKS_SIZE=22
@@ -28,15 +34,14 @@ SERVER_HOST="https://homes.cs.washington.edu/~atran35"
 SERVER_ROUTE="/tellina_user_experiment/server_side/post_handler/post_handler.php"
 
 # Establish infrastructure variables and functions
-touch ${INFRA_DIR}/.{task_code,treatment,task_order,command}
+source "${INFRA_DIR}"/infrastructure.sh
+touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
 
-echo "a" > ${INFRA_DIR}/.task_code
-echo "start task" > ${INFRA_DIR}/.command
+echo "start task" > "${INFRA_DIR}/.command"
 
-curr_task=0
 time_elapsed=0
 status="incomplete"
-curr_task=0
+curr_task=1
 
 MACHINE_NAME=$(hostname)
 read -p "Enter your UW NetID: " USER_NAME
@@ -54,62 +59,105 @@ USER_ID="${USER_NAME}@${MACHINE_NAME}"
 #    |3|`s2 NT`|`s1 T` |
 case $(echo $((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))) in
   0)
-    echo "T1N2" > ${INFRA_DIR}/.task_code
-    echo "0" > ${INFRA_DIR}/.task_order
-    echo "T" > ${INFRA_DIR}/.treatment
+    echo "T1N2" > "${INFRA_DIR}/.task_order"
+    echo "T" > "${INFRA_DIR}/.treatment"
+    task_set=1
     ;;
   1)
-    echo "T2N1" > ${INFRA_DIR}/.task_code
-    echo "1" > ${INFRA_DIR}/.task_order
-    echo "T" > ${INFRA_DIR}/.treatment
+    echo "T2N1" > "${INFRA_DIR}/.task_order"
+    echo "T" > "${INFRA_DIR}/.treatment"
+    task_set=2
     ;;
   2)
-    echo "N1T2" > ${INFRA_DIR}/.task_code
-    echo "2" > ${INFRA_DIR}/.task_order
-    echo "NT" > ${INFRA_DIR}/.treatment
+    echo "N1T2" > "${INFRA_DIR}/.task_order"
+    echo "NT" > "${INFRA_DIR}/.treatment"
+    task_set=1
     ;;
   3)
-    echo "N2T1" > ${INFRA_DIR}/.task_code
-    echo "3" > ${INFRA_DIR}/.task_order
-    echo "NT" > ${INFRA_DIR}/.treatment
+    echo "N2T1" > "${INFRA_DIR}/.task_order"
+    echo "NT" > "${INFRA_DIR}/.treatment"
+    task_set=2
     ;;
 esac
 
-source ${INFRA_DIR}/interface_functions.sh
-source ${INFRA_DIR}/user_functions.sh
+echo $(get_task_code) > "${INFRA_DIR}/.task_code"
 
+alias reset="touch ${INFRA_DIR}/.reset"
+alias task="touch ${INFRA_DIR}/.task"
+alias abandon="touch ${INFRA_DIR}/.abandon"
+alias helpme="touch ${INFRA_DIR}/.helpme"
 
 # Install Bash preexec.
-source ${INFRA_DIR}/bash-preexec.sh
+source "${INFRA_DIR}"/bash-preexec.sh
 
 # preexec will send user commands to the server
 preexec_func() {
   # Gets all the variables needed by the infrastructure and logs the user's command
-  TASK_NO=$(cat ${INFRA_DIR}/.curr_task)
-  TREATMENT=$(cat ${INFRA_DIR}/.treatment)
-  TIME_STAMP=$(date +%T)
-echo "$1" > ${INFRA_DIR}/.prev_cmd }
+  echo "$1" > "${INFRA_DIR}/.command"
+  curr_task=$(cat "${INFRA_DIR}/.curr_task")
+  treatment=$(cat "${INFRA_DIR}/.treatment")
+  time_stamp=$(date +%T)
+}
+
 precmd_func() {
-  TIME_SPENT=${SECONDS}
-  COMMAND=$(cat ${INFRA_DIR}/.prev_cmd)
+  time_elapsed=${SECONDS}
 
-  if [ $TIME_SPENT -gt $TIME_LIMIT ]; then
-    next_task 2
-  elif [ -n "$COMMAND" ] && [ "$COMMAND" != "abandon" ] && [ "$COMMAND" != "reset" ] && [ "$COMMAND" != "helpme" ] && [ "$COMMAND" != "task" ]; then
+  if (( time_elapsed >= TIME_LIMIT )); then
+    status="timeout"
+  elif [[ -f "${INFRA_DIR}/.abandon" ]]; then
+    status="abandon"
+
+    rm "${INFRA_DIR}/.abandon"
+  elif [[ -f "${INFRA_DIR}/.reset" ]]; then
+    status="incomplete"
+    make_fs
+
+    rm "${INFRA_DIR}/.reset"
+  elif [[ -f "${INFRA_DIR}/.task" ]]; then
+    status="incomplete"
+
+    print_task
+
+    rm "${INFRA_DIR}/.task"
+  elif [[ -f "${INFRA_DIR}/.helpme" ]]; then
+    status="incomplete"
+
+    echo "task: prints the description of the current task."
+    echo "reset: restore the file system to its original state."
+    echo "abandon: abandon the current task."
+    echo "helpme: prints this help message."
+
+    rm "${INFRA_DIR}/.helpme"
+  elif [[ "$(cat "${INFRA_DIR}/.command")" == "start task" ]]; then
+    status="incomplete"
+  else
     verify_task
-    if [ "$EXIT" = 1 ]; then
-      next_task 1
-    else
-      echo "You've modified the file system, a diff of the changes has been shown."
-      echo "You can continue, or run \"reset\" to restore the file system to its original state."
 
-      STATUS=3
-      write_log
+    if [[ ${status} == "incomplete" ]]; then
+      if (( EXIT == 2 )); then
+        echo "You have modified the file system. It will now be reset to its" \
+          "original state."
+        make_fs
+      else
+        echo "Actual output does not match expected. A diff has been shown."
+      fi
+
+      meld "/tmp/task_actual" "/tmp/task_expected" &
+    elif [[ -z ${status} ]]; then
+      status="Verification error!"
     fi
+  fi
+
+  write_log
+  if [[ "${status}" == "abandon" ]] || \
+     [[ "${status}" == "timeout" ]] || \
+     [[ "${status}" == "success" ]]; then
+    next_task
   fi
 }
 
 make_fs
+cd "${FS_DIR}"
 
 # Stuff here
 echo "Welcome to the user study!"
@@ -118,4 +166,4 @@ echo "You will have 5 minutes to complete each task. Once the timer is reached, 
 echo "will move on to the next task."
 echo "Make sure that you are performing the tasks in the $(basename $FS_DIR) directory"
 echo "The experiment interface does not ensure that anything outside of that directory is protected."
-echo "To start performing tasks, run \"start_experiment\""
+start_experiment
