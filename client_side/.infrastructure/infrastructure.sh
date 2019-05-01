@@ -23,7 +23,7 @@ ord() {
 # $1: the number n specifying which characters
 char_from() {
   local num_a=$(ord "a")
-  local num_fr=$((num_a + $1))
+  local num_fr=$((num_a + $1 - 1))
 
   echo $(chr ${num_fr})
 }
