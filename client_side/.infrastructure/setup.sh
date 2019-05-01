@@ -9,6 +9,9 @@ fi
 
 set -a
 
+# Saves the old value of PROMPT_COMMAND, since Bash Preexec overrides it
+PROMPT_COMMAND_OG=${PROMPT_COMMAND}
+
 # Get the full path to the user experiment directory
 EXP_DIR="$1"
 # Get the full path to the experiment's infrastructure directory

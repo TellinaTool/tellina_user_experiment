@@ -56,9 +56,15 @@ start_experiment() {
 }
 
 end_experiment() {
+  # This effectively uninstalls Bash Pre-exec
+  # Makes it so any commands typed after the experiment has ended will not be
+  # passed through preexec and precmd.
+  PROMPT_COMMAND=${PROMPT_COMMAND_OG}
+  trap - DEBUG
+
   echo "Congratulations! You have completed the interactive portion of the" \
     "experiment!"
-  echo "Please take some time to fill out the survey here <URL> using" \
+  echo "Please take some time to fill out the survey here ${SURVEY_URL} using" \
     "${USER_NAME} as your user name."
 
   cd "${EXP_DIR}"
