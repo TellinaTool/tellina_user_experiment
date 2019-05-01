@@ -40,7 +40,7 @@ get_task_code() {
   fi
 
 
-  echo "$(char_from ${task_no})" > "${INFRA_DIR}/.task_code"
+  echo "$(char_from ${task_no})"
 }
 
 start_experiment() {
@@ -49,6 +49,7 @@ start_experiment() {
   precmd_functions+=(precmd_func)
 
   print_treatment
+  print_task
 
   SECONDS=0
   time_elapsed=0
@@ -64,7 +65,6 @@ end_experiment() {
 
   return 0
 }
-
 # Creates the mock file system that the user will be working on
 # And moves them to that directory
 make_fs() {
@@ -90,13 +90,19 @@ print_treatment() {
   fi
 }
 
+print_task() {
+  local task_code=$(cat "${INFRA_DIR}/.task_code")
+
+  jq -r '.description' "${TASKS_DIR}/task_${task_code}/task_${task_code}.json"
+}
+
 # See documentation for scripts/verify_task.py for more details on what it does
 verify_task() {
   # Verify the output of the previous command.
-  local task_no=$(task_no)
-  local user_command="$(cat "${INFRA_DIR}/.command"))"
+  local task_code="$(cat "${INFRA_DIR}/.task_code")"
+  local user_command="$(cat "${INFRA_DIR}/.command")"
 
-  status=$(./"${INFRA_DIR}"/verify_task.py ${task_no} ${user_command})
+  status=$("${INFRA_DIR}"/verify_task.py ${task_code} ${user_command})
   EXIT=$?
 }
 
@@ -134,12 +140,14 @@ next_task() {
   write_log
 
   echo "Task Number: ${curr_task}"
+
+  print_task
 }
 
 # Writes to the user's log file on the server
 # The resets, command, time, and status parameters are optional
 write_log() {
-  curl -X POST ${HOST}/${ROUTE} \
+  curl -s -X POST ${SERVER_HOST}/${SERVER_ROUTE} \
     -d user_id="$USER_ID" \
     -d task_order="$(cat "${INFRA_DIR}/.task_order")" \
     -d client_time_stamp="$(date --utc +%FT%TZ)" \
@@ -147,5 +155,5 @@ write_log() {
     -d treatment="$(cat "${INFRA_DIR}/.treatment")" \
     -d time_elapsed="${time_elapsed}" \
     -d status="${status}" \
-    -d command="$(cat "${INFRA_DIR}/.command")"
+    -d command="$(cat "${INFRA_DIR}/.command")" 2> /dev/null
 }
