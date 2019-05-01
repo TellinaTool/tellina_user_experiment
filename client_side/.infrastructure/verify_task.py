@@ -25,12 +25,14 @@ import subprocess
 import filecmp
 import tarfile
 
+# Gets all the environment variables and sets up the user output directory
 FS_DIR = os.environ['FS_DIR']
 
 USER_OUT_DIR = os.environ['USER_OUT']
 if not os.path.exists(USER_OUT_DIR):
     os.mkdir(USER_OUT_DIR)
 
+# Establishes files for all the outputs
 USER_STDERR = os.path.join(USER_OUT_DIR, 'std_err')
 
 USER_FS_FILE = os.path.join(USER_OUT_DIR, 'fs_out')
@@ -74,26 +76,24 @@ def main():
         # expected
         fs_good = verify(ACT_FILE, task_code, True)
 
-        # - If it is a "file system" task, the script will:
-        #   - Get the current state of the file system and compares it to the expected
-        #     file system for the current task.
-        # - Else if it is a "select" task, the script will:
-        #   - Get the current state of the file system and compares it to the original
-        #     state to make sure that it was not changed.
-        #   - If the file system was not modified:
-        #     - Re-execute the user command and capture the `stdout`.
-        #     - Check that the captured `stdout` of the user command matches the
-        #       corresponding expected output.
-        #   - If the file system was modified then the task failed.
+        # If it is a "file system" task, the script will:
+        # - Get the current state of the file system and compares it to the expected
+        #   file system for the current task.
+        # Else if it is a "select" task, the script will:
+        # - Get the current state of the file system and compares it to the original
+        #   state to make sure that it was not changed.
+        # - If the file system was not modified:
+        #   - Re-execute the user command and capture the `stdout`.
+        #   - Check that the captured `stdout` of the user command matches the
+        #     corresponding expected output.
+        # - If the file system was modified then the task failed.
         exit = 0
         if not fs_good:
             if task_code in FILESYSTEM_TASKS:
                 print("incomplete")
-
                 exit = 1
             else:
                 print("incomplete")
-
                 exit = 2
         else:
             if task_code not in FILESYSTEM_TASKS:
@@ -105,7 +105,6 @@ def main():
 
                 if not verify(ACT_FILE, task_code, False):
                     print("incomplete")
-
                     exit = 3
             else:
                 exit = 0
@@ -158,7 +157,12 @@ def verify(norm_out_path, task_code, check_fs):
                 print('-------------------------------------------')
                 print('html.tar does not contain the correct files')
                 print('contains: ' + str(files_in_tar))
-                print('should be: ' + str({'index.html', 'home.html', 'labs.html', 'lesson.html', 'menu.html', 'navigation.html'}))
+                print('should be: ' + str({'index.html',
+                                           'home.html',
+                                           'labs.html',
+                                           'lesson.html',
+                                           'menu.html',
+                                           'navigation.html'}))
                 return False
         except tarfile.ReadError:
             # valid tar file does not exist on the target path
