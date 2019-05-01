@@ -1,13 +1,21 @@
 #!/bin/bash
 # This script takes 1 argument which is the full path to the user experiment
 # directory.
+
+# Checks if the user has a usable graphical display. Detects X forwarding as
+# well
 if ! xhost &> /dev/null; then
   echo "No display detected, please make sure that you are" \
     "setting up the experiment in an environment with a graphical display."
   return 1
 fi
 
+# Automatically export any assigned variables
 set -a
+
+################################################################################
+#                              CONSTANT DEFINITIONS                            #
+################################################################################
 
 # Saves the old value of PROMPT_COMMAND, since Bash Preexec overrides it
 PROMPT_COMMAND_OG=${PROMPT_COMMAND}
@@ -40,6 +48,11 @@ read -p "Enter your UW NetID: " USER_NAME
 
 USER_ID="${USER_NAME}@${MACHINE_NAME}"
 
+################################################################################
+#                              VARIABLE DEFINITIONS                            #
+#             This includes bash variables as well as variable files           #
+################################################################################
+
 # Makes sure that all the scripts are executable
 chmod +x "${INFRA_DIR}"/*.sh
 chmod +x "${INFRA_DIR}"/*.py
@@ -48,10 +61,11 @@ chmod +x "${INFRA_DIR}"/*.py
 source "${INFRA_DIR}"/infrastructure.sh
 touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
 
+# Initalize variable with default values
 echo "start task" > "${INFRA_DIR}/.command"
 
-time_elapsed=0
 status="incomplete"
+time_elapsed=0
 curr_task=1
 
 # Determine the task order based on a truncated md5sum hash of the username.
@@ -86,23 +100,63 @@ case $(echo $((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))) in
     ;;
 esac
 
+# Determines the task code w.r.t current_task and task_set
 echo $(get_task_code) > "${INFRA_DIR}/.task_code"
 
+# Create user meta-commands
 alias reset="touch ${INFRA_DIR}/.reset"
 alias task="touch ${INFRA_DIR}/.task"
 alias abandon="touch ${INFRA_DIR}/.abandon"
 alias helpme="touch ${INFRA_DIR}/.helpme"
 
+################################################################################
+#                                  BASH PREEXEC                                #
+################################################################################
+
 # Install Bash preexec.
 source "${INFRA_DIR}"/bash-preexec.sh
 
-# preexec will send user commands to the server
+# Executed before the user-entered command is executed
+# Saves the most recent command into the .command file
+# If the user enters an "empty" command, then the .command file does not change
 preexec_func() {
-  # Gets all the variables needed by the infrastructure and logs the user's command
   echo "$1" > "${INFRA_DIR}/.command"
-  time_stamp=$(date +%T)
 }
 
+# Executed after the user-entered command is executed
+# - Only one of these cases can happen
+# 1. Check if user has ran out of time:
+#    - `time_elapsed=$SECONDS` is less than some time limit constant.
+#    - The check will happen after the command is executed.
+#    - If the user ran out of time, `status="timeout"`,
+#      `time_elapsed=$TIME_LIMIT`.
+# 2. Handle user meta-command:
+#    - Output verification will not be performed on these commands.
+#    - The check is done by looking for the existence of the file
+#       `.<commmand_name>` in the `.infrastructure` directory.
+#    - If `abandon`:
+#      - Set `status="abandon"`.
+#      - Remove `.abandon`.
+#    - Otherwise
+#      - If `reset`: Call `make_fs`. Remove `.reset`.
+#      - If `helpme`: print the list of user meta-commands. Remove `.helpme`.
+#      - If `task`: call `get_task_description.py` with `.task_code` to print the
+#        task's description. Remove `.task`
+#      - Set `status="incomplete"`.
+# 3. Check if the command in `.command` is correct.
+#    - Does this by setting `status=$(verify_output.py $(cat .task_code) $(cat
+#      .command))`
+#    - This sets `status` to either "success" or "incomplete".
+#    - If `status == "incomplete"` check the [exit code](#exit-stat) of
+#      `verify_output.py`:
+#      - `1`: open Meld for the file system.
+#      - `2`: open Meld for the file system, issue warning, and call
+#        `make_fs`.
+#      - `3`: open Meld for the `stdout`.
+# - Call `write_log`. This writes information about the most recently executed
+#   user command.
+# - If `status="abandon" || status="timeout" || status="success"`, call
+#   `next_task`.
 precmd_func() {
   time_elapsed=${SECONDS}
   if (( time_elapsed >= TIME_LIMIT )); then
@@ -135,6 +189,8 @@ precmd_func() {
 
     rm "${INFRA_DIR}/.helpme"
   elif [[ "$(cat "${INFRA_DIR}/.command")" == "start task" ]]; then
+    # A special case for "start task" is needed so verify_task does not run on
+    # it
     status="incomplete"
   else
     verify_task
@@ -165,11 +221,15 @@ precmd_func() {
 make_fs
 cd "${FS_DIR}"
 
-# Stuff here
+# Prints the introduction here
 echo "Welcome to the user study!"
-echo "At any point, run \"helpme\" to see a list of commands available to you during the study."
-echo "You will have 5 minutes to complete each task. Once the timer is reached, the experiment"
-echo "will move on to the next task."
-echo "Make sure that you are performing the tasks in the $(basename $FS_DIR) directory"
-echo "The experiment interface does not ensure that anything outside of that directory is protected."
+echo "At any point, run \"helpme\" to see a list of commands available to" \
+  "you during the study."
+echo "You will have 5 minutes to complete each task. Once the timer is" \
+  "reached, the experiment will move on to the next task."
+echo "Make sure that you are performing the tasks in the" \
+  "$(basename $FS_DIR) directory"
+echo "The experiment interface does not ensure that anything outside" \
+  "of that directory is protected."
+
 start_experiment
