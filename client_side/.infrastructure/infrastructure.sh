@@ -19,7 +19,7 @@ ord() {
   LC_CTYPE=C printf '%d' "'$1"
 }
 
-# Outputs the nth alphabetic character. n starts at 0.
+# Outputs the nth alphabetic character. n starts at 1.
 # $1: the number n specifying which characters
 char_from() {
   local num_a=$(ord "a")
@@ -28,6 +28,12 @@ char_from() {
   echo $(chr ${num_fr})
 }
 
+# Gets the true task code from the user task number and the task set
+# The user task number is always sequential.
+# The task can be in either task set 1 or 2, with the dividing task being
+# TASKS_SIZE / 2
+# That is, if the current task set is 2 and the user current user task number
+# is 12, then its true task code is "a", because it is in task set 1.
 get_task_code() {
   if ((task_set == 1)); then
     local task_no=$((curr_task > TASKS_SIZE / 2 ? \
@@ -43,6 +49,8 @@ get_task_code() {
   echo "$(char_from ${task_no})"
 }
 
+# Enables Bash preexec functions and prints out the first treatment and task
+# Also sets $SECONDS and $time_elapsed to 0
 start_experiment() {
   # Enable task logging
   preexec_functions+=(preexec_func)
@@ -55,6 +63,9 @@ start_experiment() {
   time_elapsed=0
 }
 
+# "Uninstalls" Bash Preexec by removing its triggers.
+# Remove all variable files created by the infrastructure
+# Stops the experiment completely by returning from the sourced scripts.
 end_experiment() {
   # This effectively uninstalls Bash Pre-exec
   # Makes it so any commands typed after the experiment has ended will not be
@@ -73,8 +84,11 @@ end_experiment() {
 
   return 0
 }
-# Creates the mock file system that the user will be working on
-# And moves them to that directory
+
+# Creates the file system directory that the user will be working on.
+# If the directory already exists, removes it and create it again.
+# Saves the user's current working directory and restores them to it once the
+# directory is set up.
 make_fs() {
   pushd "${INFRA_DIR}" &> /dev/null
 
@@ -98,6 +112,7 @@ print_treatment() {
   fi
 }
 
+# Prints the current task number and its description.
 print_task() {
   local task_code=$(cat "${INFRA_DIR}/.task_code")
 
@@ -107,7 +122,9 @@ print_task() {
   jq -r '.description' "${TASKS_DIR}/task_${task_code}/task_${task_code}.json"
 }
 
-# See documentation for scripts/verify_task.py for more details on what it does
+# See documentation for ./verify_task.py for more details on what it does
+# Captures the stdout of verify_task.py into $status
+# Captures the exit code of verify_task.py into $EXIT
 verify_task() {
   # Verify the output of the previous command.
   local task_code="$(cat "${INFRA_DIR}/.task_code")"
@@ -117,11 +134,17 @@ verify_task() {
   EXIT=$?
 }
 
-# Writes to log the results of the current task
-# Parameters:
-# $1 the STATUS of the task: 0 for abandon, 1 for success, 2 for timeout
-# Increments the current task counter and determines if we need to go to the
-# next task set
+# Resets the file system directory that the user works on
+# Increment the current task number and update the true task code in .task_code
+# accordingly
+#   - Check if all the tasks are complete, if it is then skip the following
+#     steps and clean up instead.
+#   - If this current_task is equal to `TASKS_SIZE / 2`, switch treatments and
+#     task sets and notify the user.
+# Write "start task" to `.command`.
+# Writes to the log
+# Set time_elapsed=0, status="incomplete", SECONDS=0
+# Prints out the task's information
 next_task() {
   make_fs
 
@@ -168,8 +191,7 @@ next_task() {
   print_task
 }
 
-# Writes to the user's log file on the server
-# The resets, command, time, and status parameters are optional
+# Writes to the log file on the server with a POST request
 write_log() {
   curl -s -X POST ${SERVER_HOST}/${SERVER_ROUTE} \
     -d user_id="$USER_ID" \
