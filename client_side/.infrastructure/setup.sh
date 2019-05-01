@@ -1,9 +1,9 @@
 #!/bin/bash
-# This script takes 1 argument which is the full path to the user experiment
+# This script takes 1 argument which is the absolute path to the user experiment
 # directory.
 
 # Checks if the user has a usable graphical display. Detects X forwarding as
-# well
+# well.
 if ! xhost &> /dev/null; then
   echo "No display detected, please make sure that you are" \
     "setting up the experiment in an environment with a graphical display."
@@ -17,12 +17,12 @@ set -a
 #                              CONSTANT DEFINITIONS                            #
 ################################################################################
 
-# Saves the old value of PROMPT_COMMAND, since Bash Preexec overrides it
+# Saves the old value of PROMPT_COMMAND, since Bash Preexec overwrites it.
 PROMPT_COMMAND_OG=${PROMPT_COMMAND}
 
-# Get the full path to the user experiment directory
+# The absolute path to the user experiment directory
 EXP_DIR="$1"
-# Get the full path to the experiment's infrastructure directory
+# The absolute path to the experiment's infrastructure directory
 INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
 
 # Establish tasks directories and related variables
@@ -31,9 +31,10 @@ TASKS_SIZE=22
 TASKS_DIR="${INFRA_DIR}/tasks"
 TIME_LIMIT=300
 
+# Contains output of user commands.
 USER_OUT="${INFRA_DIR}/user_out"
 
-# Establish the file system directory the user will perform tasks on
+# The directory the user will perform tasks on
 FS_DIR="${EXP_DIR}/file_system"
 
 # Establish the server information
@@ -77,14 +78,8 @@ else
 fi
 
 # Determine the task order based on a truncated md5sum hash of the username.
-# The following table is used to determine the ordering with "s" indicating the
-# task set, and T/NT for Tellina/NoTellina
-#    | |  1st  |  2nd  |
-#    |-|-------|-------|
-#    |0|`s1 T` |`s2 NT`|
-#    |1|`s2 T` |`s1 NT`|
-#    |2|`s1 NT`|`s2 T` |
-#    |3|`s2 NT`|`s1 T` |
+# It is two two-character codes.  In each two-character code, the letter
+# T/N is for Tellina/NoTellina, and the number indicates the task_set used.
 case $(echo $((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))) in
   0)
     echo "T1N2" > "${INFRA_DIR}/.task_order"
@@ -98,12 +93,12 @@ case $(echo $((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))) in
     ;;
   2)
     echo "N1T2" > "${INFRA_DIR}/.task_order"
-    echo "NT" > "${INFRA_DIR}/.treatment"
+    echo "N" > "${INFRA_DIR}/.treatment"
     task_set=1
     ;;
   3)
     echo "N2T1" > "${INFRA_DIR}/.task_order"
-    echo "NT" > "${INFRA_DIR}/.treatment"
+    echo "N" > "${INFRA_DIR}/.treatment"
     task_set=2
     ;;
 esac
@@ -133,7 +128,7 @@ preexec_func() {
 
 # Executed after the user-entered command is executed
 # - Only one of these cases can happen
-# 1. Check if user has ran out of time:
+# 1. Check if user has run out of time:
 #    - `time_elapsed=$SECONDS` is less than some time limit constant.
 #    - The check will happen after the command is executed.
 #    - If the user ran out of time, `status="timeout"`,

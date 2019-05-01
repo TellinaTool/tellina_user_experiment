@@ -1,6 +1,5 @@
 ##############################################################################
-# This file contains functions that the interface will use to manage the
-# following things:
+# This file contains utility functions for use by the interface:
 # - Creating the mock file system for the user
 # - Timing each task
 # - Determining which task and treatment ordering for the current experiment
@@ -8,18 +7,18 @@
 # - Verify the output of a task
 ##############################################################################
 
-# Converts a numeric ascii value to a character
+# Converts a numeric ASCII value to a character.
 chr() {
   [ "$1" -lt 256 ] || return 1
   printf "\\$(printf '%03o' "$1")"
 }
 
-# converts a character to its ascii value
+# Converts a character to its ASCII value.
 ord() {
   LC_CTYPE=C printf '%d' "'$1"
 }
 
-# Outputs the nth alphabetic character. n starts at 1.
+# Outputs the nth alphabetic character. n is 1-based; that is, char_from(1) is "a".
 # $1: the number n specifying which characters
 char_from() {
   local num_a=$(ord "a")
@@ -28,10 +27,10 @@ char_from() {
   echo $(chr ${num_fr})
 }
 
-# Gets the true task code from the user task number and the task set
+# Gets the true task code from the user task number and the task set.
 # The user task number is always sequential.
 # The task can be in either task set 1 or 2, with the dividing task being
-# TASKS_SIZE / 2
+# TASKS_SIZE / 2.
 # That is, if the current task set is 2 and the user current user task number
 # is 12, then its true task code is "a", because it is in task set 1.
 get_task_code() {
@@ -49,8 +48,8 @@ get_task_code() {
   echo "$(char_from ${task_no})"
 }
 
-# Enables Bash preexec functions and prints out the first treatment and task
-# Also sets $SECONDS and $time_elapsed to 0
+# Enables Bash preexec functions and prints out the first treatment and task.
+# Also sets $SECONDS and $time_elapsed to 0.
 start_experiment() {
   # Enable task logging
   preexec_functions+=(preexec_func)
@@ -79,15 +78,14 @@ end_experiment() {
 
   echo "Congratulations! You have completed the interactive portion of the" \
     "experiment!"
-  echo "Please take some time to fill out the survey here ${SURVEY_URL} using" \
-    "${USER_NAME} as your user name."
+  echo "Please take some time to fill out the survey at ${SURVEY_URL} ."
 
   return 0
 }
 
 # Creates the file system directory that the user will be working on.
-# If the directory already exists, removes it and create it again.
-# Saves the user's current working directory and restores them to it once the
+# If the directory already exists, removes it and creates it again.
+# Saves the user's current working directory and returnst to it once the
 # directory is set up.
 make_fs() {
   pushd "${INFRA_DIR}" &> /dev/null
@@ -134,7 +132,6 @@ verify_task() {
   EXIT=$?
 }
 
-# Resets the file system directory that the user works on
 # Increment the current task number and update the true task code in .task_code
 # accordingly
 #   - Check if all the tasks are complete, if it is then skip the following
@@ -162,12 +159,11 @@ next_task() {
   # otherwise we check if we need to switch the task set and the treatment
   # And go into the second half of the experiment
   if (( curr_task == TASKS_SIZE / 2 + 1 )); then
-    echo "You have finished the first half of the experiment! The treatment" \
-      "will now switch."
+    echo "You have finished the first half of the experiment!"
 
     # Updates the treatment and the task set for the user
     if [[ "$(cat "${INFRA_DIR}/.treatment")" == "T" ]]; then
-      echo "NT" > "${INFRA_DIR}/.treatment"
+      echo "N" > "${INFRA_DIR}/.treatment"
     else
       echo "T" > "${INFRA_DIR}/.treatment"
     fi
@@ -191,7 +187,7 @@ next_task() {
   print_task
 }
 
-# Writes to the log file on the server with a POST request
+# Writes a command to the log file on the server with a POST request.
 write_log() {
   curl -s -X POST ${SERVER_HOST}/${SERVER_ROUTE} \
     -d user_id="$USER_ID" \
