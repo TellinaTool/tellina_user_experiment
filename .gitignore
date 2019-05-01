@@ -1,1 +1,13 @@
 # Will soon be updated
+# Ignore variable files
+.command
+.task_code
+.task_order
+.treatment
+
+# Ignore generated directories
+user_out/
+file_system/
+
+# Ignore .vim files
+*.vim
