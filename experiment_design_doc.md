@@ -350,7 +350,7 @@ command is executed
 - Write the command to `.command`.
 - Kill Meld.
 
-##### `precut`:
+##### `precmd`:
 - Ran right after the user command is executed and right before the
   prompt is displayed.
 - Only one of the following cases can happen every time a command has finished
