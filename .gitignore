@@ -1,4 +1,6 @@
-# Will soon be updated
+# Don't track log file
+log.csv
+
 # Ignore variable files
 .command
 .task_code
