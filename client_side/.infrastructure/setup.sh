@@ -18,7 +18,7 @@ set -a
 ################################################################################
 
 # Saves the old value of PROMPT_COMMAND, since Bash Preexec overwrites it.
-PROMPT_COMMAND_OG=${PROMPT_COMMAND}
+PROMPT_COMMAND_ORIG=${PROMPT_COMMAND}
 
 # The absolute path to the user experiment directory
 EXP_DIR="$1"
@@ -29,7 +29,7 @@ INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
 TASKS_SIZE=22
 
 TASKS_DIR="${INFRA_DIR}/tasks"
-TIME_LIMIT=300
+TASK_TIME_LIMIT=300
 
 # Contains output of user commands.
 USER_OUT="${INFRA_DIR}/user_out"
@@ -39,10 +39,10 @@ FS_DIR="${EXP_DIR}/file_system"
 
 # Establish the server information
 SERVER_HOST="https://homes.cs.washington.edu/~atran35"
-SERVER_ROUTE="/tellina_user_experiment/server_side/post_handler/post_handler.php"
-
 # Establish survey URL
-SURVEY_URL="<URL>"
+EXPERIMENT_HOME_URL="${SERVER_HOST}/tellina_user_experiment"
+
+SERVER_ROUTE="${EXPERIMENT_HOME_URL}/server_side/post_handler/post_handler.php"
 
 MACHINE_NAME=$(hostname)
 read -p "Enter your UW NetID: " USER_NAME
@@ -60,7 +60,7 @@ chmod +x "${INFRA_DIR}"/*.py
 
 # Establish infrastructure variables and functions
 source "${INFRA_DIR}"/infrastructure.sh
-touch "${INFRA_DIR}"/.{task_code,curr_task,treatment,task_order,command}
+touch "${INFRA_DIR}"/.{task_code,task_num,treatment,task_order,command}
 
 # Initalize variable with default values
 echo "start task" > "${INFRA_DIR}/.command"
@@ -68,13 +68,13 @@ echo "start task" > "${INFRA_DIR}/.command"
 status="incomplete"
 time_elapsed=0
 
-# If a curr_task file already exists, it means we are trying to resume the
+# If a task_num file already exists, it means we are trying to resume the
 # experiment
-if [[ -e "${INFRA_DIR}/.curr_task" ]]; then
-  curr_task=$(cat "${INFRA_DIR}/.curr_task")
+if [[ -e "${INFRA_DIR}/.task_num" ]]; then
+  task_num=$(cat "${INFRA_DIR}/.task_num")
 else
-  curr_task=1
-  echo "${curr_task}" > "${INFRA_DIR}/.curr_task"
+  task_num=1
+  echo "${task_num}" > "${INFRA_DIR}/.task_num"
 fi
 
 # Determine the task order based on a truncated md5sum hash of the username.
@@ -163,7 +163,7 @@ preexec_func() {
 precmd_func() {
   time_elapsed=${SECONDS}
   if (( time_elapsed >= TIME_LIMIT )); then
-    echo "You have run out of time for task ${curr_task}"
+    echo "You have run out of time for task ${task_num}"
 
     status="timeout"
     time_elapsed=${TIME_LIMIT}

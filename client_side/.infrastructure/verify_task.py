@@ -58,7 +58,7 @@ def main():
         def __exit__(self, etype, value, traceback):
             os.chdir(self.savedPath)
 
-    # the current task number, as a str
+    # the true task code
     task_code = sys.argv[1]
     # the current command
     command = ' '.join(sys.argv[2:])

@@ -35,13 +35,13 @@ char_from() {
 # is 12, then its true task code is "a", because it is in task set 1.
 get_task_code() {
   if ((task_set == 1)); then
-    local task_no=$((curr_task > TASKS_SIZE / 2 ? \
-      curr_task - TASKS_SIZE / 2 : \
-      curr_task))
+    local task_no=$((task_num > TASKS_SIZE / 2 ? \
+      task_num - TASKS_SIZE / 2 : \
+      task_num))
   else
-    local task_no=$((curr_task > TASKS_SIZE / 2 ? \
-      curr_task : \
-      curr_task + TASKS_SIZE / 2))
+    local task_no=$((task_num > TASKS_SIZE / 2 ? \
+      task_num : \
+      task_num + TASKS_SIZE / 2))
   fi
 
 
@@ -78,7 +78,7 @@ end_experiment() {
 
   echo "Congratulations! You have completed the interactive portion of the" \
     "experiment!"
-  echo "Please take some time to fill out the survey at ${SURVEY_URL} ."
+  echo "Please take some time to fill out the survey at ${EXPERIMENT_HOME_URL}."
 
   return 0
 }
@@ -115,7 +115,7 @@ print_task() {
   local task_code=$(cat "${INFRA_DIR}/.task_code")
 
   echo "-----------------------------------------------------------------------"
-  echo "Task: ${curr_task}/${TASKS_SIZE}"
+  echo "Task: ${task_num}/${TASKS_SIZE}"
 
   jq -r '.description' "${TASKS_DIR}/task_${task_code}/task_${task_code}.json"
 }
@@ -146,11 +146,11 @@ next_task() {
   make_fs
 
   # Increment the number of tasks finished by the user
-  curr_task=$(( curr_task + 1 ))
-  echo "${curr_task}" > "${INFRA_DIR}/.curr_task"
+  task_num=$(( task_num + 1 ))
+  echo "${task_num}" > "${INFRA_DIR}/.task_num"
 
   # If we're done with all the tasks
-  if (( curr_task == TASKS_SIZE )); then
+  if (( task_num == TASKS_SIZE )); then
     end_experiment
 
     return 1
@@ -158,7 +158,7 @@ next_task() {
 
   # otherwise we check if we need to switch the task set and the treatment
   # And go into the second half of the experiment
-  if (( curr_task == TASKS_SIZE / 2 + 1 )); then
+  if (( task_num == TASKS_SIZE / 2 + 1 )); then
     echo "You have finished the first half of the experiment!"
 
     # Updates the treatment and the task set for the user
