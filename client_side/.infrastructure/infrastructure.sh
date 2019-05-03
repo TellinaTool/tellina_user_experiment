@@ -55,11 +55,19 @@ start_experiment() {
   preexec_functions+=(preexec_func)
   precmd_functions+=(precmd_func)
 
+  make_fs
+  cd "${FS_DIR}"
+
   print_treatment
   print_task
 
   SECONDS=0
   time_elapsed=0
+
+  # Because precmd is enabled when start_experiment is called, it will be
+  # invoked before the next command line prompt. ".noverify" is touched so that
+  # precmd does not attempt to verify the output of "start task".
+  touch "${INFRA_DIR}/.noverify"
 }
 
 # "Uninstalls" Bash Preexec by removing its triggers.

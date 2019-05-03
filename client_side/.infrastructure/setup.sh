@@ -26,9 +26,9 @@ EXP_DIR="$1"
 INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
 
 # Establish tasks directories and related variables
-TASKS_SIZE=22
-
 TASKS_DIR="${INFRA_DIR}/tasks"
+
+TASKS_SIZE=$(ls -1 "${TASKS_DIR}" | wc -l)
 TASK_TIME_LIMIT=300
 
 # Contains output of user commands.
@@ -60,7 +60,7 @@ chmod +x "${INFRA_DIR}"/*.py
 
 # Establish infrastructure variables and functions
 source "${INFRA_DIR}"/infrastructure.sh
-touch "${INFRA_DIR}"/.{task_code,task_num,treatment,task_order,command}
+touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
 
 # Initalize variable with default values
 echo "start task" > "${INFRA_DIR}/.command"
@@ -70,7 +70,7 @@ time_elapsed=0
 
 # If a task_num file already exists, it means we are trying to resume the
 # experiment
-if [[ -e "${INFRA_DIR}/.task_num" ]]; then
+if [[ -f "${INFRA_DIR}/.task_num" ]]; then
   task_num=$(cat "${INFRA_DIR}/.task_num")
 else
   task_num=1
@@ -103,14 +103,25 @@ case $(echo $((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))) in
     ;;
 esac
 
-# Determines the task code w.r.t current_task and task_set
+# Determines the task code w.r.t current_task and task_set.
 echo $(get_task_code) > "${INFRA_DIR}/.task_code"
 
-# Create user meta-commands
-alias reset="touch ${INFRA_DIR}/.reset"
-alias task="touch ${INFRA_DIR}/.task"
-alias abandon="touch ${INFRA_DIR}/.abandon"
-alias helpme="touch ${INFRA_DIR}/.helpme"
+# Create user meta-commands.
+# Each user meta-commands will create a file called .noverify in the
+# infrastructure directory
+
+# abandon writes "abandon" to `.noverify`.
+# This is to allow `abandon` to be an alias and delegates setting the $status
+# variable to precmd.
+alias abandon='echo "abandon" > ${INFRA_DIR}/.noverify'
+
+alias reset='make_fs; touch ${INFRA_DIR}/.noverify'
+alias task='print_task; touch ${INFRA_DIR}/.noverify'
+alias helpme='echo "task: prints the description of the current task."; \
+   echo "reset: restore the file system to its original state."; \
+   echo "abandon: abandon the current task."; \
+   echo "helpme: prints this help message."; \
+   touch ${INFRA_DIR}/.noverify'
 
 ################################################################################
 #                                  BASH PREEXEC                                #
@@ -129,23 +140,16 @@ preexec_func() {
 # Executed after the user-entered command is executed
 # - Only one of these cases can happen
 # 1. Check if user has run out of time:
-#    - `time_elapsed=$SECONDS` is less than some time limit constant.
+#    - `time_elapsed=$SECONDS` is more than some time limit constant.
 #    - The check will happen after the command is executed.
 #    - If the user ran out of time, `status="timeout"`,
 #      `time_elapsed=$TIME_LIMIT`.
 # 2. Handle user meta-command:
 #    - Output verification will not be performed on these commands.
 #    - The check is done by looking for the existence of the file
-#       `.<commmand_name>` in the `.infrastructure` directory.
-#    - If `abandon`:
-#      - Set `status="abandon"`.
-#      - Remove `.abandon`.
-#    - Otherwise
-#      - If `reset`: Call `make_fs`. Remove `.reset`.
-#      - If `helpme`: print the list of user meta-commands. Remove `.helpme`.
-#      - If `task`: call `get_task_description.py` with `.task_code` to print the
-#        task's description. Remove `.task`
-#      - Set `status="incomplete"`.
+#       `.noverify` in the `.infrastructure` directory
+#    - If `.noverify` contains the string "abandon", also sets status="abandon"
+#    - Removes `.noverify`.
 # 3. Check if the command in `.command` is correct.
 #    - Does this by setting `status=$(verify_output.py $(cat .task_code) $(cat
 #      .command))`
@@ -162,39 +166,17 @@ preexec_func() {
 #   `next_task`.
 precmd_func() {
   time_elapsed=${SECONDS}
-  if (( time_elapsed >= TIME_LIMIT )); then
+  if (( time_elapsed >= TASK_TIME_LIMIT )); then
     echo "You have run out of time for task ${task_num}"
 
     status="timeout"
     time_elapsed=${TIME_LIMIT}
-  elif [[ -f "${INFRA_DIR}/.abandon" ]]; then
-    status="abandon"
+  elif [[ -f "${INFRA_DIR}/.noverify" ]]; then
+    if [[ "$(cat "${INFRA_DIR}/.noverify")" == "abandon" ]]; then
+      status="abandon"
+    fi
 
-    rm "${INFRA_DIR}/.abandon"
-  elif [[ -f "${INFRA_DIR}/.reset" ]]; then
-    status="incomplete"
-    make_fs
-
-    rm "${INFRA_DIR}/.reset"
-  elif [[ -f "${INFRA_DIR}/.task" ]]; then
-    status="incomplete"
-
-    print_task
-
-    rm "${INFRA_DIR}/.task"
-  elif [[ -f "${INFRA_DIR}/.helpme" ]]; then
-    status="incomplete"
-
-    echo "task: prints the description of the current task."
-    echo "reset: restore the file system to its original state."
-    echo "abandon: abandon the current task."
-    echo "helpme: prints this help message."
-
-    rm "${INFRA_DIR}/.helpme"
-  elif [[ "$(cat "${INFRA_DIR}/.command")" == "start task" ]]; then
-    # A special case for "start task" is needed so verify_task does not run on
-    # it
-    status="incomplete"
+    rm "${INFRA_DIR}/.noverify"
   else
     verify_task
 
@@ -220,9 +202,6 @@ precmd_func() {
     next_task
   fi
 }
-
-make_fs
-cd "${FS_DIR}"
 
 # Prints the introduction here
 echo "Welcome to the user study!"
