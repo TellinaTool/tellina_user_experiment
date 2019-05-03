@@ -18,8 +18,9 @@ ord() {
   LC_CTYPE=C printf '%d' "'$1"
 }
 
-# Outputs the nth alphabetic character. n is 1-based; that is, char_from(1) is "a".
-# $1: the number n specifying which characters
+# Outputs the nth alphabetic character. n is 1-based; that is, char_from(1) is
+# "a".
+# $1: the number n specifying which character.
 char_from() {
   local num_a=$(ord "a")
   local num_fr=$((num_a + $1 - 1))
@@ -110,11 +111,11 @@ make_fs() {
 # current treatment
 print_treatment() {
   echo -n "For this half of the experiment you can use any online resources," \
-    "man pages, "
+    "man pages"
   if [[ "$(cat "${INFRA_DIR}/.treatment")" == "T" ]]; then
-    echo "and Tellina <URL> to help you solve the tasks."
+    echo ", and Tellina <URL> to help you solve the tasks."
   else
-    echo "but you can't use Tellina to help you solve the tasks."
+    echo "."
   fi
 }
 
