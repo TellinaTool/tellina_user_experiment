@@ -8,14 +8,14 @@
 ##############################################################################
 
 # Converts a numeric ASCII value to a character.
-# 
+#
 # Prints the correct value to stdout and exits with the status code of `printf`
 # (0 if there are no syntax errors).
 #
-# If the passed value is larger than 256 exits with status code 1 to indicate
-# failure
+# If the passed value is larger than 256 or smaller than 0, exits with status
+# code 1 to indicate failure.
 chr() {
-  [ "$1" -lt 256 ] || return 1
+  [ "$1" -gt 0 ] && [ "$1" -lt 256 ] || return 1
   printf "\\$(printf '%03o' "$1")"
 }
 

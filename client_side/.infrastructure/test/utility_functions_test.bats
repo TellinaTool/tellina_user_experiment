@@ -22,6 +22,17 @@ setup() {
   test_ascii_alpha_conversion 65 "chr"
 }
 
+@test "chr fails on bad input" {
+  run chr 256
+  assert_failure
+
+  run chr 300
+  assert_failure
+
+  run chr -1
+  assert_failure
+}
+
 @test "ord correct lower case output" {
   test_ascii_alpha_conversion 97 "ord"
 }
