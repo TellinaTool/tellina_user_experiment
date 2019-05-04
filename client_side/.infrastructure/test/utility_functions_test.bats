@@ -1,4 +1,7 @@
 #!/usr/bin/env/ bats
+#
+# Tests utility code used by the client side infrastructure to handle internal
+# information.
 load assertions
 
 # Enables the following functions:
