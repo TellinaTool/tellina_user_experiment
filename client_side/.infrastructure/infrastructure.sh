@@ -8,12 +8,20 @@
 ##############################################################################
 
 # Converts a numeric ASCII value to a character.
+# 
+# Prints the correct value to stdout and exits with the status code of `printf`
+# (0 if there are no syntax errors).
+#
+# If the passed value is larger than 256 exits with status code 1 to indicate
+# failure
 chr() {
   [ "$1" -lt 256 ] || return 1
   printf "\\$(printf '%03o' "$1")"
 }
 
 # Converts a character to its ASCII value.
+#
+# Prints the character to stdout and exits with the status code of printf.
 ord() {
   LC_CTYPE=C printf '%d' "'$1"
 }
