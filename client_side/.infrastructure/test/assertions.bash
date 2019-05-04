@@ -40,7 +40,7 @@ assert_failure() {
 }
 
 # Assert that a given actual value matches a given expected value.
-# 
+#
 # Can provide an "-n" flag to instead check that the actual does not match the
 # expected value. The flag must appear before both the actual and expected
 # values
@@ -62,4 +62,25 @@ assert_output() {
   else
     [[ $actual == $expected ]]
   fi
+}
+
+# Assert that a given array contains a certain value.
+#
+# Parameters:
+# $1: the array to search in.
+# $2: the value to search for.
+assert_contains() {
+  # trick to get the array that was passed
+  local array=( $(echo $1) )
+  local value=$2
+
+  echo "Array: ${array[@]}"
+  echo "Value: $value"
+  for val in ${array[@]}; do
+    if [[ "$value" == "$val" ]]; then
+      return 0
+    fi
+  done
+
+  [[ $(false) ]]
 }
