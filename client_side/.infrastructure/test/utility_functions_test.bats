@@ -10,10 +10,6 @@ load assertions
 load utility_test_helper
 
 setup() {
-  if [ "${BATS_TEST_NUMBER}" = 1 ];then
-    echo "# ---$(basename ${BATS_TEST_FILENAME%.*})---" >&3
-  fi
-
   source "${BATS_TEST_DIRNAME}/../infrastructure.sh"
 }
 
