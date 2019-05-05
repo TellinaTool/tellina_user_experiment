@@ -13,3 +13,7 @@ file_system/
 
 # Ignore .vim files
 *.vim
+
+# Distribution files
+*.zip
+*.tar*
