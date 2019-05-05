@@ -29,7 +29,7 @@ zip: $(ZIP_DIST)
 gzip: $(GZIP_DIST)
 
 test: $(BATS) $(TEST_DIR)
-	@$(BATS) $(TEST_DIR)
+	@$(BATS) --tap $(TEST_DIR)
 
 clean: clean-dist clean-fs-dir
 
