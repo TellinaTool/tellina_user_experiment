@@ -54,10 +54,6 @@ USER_ID="${USER_NAME}@${MACHINE_NAME}"
 #             This includes bash variables as well as variable files           #
 ################################################################################
 
-# Makes sure that all the scripts are executable
-chmod +x "${INFRA_DIR}"/*.sh
-chmod +x "${INFRA_DIR}"/*.py
-
 # Establish infrastructure variables and functions
 source "${INFRA_DIR}"/infrastructure.sh
 touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
