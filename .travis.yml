@@ -8,8 +8,7 @@ before_install:
   - rm -rf ./bats-core
 
 script:
-  - cd ./client_side/.infrastructure
-  - /usr/local/bin/bats --tap test
+  - make test
 
 notifications:
   email:
