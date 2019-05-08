@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/anhnamtran/tellina_user_experiment.svg?branch=master)](https://travis-ci.org/anhnamtran/tellina_user_experiment)
 # Tellina User Experiment
 
 ## Directory explanation
