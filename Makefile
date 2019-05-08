@@ -15,20 +15,15 @@ FS_DIR=$(CLIENT_DIR)/file_system
 INFRA_DIR=$(CLIENT_DIR)/.infrastructure
 TEST_DIR=$(INFRA_DIR)/test
 
-$(find $(INFRA_DIR) -name "*.sh" -or -name "*.py" -or -name "configure"\
-	-exec chmod 777 {} \;)
-
 .PHONY: all test
 
 all: test distribution
 
-distribution: $(FS_DIR) zip gzip
+distribution: $(FS_DIR) zip
 
 zip: $(ZIP_DIST)
 
-gzip: $(GZIP_DIST)
-
-test: $(BATS) $(TEST_DIR)
+test: fix-execs $(BATS) $(TEST_DIR)
 	@$(BATS) --tap $(TEST_DIR)
 
 clean: clean-dist clean-fs-dir
@@ -40,11 +35,12 @@ clean-dist:
 clean-fs-dir:
 	$(RM) $(FS_DIR)
 
+fix-execs:
+	@find $(INFRA_DIR) -name "*.sh" -or -name "*.py" -or -name "configure"\
+		-exec chmod 777 {} \;
+
 $(ZIP_DIST): $(CLIENT_DIR)
 	$(ZIP) $(ZIP_DIST) $(CLIENT_DIR)
-
-$(GZIP_DIST): $(CLIENT_DIR)
-	$(GZIP) $(GZIP_DIST) $(CLIENT_DIR)
 
 $(FS_DIR):
 	mkdir $(FS_DIR)
