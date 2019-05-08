@@ -6,6 +6,7 @@ log.csv
 .task_code
 .task_order
 .treatment
+.task_num
 
 # Ignore generated directories
 user_out/
