@@ -209,7 +209,8 @@ next_task() {
 # Writes a command to the log file on the server with a POST request.
 write_log() {
   curl -s -X POST ${SERVER_HOST}/${SERVER_ROUTE} \
-    -d user_id="$USER_ID" \
+    -d user_id="$USER_NAME" \
+    -d host_name="$MACHINE_NAME" \
     -d task_order="$(cat "${INFRA_DIR}/.task_order")" \
     -d client_time_stamp="$(date --utc +%FT%TZ)" \
     -d task_code="$(cat "${INFRA_DIR}/.task_code")" \
