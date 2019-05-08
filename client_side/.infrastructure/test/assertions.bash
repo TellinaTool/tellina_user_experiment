@@ -35,7 +35,7 @@ assert_success() {
 # Assert that a command returned with a non 0 exit code.
 assert_failure() {
   status_failure $status
-  output_failure $output
+  echo "$output"
   [[ $status != 0 ]]
 }
 
