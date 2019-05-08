@@ -79,7 +79,7 @@ def main():
 
         with open(USER_FS_FILE, 'w') as user_out:
             with cd(FS_DIR):
-                filesystem = subprocess.run('find .', shell=True, stderr=devnull, stdout=user_out)
+                filesystem = subprocess.call('find .', shell=True, stderr=devnull, stdout=user_out)
 
         normalize_output(USER_FS_FILE, ACTUAL_FILE)
 
@@ -100,7 +100,7 @@ def main():
             else:
                 with open(USER_STDOUT_FILE, 'w') as user_out:
                     with open(USER_STDERR, 'w') as user_err:
-                        stdout = subprocess.run(command, shell=True, stderr=user_err, stdout=user_out)
+                        stdout = subprocess.call(command, shell=True, stderr=user_err, stdout=user_out)
 
                 normalize_output(USER_STDOUT_FILE, ACTUAL_FILE)
 

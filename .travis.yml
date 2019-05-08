@@ -5,9 +5,6 @@ before_install:
   - git clone https://github.com/bats-core/bats-core.git
   - sudo ./bats-core/install.sh /usr/local
   - rm -rf ./bats-core
-  # install python3 for verify_task.py
-  - sudo apt-get update
-  - sudo apt-get install python3
 
 script:
   - make test
