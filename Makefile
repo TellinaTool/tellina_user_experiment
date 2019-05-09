@@ -5,11 +5,13 @@ GZIP=tar -pczf
 ZIP=zip -qr
 
 # Files and directories
+# the name of the distribution
 DIST_NAME=tellina_user_experiment
-ZIP_DIST=$(DIST_NAME).zip
-GZIP_DIST=$(DIST_NAME).tar.gz
+
+ZIP_DIST_NAME=$(DIST_NAME).zip
 
 CLIENT_DIR=client_side
+CLIENT_FILES=$(shell find $(CLIENT_DIR))
 FS_DIR=$(CLIENT_DIR)/file_system
 
 INFRA_DIR=$(CLIENT_DIR)/.infrastructure
@@ -17,30 +19,29 @@ TEST_DIR=$(INFRA_DIR)/test
 
 .PHONY: all test
 
-all: test distribution
+all: distribution
 
-distribution: $(FS_DIR) zip
+test:
+	$(MAKE) -C ${INFRA_DIR} test
 
-zip: $(ZIP_DIST)
+distribution: test $(FS_DIR) zip
 
-test: fix-execs $(BATS) $(TEST_DIR)
-	@$(BATS) --tap $(TEST_DIR)
+zip: $(ZIP_DIST_NAME)
 
 clean: clean-dist clean-fs-dir
 
 clean-dist:
-	$(RM) $(ZIP_DIST)
-	$(RM) $(GZIP_DIST)
+	$(RM) $(ZIP_DIST_NAME)
+	$(RM) $(DIST_NAME)
 
 clean-fs-dir:
 	$(RM) $(FS_DIR)
 
-fix-execs:
-	@find $(INFRA_DIR) -name "*.sh" -or -name "*.py" -or -name "configure"\
-		-exec chmod 777 {} \;
+$(ZIP_DIST_NAME): $(DIST_NAME) $(CLIENT_FILES)
+	$(ZIP) $(ZIP_DIST_NAME) $<
 
-$(ZIP_DIST): $(CLIENT_DIR)
-	$(ZIP) $(ZIP_DIST) $(CLIENT_DIR)
+$(DIST_NAME): $(CLIENT_DIR)
+	ln -s $< $(DIST_NAME)
 
 $(FS_DIR):
 	mkdir $(FS_DIR)
