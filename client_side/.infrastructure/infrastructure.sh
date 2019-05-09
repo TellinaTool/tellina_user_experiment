@@ -57,6 +57,24 @@ get_task_code() {
   echo "$(char_from ${task_no})"
 }
 
+# Determines the current treatment and task set based on the task ordering for
+# the experiment
+#
+# Parameters:
+# $1: 0 to specify that we are in the first half of the experiment, 1 otherwise
+determine_task_set() {
+  local first_half=$1
+  local task_order="$(cat "${INFRA_DIR}/.task_order")"
+
+  if (( ${first_half} == 0 )); then
+    echo "${task_order:0:1}" > "${INFRA_DIR}/.treatment"
+    task_set=${task_order:1:1}
+  else
+    echo "${task_order:2:1}" > "${INFRA_DIR}/.treatment"
+    task_set=${task_order:3:1}
+  fi
+}
+
 # Enables Bash preexec functions and prints out the first treatment and task.
 # Also sets $SECONDS and $time_elapsed to 0.
 start_experiment() {
@@ -67,11 +85,9 @@ start_experiment() {
   make_fs
   cd "${FS_DIR}"
 
-  print_treatment
-  print_task
+  begin_treatment
 
-  SECONDS=0
-  time_elapsed=0
+  start_task
 
   # Because precmd is enabled when start_experiment is called, it will be
   # invoked before the next command line prompt. ".noverify" is touched so that
@@ -90,7 +106,7 @@ end_experiment() {
   trap - DEBUG
 
   # Remove all variable files
-  rm -r "${INFRA_DIR}/.*"
+  find ${INFRA_DIR} -type f -name ".*" -delete
   cd "${EXP_DIR}"
 
   echo "Congratulations! You have completed the interactive portion of the" \
@@ -113,6 +129,38 @@ make_fs() {
 
   # Moves the user to this directory
   popd &> /dev/null
+}
+
+# Prints out the treatment conditions for the experiment and optionally starts
+# training for the infrastructure and/or Tellina.
+#
+# If the experiment just started, infra_training will be started.
+# If the current treatment is "T", tellina_training will be started.
+begin_treatment() {
+  if (( task_num == 1 )); then
+    infra_training
+  fi
+  if [[ "$(cat "${INFRA_DIR}/.treatment")" == "T" ]]; then
+    tellina_training
+  fi
+
+  print_treatment
+}
+
+# TODO: implement this
+# Trains the user on how the infrastructure itself works. This includes:
+# - User meta-commands.
+# - Tasks and diff printing.
+# - The directory that they should be performing tasks on.
+infra_training() {
+  return 0
+}
+
+# TODO: implement this
+# Introduces the user to Tellina and suggests a couple of known query-command
+# pairs
+tellina_training() {
+  return 0
 }
 
 # Prints the list of resources that the user is allowed to use based on the
@@ -149,6 +197,28 @@ verify_task() {
   EXIT=$?
 }
 
+start_task() {
+  # Check if we need to switch the task set and the treatment
+  if (( task_num == TASKS_SIZE / 2 + 1 )); then
+    echo "You have finished the first half of the experiment!"
+
+    # Updates the treatment and the task set for the user
+    determine_task_set 1
+
+    begin_treatment
+  fi
+
+  # Determines the task code w.r.t current_task and task_set.
+  echo $(get_task_code) > "${INFRA_DIR}/.task_code"
+  SECONDS=0
+  time_elapsed=0
+  status="incomplete"
+
+  echo "start_task" > "${INFRA_DIR}/.command"
+
+  print_task
+}
+
 # Increment the current task number and update the true task code in .task_code
 # accordingly
 #   - Check if all the tasks are complete, if it is then skip the following
@@ -173,35 +243,9 @@ next_task() {
     return 1
   fi
 
-  # otherwise we check if we need to switch the task set and the treatment
-  # And go into the second half of the experiment
-  if (( task_num == TASKS_SIZE / 2 + 1 )); then
-    echo "You have finished the first half of the experiment!"
-
-    # Updates the treatment and the task set for the user
-    if [[ "$(cat "${INFRA_DIR}/.treatment")" == "T" ]]; then
-      echo "N" > "${INFRA_DIR}/.treatment"
-    else
-      echo "T" > "${INFRA_DIR}/.treatment"
-    fi
-    if ((task_set == 1)); then
-      task_set=2
-    else
-      task_set=1
-    fi
-
-    print_treatment
-  fi
-
-  echo $(get_task_code) > "${INFRA_DIR}/.task_code"
-  SECONDS=0
-  time_elapsed=0
-  status="incomplete"
-
-  echo "start_task" > "${INFRA_DIR}/.command"
-
+  # Otherwise start another task
+  start_task
   write_log
-  print_task
 }
 
 # Writes a command to the log file on the server with a POST request.

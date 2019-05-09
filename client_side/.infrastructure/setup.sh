@@ -58,12 +58,6 @@ USER_ID="${USER_NAME}@${MACHINE_NAME}"
 source "${INFRA_DIR}"/infrastructure.sh
 touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
 
-# Initalize variable with default values
-echo "start task" > "${INFRA_DIR}/.command"
-
-status="incomplete"
-time_elapsed=0
-
 # If a task_num file already exists, it means we are trying to resume the
 # experiment
 if [[ -f "${INFRA_DIR}/.task_num" ]]; then
@@ -79,28 +73,19 @@ fi
 case $(echo $((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))) in
   0)
     echo "T1N2" > "${INFRA_DIR}/.task_order"
-    echo "T" > "${INFRA_DIR}/.treatment"
-    task_set=1
     ;;
   1)
     echo "T2N1" > "${INFRA_DIR}/.task_order"
-    echo "T" > "${INFRA_DIR}/.treatment"
-    task_set=2
     ;;
   2)
     echo "N1T2" > "${INFRA_DIR}/.task_order"
-    echo "N" > "${INFRA_DIR}/.treatment"
-    task_set=1
     ;;
   3)
     echo "N2T1" > "${INFRA_DIR}/.task_order"
-    echo "N" > "${INFRA_DIR}/.treatment"
-    task_set=2
     ;;
 esac
 
-# Determines the task code w.r.t current_task and task_set.
-echo $(get_task_code) > "${INFRA_DIR}/.task_code"
+determine_task_set 0
 
 # Create user meta-commands.
 # Each user meta-commands will create a file called .noverify in the
