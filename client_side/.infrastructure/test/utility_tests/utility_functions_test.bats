@@ -2,12 +2,12 @@
 #
 # Tests utility code used by the client side infrastructure to handle internal
 # information.
-load assertions
+load ../libs/assertions
 
 setup() {
-  source "${BATS_TEST_DIRNAME}/../infrastructure.sh"
+  source "${BATS_TEST_DIRNAME}/../../infrastructure.sh"
 
-  INFRA_DIR="${BATS_TEST_DIRNAME}/.."
+  INFRA_DIR="${BATS_TEST_DIRNAME}/../.."
   TASKS_DIR="${INFRA_DIR}/tasks"
 
   FS_DIR=$(mktemp -d)
