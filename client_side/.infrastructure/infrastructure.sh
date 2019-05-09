@@ -61,12 +61,12 @@ get_task_code() {
 # the experiment
 #
 # Parameters:
-# $1: 0 to specify that we are in the first half of the experiment, 1 otherwise
+# $1: 1 to specify that we are in the first half of the experiment, 2 otherwise
 determine_task_set() {
   local first_half=$1
   local task_order="$(cat "${INFRA_DIR}/.task_order")"
 
-  if (( ${first_half} == 0 )); then
+  if (( ${first_half} == 1 )); then
     echo "${task_order:0:1}" > "${INFRA_DIR}/.treatment"
     task_set=${task_order:1:1}
   else
@@ -203,7 +203,7 @@ start_task() {
     echo "You have finished the first half of the experiment!"
 
     # Updates the treatment and the task set for the user
-    determine_task_set 1
+    determine_task_set 2
 
     begin_treatment
   fi
