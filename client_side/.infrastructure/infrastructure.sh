@@ -42,8 +42,6 @@ char_from() {
 # TASKS_SIZE / 2.
 # That is, if the current task set is 2 and the user current user task number
 # is 12, then its true task code is "a", because it is in task set 1.
-#
-# TDOD: handle odd task sizes
 get_task_code() {
   if ((task_set == 1)); then
     local task_no=$((task_num > TASKS_SIZE / 2 ? \
