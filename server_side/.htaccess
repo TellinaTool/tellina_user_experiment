@@ -2,7 +2,7 @@
 AuthType Shibboleth
 
 # Make it a requirement
-ShibRequestSetting requireSession 1
+ShibRequestSetting requireSession true
 # REQUIRE CSE login
 ShibRequestSetting entityID https://cas01.cs.washington.edu/idp/shibboleth
 
