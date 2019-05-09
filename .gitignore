@@ -7,6 +7,7 @@ log.csv
 .task_order
 .treatment
 .task_num
+.noverify
 
 # Ignore generated directories
 user_out/
@@ -14,6 +15,7 @@ file_system/
 
 # Ignore .vim files
 *.vim
+tags
 
 # Distribution files
 *.zip
