@@ -1,0 +1,9 @@
+# Activate authentication plugin
+AuthType Shibboleth
+
+# Make it a requirement
+ShibRequestSetting requireSession 1
+# REQUIRE CSE login
+ShibRequestSetting entityID https://cas01.cs.washington.edu/idp/shibboleth
+
+Require shib-user ~ @cs.washington.edu$
