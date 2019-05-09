@@ -42,7 +42,7 @@ SERVER_HOST="https://homes.cs.washington.edu/~atran35"
 # Establish survey URL
 EXPERIMENT_HOME_URL="${SERVER_HOST}/tellina_user_experiment"
 
-SERVER_ROUTE="${EXPERIMENT_HOME_URL}/server_side/post_handler/post_handler.php"
+POST_HANDLER="${EXPERIMENT_HOME_URL}/server_side/post_handler/post_handler.php"
 
 MACHINE_NAME=$(hostname)
 read -p "Enter your UW NetID: " USER_NAME
