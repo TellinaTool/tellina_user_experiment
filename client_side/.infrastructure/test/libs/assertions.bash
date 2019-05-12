@@ -56,11 +56,11 @@ assert_output() {
   local actual=$1
   local expected=$2
 
-  output_failure $actual $expected
+  output_failure "$actual" "$expected"
   if [[ -n $no_match ]]; then
-    [[ $actual != $expected ]]
+    [[ "$actual" != "$expected" ]]
   else
-    [[ $actual == $expected ]]
+    [[ "$actual" == "$expected" ]]
   fi
 }
 
