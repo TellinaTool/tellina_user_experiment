@@ -104,3 +104,65 @@ load setup
     i=$((i + 1))
   done
 }
+
+@test "begin_treatment starts infrastructure training" {
+  skip "Not implemented."
+}
+
+@test "begin_treatment does not start infrastructure training" {
+  skip "Not implemented."
+}
+
+@test "begin_treatment starts Tellina training" {
+  skip "Not implemented."
+}
+
+@test "begin_treatment does not start Tellina training" {
+  skip "Not implemented."
+}
+
+@test "start_task resets time variables" {
+  local time_elapsed=$SECONDS
+  SECONDS=0
+
+  sleep 3
+
+  start_task
+
+  assert_output "$SECONDS" 0
+  assert_output "$time_elapsed" 0
+}
+
+@test "start_task sets correct log information" {
+  local status command
+
+  start_task
+
+  command=$(cat "${INFRA_DIR}/.command")
+
+  assert_output "$status" "incomplete"
+  assert_output "$command" "start_task"
+}
+
+@test "next_task increments task_num" {
+  local task_num=0
+
+  # Write log will fail because we don't have a URL for curl
+  set +e
+  next_task
+  set -e
+
+  assert_output "$task_num" 1
+
+  task_num=$(cat "${INFRA_DIR}/.task_num")
+  assert_output "$task_num" 1
+}
+
+@test "next_task ends experiment" {
+  local TASKS_SIZE=10
+  local task_num=9
+
+  run next_task
+
+  assert_success
+}
