@@ -38,3 +38,30 @@ test_determine_task_set() {
   assert_output "$treatment" "$3"
   assert_output "$task_set" "$4"
 }
+
+# Runs verfiy task with the specified command and tests the output and exit code
+# with the given expected values
+#
+# Parameters
+# $1: the true task code to test for
+# $2: the command to run verify_task with
+# $3: the expected status
+# $4: the expected EXIT code
+test_verify_task() {
+  make_fs
+  cd "${FS_DIR}"
+
+  echo "$1" > "${INFRA_DIR}/.task_code"
+  echo "$2" > "${INFRA_DIR}/.command"
+  local expected_status="$3"
+  local expected_exit="$4"
+
+  local status EXIT
+
+  set +e
+  verify_task
+  set -e
+
+  assert_output "$status" "$expected_status"
+  assert_output "$EXIT" $expected_exit
+}
