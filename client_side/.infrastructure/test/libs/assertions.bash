@@ -4,7 +4,7 @@
 # Prints all arguments passed to the console.
 debug() {
   echo "------------"
-  for arg in $@; do
+  for arg in "$@"; do
     echo "$arg"
   done
 }
