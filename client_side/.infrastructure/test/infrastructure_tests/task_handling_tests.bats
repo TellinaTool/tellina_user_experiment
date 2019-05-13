@@ -1,6 +1,26 @@
 #!/usr/bin/env bats
 load setup
 
+@test "determine_task_set correct for first half of experiment" {
+  # Parameters for test_determine_task_set is in the order:
+  # <TASK_ORDER> <EXPERIMENT_HALF> <EXPECTED_TREATMENT> <EXPECTED_TASK_SET>
+
+  test_determine_task_set "T1N2" 1 "T" 1
+  test_determine_task_set "T2N1" 1 "T" 2
+  test_determine_task_set "N1T2" 1 "N" 1
+  test_determine_task_set "N2T1" 1 "N" 2
+}
+
+@test "determine_task_set correct for second half of experiment" {
+  # Parameters for test_determine_task_set is in the order:
+  # <TASK_ORDER> <EXPERIMENT_HALF> <EXPECTED_TREATMENT> <EXPECTED_TASK_SET>
+
+  test_determine_task_set "T1N2" 2 "N" 2
+  test_determine_task_set "T2N1" 2 "N" 1
+  test_determine_task_set "N1T2" 2 "T" 2
+  test_determine_task_set "N2T1" 2 "T" 1
+}
+
 @test "get_task_code correct - small even task size" {
   # Parameters for test_get_task_code is in the order:
   # <TASK_SIZE> <TASK_SET> <TASK_NUM> <EXPECTED_TASK_CODE>
@@ -10,8 +30,7 @@ load setup
   test_get_task_code 2 1 2 a
 
   # test correctness for task set 2
-  test_get_task_code 2 2 1 b
-  test_get_task_code 2 2 2 b
+  test_get_task_code 2 2 1 b test_get_task_code 2 2 2 b
 }
 
 @test "get_task_code correct - large even task size" {
