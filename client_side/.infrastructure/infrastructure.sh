@@ -240,7 +240,7 @@ next_task() {
   if (( task_num == TASKS_SIZE )); then
     end_experiment
 
-    return 1
+    return 0
   fi
 
   # Otherwise start another task
@@ -259,5 +259,5 @@ write_log() {
     -d treatment="$(cat "${INFRA_DIR}/.treatment")" \
     -d time_elapsed="${time_elapsed}" \
     -d status="${status}" \
-    -d command="$(cat "${INFRA_DIR}/.command")" &> /dev/null
+    -d command="$(cat "${INFRA_DIR}/.command")"
 }
