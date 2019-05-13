@@ -7,7 +7,7 @@ TEST_FILES=$(shell find $(TEST_DIR) -type f -name "*.bats")
 all: test
 
 test: fix-execs $(BATS) $(TEST_FILES)
-	@$(BATS) --tap $(TEST_FILES)
+	@$(BATS) $(TEST_FILES)
 
 fix-execs:
 	@find . -name "*.sh" -or -name "*.py" -or -name "configure"\
