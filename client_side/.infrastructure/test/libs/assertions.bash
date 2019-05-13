@@ -27,8 +27,8 @@ status_failure() {
 
 # Asserts that a command returned with 0 exit code.
 assert_success() {
-  status_failure $status
-  output_failure $output
+  status_failure "$status"
+  output_failure "$output"
   [[ $status == 0 ]]
 }
 
