@@ -134,14 +134,48 @@ load setup
 }
 
 @test "start_task sets correct log information" {
-  local status command
+  local TASKS_SIZE=10
+  local task_num=1
+  local task_set=1
+  local status command task_code
 
   start_task
 
   command=$(cat "${INFRA_DIR}/.command")
+  task_code=$(cat "${INFRA_DIR}/.task_code")
 
   assert_output "$status" "incomplete"
   assert_output "$command" "start_task"
+  assert_output "$task_code" "a"
+}
+
+@test "start_task switches treatment" {
+  local TASKS_SIZE=10
+  local task_num task_set time_elapsed status task_code treatment
+  echo "T1N2" > "${INFRA_DIR}/.task_order"
+
+  task_num=5
+  determine_task_set 1
+
+  start_task
+
+  treatment=$(cat "${INFRA_DIR}/.treatment")
+  task_code=$(cat "${INFRA_DIR}/.task_code")
+
+  assert_output "$treatment" "T"
+  assert_output "$task_set" 1
+  assert_output "$task_code" "e"
+
+  task_num=6
+
+  start_task
+
+  treatment=$(cat "${INFRA_DIR}/.treatment")
+  task_code=$(cat "${INFRA_DIR}/.task_code")
+
+  assert_output "$treatment" "N"
+  assert_output "$task_set" 2
+  assert_output "$task_code" "f"
 }
 
 @test "next_task increments task_num" {
@@ -156,6 +190,31 @@ load setup
 
   task_num=$(cat "${INFRA_DIR}/.task_num")
   assert_output "$task_num" 1
+}
+
+@test "next_task resets the file system directory" {
+  local task_num=0
+
+  set +e
+  next_task
+  set -e
+
+  assert_output "$task_num" 1
+  run find ${fs_dir} -type f
+  [[ -n "$output" ]]
+
+  find ${FS_DIR} -type f -delete
+
+  run find ${FS_DIR} -type f
+  assert_output "$output" ""
+
+  set +e
+  next_task
+  set -e
+
+  assert_output "$task_num" 2
+  run find ${fs_dir} -type f
+  [[ -n "$output" ]]
 }
 
 @test "next_task ends experiment" {
