@@ -5,16 +5,20 @@ export FS_DIR
 export USER_OUT
 export TASKS_DIR
 
-@test "verify_task correct re-execution one command regular quoting" {
+@test "verify_task maintains quoting for command" {
   # Parameters for test_verify_task are
   # <task_code> <command> <expected status> <expected exit code>
-  local cmd
+  local cmd # cmd should be a 'single quoted' string.
 
-  debug "--------------------- Expected failure"
-  cmd="find . -type -name \"content\""
+  cmd='find "content" -type f -size +800c -size -10k'
+  test_verify_task "a" "$cmd" "success" 0
+
+  cmd='find 'content' -type f -size +800c -size -10k'
+  test_verify_task "a" "$cmd" "success" 0
+
+  cmd='find "\"content\""'
   test_verify_task "a" "$cmd" "incomplete" 3
 
-  debug "--------------------- Expected success"
-  cmd="find \"content\" -type f -size +800c -size -10k"
-  test_verify_task "a" "$cmd" "success" 0
+  cmd='find "'content'"'
+  test_verify_task "a" "$cmd" "incomplete" 3
 }
