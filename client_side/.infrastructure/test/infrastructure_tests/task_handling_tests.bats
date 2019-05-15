@@ -105,22 +105,6 @@ load setup
   done
 }
 
-@test "begin_treatment starts infrastructure training" {
-  skip "Not implemented."
-}
-
-@test "begin_treatment does not start infrastructure training" {
-  skip "Not implemented."
-}
-
-@test "begin_treatment starts Tellina training" {
-  skip "Not implemented."
-}
-
-@test "begin_treatment does not start Tellina training" {
-  skip "Not implemented."
-}
-
 @test "start_task resets time variables" {
   local time_elapsed=$SECONDS
   SECONDS=0
