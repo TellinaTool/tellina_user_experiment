@@ -58,9 +58,15 @@ test_verify_task() {
 
   local status EXIT
 
+  local user_command=$(cat "${INFRA_DIR}/.command")
+  debug "Command: $user_command"
+
   set +e
   verify_task
   set -e
+
+  debug "User stderr: $(cat ${USER_OUT}/std_err)"
+  debug "User stdout: $(cat ${USER_OUT}/std_out)"
 
   assert_output "$status" "$expected_status"
   assert_output "$EXIT" $expected_exit
