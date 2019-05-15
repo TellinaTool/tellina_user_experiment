@@ -20,7 +20,7 @@ setup() {
   touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
 }
 
-tear_down() {
+teardown() {
   find ${INFRA_DIR} -type f -name ".*" -delete
   rm "${FS_DIR}"
   rm -rf "${USER_OUT}"
