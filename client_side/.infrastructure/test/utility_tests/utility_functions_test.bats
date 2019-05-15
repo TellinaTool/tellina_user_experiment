@@ -21,6 +21,7 @@ setup() {
 teardown() {
   find "${INFRA_DIR}" -type f -name ".*" -delete
   rm -rf "${FS_DIR}"
+  rm -rf "${USER_OUT}"
 }
 
 @test "chr correct lower case output" {

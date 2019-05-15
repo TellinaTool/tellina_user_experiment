@@ -22,6 +22,6 @@ setup() {
 
 teardown() {
   find ${INFRA_DIR} -type f -name ".*" -delete
-  rm "${FS_DIR}"
-  rm -rf "${USER_OUT}"
+  rm -rf ${FS_DIR}
+  rm -rf ${USER_OUT}
 }
