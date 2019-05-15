@@ -113,7 +113,7 @@ load setup
 
   start_task
 
-  assert_output "$SECONDS" 0
+  [[ $SECONDS -lt 1 ]]
   assert_output "$time_elapsed" 0
 }
 
