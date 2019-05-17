@@ -13,6 +13,12 @@ setup() {
   TASKS_SIZE=$(ls - 1 ${TASKS_DIR} | wc -l)
 
   FS_DIR=$(mktemp -d)
+  FS_SYNC_DIR="${INFRA_DIR}/file_system"
+  if [[ ! -d "${FS_SYNC_DIR}" ]]; then
+    mkdir "${FS_SYNC_DIR}"
+    tar -xzf "${INFRA_DIR}/fs.tgz" -C "${FS_SYNC_DIR}"
+  fi
+
   USER_OUT=$(mktemp -d)
 
   time_elapsed=0

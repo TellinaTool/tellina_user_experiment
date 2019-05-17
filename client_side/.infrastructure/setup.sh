@@ -37,6 +37,17 @@ USER_OUT="${INFRA_DIR}/user_out"
 # The directory the user will perform tasks on
 FS_DIR="${EXP_DIR}/file_system"
 
+# The directory used by the infrastructure to reset FS_DIR.
+# It is created by extracting the fs.tgz tarball in INFRA_DIR.
+
+# The reason this isn't also distributed with the client ZIP is to prevent any
+# confusion as well as having a relatively smaller ZIP file.
+FS_SYNC_DIR="${INFRA_DIR}/file_system"
+if [[ ! -d "${FS_SYNC_DIR}" ]]; then
+  mkdir "${FS_SYNC_DIR}"
+  tar -xzf "${INFRA_DIR}/fs.tgz" -C "${FS_SYNC_DIR}"
+fi
+
 # Establish the server information
 SERVER_HOST="https://homes.cs.washington.edu/~atran35"
 # Establish survey URL
@@ -94,7 +105,7 @@ esac
 # variable to precmd.
 alias abandon='echo "abandon" > ${INFRA_DIR}/.noverify'
 
-alias reset='make_fs; touch ${INFRA_DIR}/.noverify'
+alias reset='reset_fs; touch ${INFRA_DIR}/.noverify'
 alias task='print_task; touch ${INFRA_DIR}/.noverify'
 alias helpme='echo "task: prints the description of the current task."; \
    echo "reset: restore the file system to its original state."; \
@@ -137,7 +148,7 @@ preexec_func() {
 #      `verify_output.py`:
 #      - `1`: open Meld for the file system.
 #      - `2`: open Meld for the file system, issue warning, and call
-#        `make_fs`.
+#        `reset_fs`.
 #      - `3`: open Meld for the `stdout`.
 # - Call `write_log`. This writes information about the most recently executed
 #   user command.
@@ -163,7 +174,7 @@ precmd_func() {
       if (( EXIT == 2 )); then
         echo "You have modified the file system. It will now be reset to its" \
           "original state."
-        make_fs
+        reset_fs
       else
         echo "Actual output does not match expected. A diff has been shown."
       fi

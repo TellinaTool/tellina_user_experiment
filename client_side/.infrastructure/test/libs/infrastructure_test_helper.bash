@@ -48,7 +48,7 @@ test_determine_task_set() {
 # $3: the expected status
 # $4: the expected EXIT code
 test_verify_task() {
-  make_fs
+  reset_fs
   cd "${FS_DIR}"
 
   echo "$1" > "${INFRA_DIR}/.task_code"

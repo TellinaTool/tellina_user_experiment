@@ -125,19 +125,10 @@ end_experiment() {
   return 0
 }
 
-# Creates the file system directory that the user will be working on.
-# If the directory already exists, removes it and creates it again.
-# Saves the user's current working directory and returnst to it once the
-# directory is set up.
-make_fs() {
-  pushd "${INFRA_DIR}" &> /dev/null
-
-  rm -rf "${FS_DIR}"
-  mkdir "${FS_DIR}" > /dev/null
-  tar -xzf "${INFRA_DIR}/fs.tgz" -C "${FS_DIR}"
-
-  # Moves the user to this directory
-  popd &> /dev/null
+# Resets the user's file system directory by syncing it with the
+# infrastructure's Extracted file system directory.
+reset_fs() {
+  rsync --omit-dir-times --recursive --quiet --delete "${FS_SYNC_DIR}/" "${FS_DIR}"
 }
 
 # Prints out the treatment conditions for the experiment and optionally starts

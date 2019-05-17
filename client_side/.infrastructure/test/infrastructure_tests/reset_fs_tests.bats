@@ -1,15 +1,15 @@
 #!/usr/bin/env bats
 load setup
 
-@test "make_fs produces no output" {
-  run make_fs
+@test "reset_fs produces no output" {
+  run reset_fs
 
   assert_success
   assert_output $output ""
 }
 
-@test "make_fs creates non-empty file system directory" {
-  make_fs
+@test "reset_fs creates non-empty file system directory" {
+  reset_fs
 
   run find ${FS_DIR} -maxdepth 2
 
@@ -17,8 +17,8 @@ load setup
   [[ -n $output ]]
 }
 
-@test "make_fs creates a correct file system directory" {
-  make_fs
+@test "reset_fs creates a correct file system directory" {
+  reset_fs
 
   # These environment variables must exist for verify_task.py to run
   export FS_DIR
@@ -36,23 +36,23 @@ load setup
   assert_output $output "incomplete"
 }
 
-@test "make_fs does not change the user's current directory" {
-  run make_fs
+@test "reset_fs does not change the user's current directory" {
+  run reset_fs
   assert_success
 
   cd ${FS_DIR}
-  make_fs
+  reset_fs
   assert_output "$(pwd)" "${FS_DIR}"
 
   cd "content"
-  make_fs
+  reset_fs
   assert_output "$(pwd)" "${FS_DIR}/content"
 
   cd "labs"
-  make_fs
+  reset_fs
   assert_output "$(pwd)" "${FS_DIR}/content/labs"
 
   cd "${FS_DIR}"
-  make_fs
+  reset_fs
   assert_output "$(pwd)" "${FS_DIR}"
 }
