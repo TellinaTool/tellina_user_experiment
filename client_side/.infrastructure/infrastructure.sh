@@ -1,15 +1,15 @@
 ##############################################################################
 # This file contains utility functions for use by the interface:
-# - Creating the mock file system for the user
-# - Timing each task
-# - Determining which task and treatment ordering for the current experiment
-# - Determine the next task to move onto and whether the experiment is over
-# - Verify the output of a task
+# - Creating the file system for the user.
+# - Timing each task.
+# - Determine task and treatment ordering for the current experiment.
+# - Determine the next task to move onto and whether the experiment is over.
+# - Verify the output of a task.
 ##############################################################################
 
 # Converts a numeric ASCII value to a character.
 #
-# Prints the correct value to stdout and exits with the status code of `printf`
+# Prints the value to stdout and exits with the status code of `printf`
 # (0 if there are no syntax errors).
 #
 # If the passed value is larger than 256 or smaller than 0, exits with status
@@ -36,12 +36,15 @@ char_from() {
   echo $(chr ${num_fr})
 }
 
-# Gets the true task code from the user task number and the task set.
+# Prints the true task code, from the current user task number and task set.
 # The user task number is always sequential.
-# The task can be in either task set 1 or 2, with the dividing task being
-# TASKS_SIZE / 2.
-# That is, if the current task set is 2 and the user current user task number
-# is 12, then its true task code is "a", because it is in task set 1.
+#
+# The task can be in either task set 1 or 2.
+# Task set 1 contains tasks 1 up to and including TASK_SIZE / 2.
+# Task set 2 contains tasks (TASK_SIZE / 2) + 1 up to and incuding TASK_SIZE.
+#
+# Example with TASK_SIZE == 22, task_set == 1, and task_num == 12, the output
+# will be "a".
 get_task_code() {
   if ((task_set == 1)); then
     local task_no=$((task_num > TASKS_SIZE / 2 ? \
@@ -57,12 +60,13 @@ get_task_code() {
   echo "$(char_from ${task_no})"
 }
 
-# Determines the current treatment and task set based on the task ordering for
-# the experiment
+# Sets the current treatment and task set based on the task ordering for the
+# experiment.
 #
 # Parameters:
-# $1: 1 to specify that we are in the first half of the experiment, 2 otherwise
-determine_task_set() {
+# $1: 1 to specify that the user is in the first half of the experiment, 2
+# otherwise
+set_task_set() {
   local first_half=$1
   local task_order="$(cat "${INFRA_DIR}/.task_order")"
 
@@ -75,24 +79,29 @@ determine_task_set() {
   fi
 }
 
-# Enables Bash preexec functions and prints out the first treatment and task.
-# Also sets $SECONDS and $time_elapsed to 0.
+# Enables Bash preexec functions, prints out the first treatment and task, and
+# start the first task.
+#
+# This function is only called at the very beginning of the experiment.
 start_experiment() {
   # Enable task logging
   preexec_functions+=(preexec_func)
   precmd_functions+=(precmd_func)
 
-  make_fs
   cd "${FS_DIR}"
 
-  begin_treatment
-
+  begin_treatment 1
   start_task
 
-  # Because precmd is enabled when start_experiment is called, it will be
-  # invoked before the next command line prompt. ".noverify" is touched so that
-  # precmd does not attempt to verify the output of "start task".
+  # Because precmd is enabled by this function, precmd will be invoked before
+  # the next command line prompt.
+
+  # ".noverify" is touched so that precmd does
+  # not attempt to verify user output on the "start_task" command that was
+  # written to `.command`.
   touch "${INFRA_DIR}/.noverify"
+
+  # write_log does not need to be called because it is called by precmd.
 }
 
 # "Uninstalls" Bash Preexec by removing its triggers.
@@ -136,7 +145,13 @@ make_fs() {
 #
 # If the experiment just started, infra_training will be started.
 # If the current treatment is "T", tellina_training will be started.
+#
+# Parameters:
+# $1: the half of the experiment to begin treatment for, can be 1 or 2.
 begin_treatment() {
+  # Sets the task set for the given half
+  set_task_set $1
+
   if (( task_num == 1 )); then
     infra_training
   fi
@@ -198,18 +213,22 @@ verify_task() {
   EXIT=$?
 }
 
+# Determines whether to move on to the second half of the experiment based on
+# the current task_num and TASK_SIZE.
+#
+# Resets all relevent varialbes to their inital values and writes "start task"
+# to `.command`.
+#
+# Prints the description of the current task.
 start_task() {
   # Check if we need to switch the task set and the treatment
   if (( task_num == TASKS_SIZE / 2 + 1 )); then
     echo "You have finished the first half of the experiment!"
 
-    # Updates the treatment and the task set for the user
-    determine_task_set 2
-
-    begin_treatment
+    begin_treatment 2
   fi
 
-  # Determines the task code w.r.t current_task and task_set.
+  # Determines the task code from current_task and task_set.
   echo $(get_task_code) > "${INFRA_DIR}/.task_code"
   SECONDS=0
   time_elapsed=0
@@ -220,18 +239,13 @@ start_task() {
   print_task
 }
 
-# Increment the current task number and update the true task code in .task_code
-# accordingly
-#   - Check if all the tasks are complete, if it is then skip the following
-#     steps and clean up instead.
-#   - If this current_task is equal to `TASKS_SIZE / 2`, switch treatments and
-#     task sets and notify the user.
-# Write "start task" to `.command`.
-# Writes to the log
-# Set time_elapsed=0, status="incomplete", SECONDS=0
-# Prints out the task's information
+# Resets the user's file system directory, increments the current task number,
+# starts a new task.
+#
+# This function will instead end the experiment if the current task number is
+# equal to TASKS_SIZE.
 next_task() {
-  make_fs
+  reset_fs
 
   # Increment the number of tasks finished by the user
   task_num=$(( task_num + 1 ))
@@ -249,7 +263,8 @@ next_task() {
   write_log
 }
 
-# Writes a command to the log file on the server with a POST request.
+# Writes the command in `.command` to the log file on the server with a POST
+# request.
 write_log() {
   curl -s -X POST ${POST_HANDLER} \
     -d user_id="$USER_NAME" \

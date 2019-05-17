@@ -85,9 +85,6 @@ case $(echo $((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))) in
     ;;
 esac
 
-# Determine the task set for the first half
-determine_task_set 1
-
 # Create user meta-commands.
 # Each user meta-commands will create a file called .noverify in the
 # infrastructure directory

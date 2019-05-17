@@ -20,7 +20,7 @@ test_get_task_code() {
   assert_output $output $expected_task_code
 }
 
-# Runs determine_task_set on the given task order and experiment half and tests
+# Runs set_task_set on the given task order and experiment half and tests
 # whether the outputs matches the given values
 #
 # Parameters:
@@ -31,7 +31,7 @@ test_get_task_code() {
 test_determine_task_set() {
   echo "$1" > "${INFRA_DIR}/.task_order"
 
-  determine_task_set $2
+  set_task_set $2
 
   local treatment=$(cat "${INFRA_DIR}/.treatment")
 

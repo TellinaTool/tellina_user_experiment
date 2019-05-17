@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 load setup
 
-@test "determine_task_set correct for first half of experiment" {
+@test "set_task_set correct for first half of experiment" {
   # Parameters for test_determine_task_set is in the order:
   # <TASK_ORDER> <EXPERIMENT_HALF> <EXPECTED_TREATMENT> <EXPECTED_TASK_SET>
 
@@ -11,7 +11,7 @@ load setup
   test_determine_task_set "N2T1" 1 "N" 2
 }
 
-@test "determine_task_set correct for second half of experiment" {
+@test "set_task_set correct for second half of experiment" {
   # Parameters for test_determine_task_set is in the order:
   # <TASK_ORDER> <EXPERIMENT_HALF> <EXPECTED_TREATMENT> <EXPECTED_TASK_SET>
 
@@ -139,7 +139,7 @@ load setup
   echo "T1N2" > "${INFRA_DIR}/.task_order"
 
   task_num=5
-  determine_task_set 1
+  set_task_set 1
 
   start_task
 
