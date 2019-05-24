@@ -6,14 +6,12 @@ Determine whether the user's command has solved the task.
 The first input is the current true task code. The remaining inputs are the
 user's command.
 
-This script has the following exit status:
-- Prints `success` to `stdout` if the actual output matches expected. Exit code
-  is `0`.
-- Prints `incomplete` to `stdout` if the actual output does not match expected.
-  - If the task is a file system task, exit code is `1`.
-  - If the task is a select task:
-    - If the file system has been changed, exit code is `2`.
-    - Otherwise, exit code is `3`.
+This script has the following exit codes:
+- 0: The verification is successful.
+- 1: The output does not match expected and the task is a file system task.
+- 2: The file system has been changed and the task is a select task.
+- 3: The output does not match expected and the task is a select task.
+
 In addition, two files called "actual" and "expected" will be created
 in /tmp/ if the verification fails.
 """
@@ -25,7 +23,8 @@ import subprocess
 import filecmp
 import tarfile
 
-# Gets all the environment variables and sets up the user output directory
+# Gets all the environment variables and creates the user output directory if it
+# doesn't already exist.
 FS_DIR = os.environ['FS_DIR']
 
 USER_OUT_DIR = os.environ['USER_OUT']
@@ -88,14 +87,11 @@ def main():
 
         if not fs_good:
             if task_code in FILESYSTEM_TASKS:
-                print("incomplete")
                 sys.exit(1)
             else:
-                print("incomplete")
                 sys.exit(2)
         else:
             if task_code in FILESYSTEM_TASKS:
-                print("success")
                 sys.exit(0)
             else:
                 with open(USER_STDOUT_FILE, 'w') as user_out:
@@ -105,10 +101,8 @@ def main():
                 normalize_output(USER_STDOUT_FILE, ACTUAL_FILE)
 
                 if verify(ACTUAL_FILE, task_code, False):
-                    print("success")
                     sys.exit(0)
                 else:
-                    print("incomplete")
                     sys.exit(3)
         print("This can't happen")
         sys.exit(4)
@@ -118,8 +112,8 @@ def main():
 
 def normalize_output(out_file, norm_file):
     """
-    Normalizes the contents of file output_path (sorts lines, removes
-    leading './') and writes the result to file norm_out_path.
+    Normalizes the contents of file out_file (sorts lines, removes leading './')
+    and writes the result to file norm_file.
     """
     norm_out = open(norm_file, 'w')
     output = open(out_file)

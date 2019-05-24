@@ -32,8 +32,6 @@ load setup
   # Assert that verify_task failed with a status of 3 and printed "incomplete"
   assert_failure
   [[ $status == 3 ]]
-
-  assert_output $output "incomplete"
 }
 
 @test "reset_fs does not change the user's current directory" {

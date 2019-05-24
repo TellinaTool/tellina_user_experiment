@@ -49,8 +49,10 @@ test_set_task_set() {
 test_verify_task() {
   local task_code user_command
   local expected_status expected_exit
-  local status EXIT
+  local status="incomplete"
+  local EXIT
   reset_fs
+
   cd "${FS_DIR}"
 
   task_code=$1
@@ -63,6 +65,7 @@ test_verify_task() {
 
   set +e
   verify_task
+  EXIT=$?
   set -e
 
   debug "User stderr: $(cat ${USER_OUT}/std_err)"

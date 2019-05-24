@@ -148,20 +148,6 @@ precmd_func() {
   else
     # Verify the command inside of .command
     verify_task
-
-    if [[ ${status} == "incomplete" ]]; then
-      if (( EXIT == 2 )); then
-        echo "You have modified the file system. It will now be reset to its" \
-          "original state."
-        reset_fs
-      else
-        echo "Actual output does not match expected. A diff has been shown."
-      fi
-
-      meld "/tmp/actual" "/tmp/expected" &
-    elif [[ -z ${status} ]]; then
-      status="Verification error!"
-    fi
   fi
 
   write_log

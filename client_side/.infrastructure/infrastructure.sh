@@ -203,10 +203,28 @@ print_task() {
 # Captures the exit code of verify_task.py into $EXIT
 verify_task() {
   # Verify the output of the previous command.
+  local exit_code
   local user_command="$(cat "${INFRA_DIR}/.command")"
 
-  status=$("${INFRA_DIR}"/verify_task.py ${task_code} ${user_command})
-  EXIT=$?
+  "${INFRA_DIR}"/verify_task.py ${task_code} ${user_command}
+  exit_code=$?
+
+  case $exit_code in
+    0)
+      status="success"
+      ;;
+    2)
+      echo "You have modified the file system. It will now be reset to its" \
+        "original state."
+      reset_fs
+      ;&
+    *)
+      echo "Actual output does not match expected. A diff has been shown."
+      meld "/tmp/actual" "/tmp/expected" &
+      ;;
+  esac
+
+  return $exit_code
 }
 
 # Determines whether to move on to the second half of the experiment based on

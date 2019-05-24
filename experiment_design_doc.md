@@ -367,11 +367,10 @@ command is executed
     - If `.noverify` is not empty and the content is "abandon", set the status
       to "abandon".
   3. Check if the command in `.command` is correct.
-     - Does this by setting `status=$(verify_output.py $(cat .task_code) $(cat
-       .command))`
-     - This sets `status` to either "success" or "incomplete".
-     - If `status == "incomplete"` check the [exit code](#exit-stat) of
-       `verify_output.py`:
+     - Does this by running `verify_output.py $task_code $(cat .command)` and
+       checking its exit code.
+     - If the exit code is:
+       - `0`: set status to "success", otherwise set status to "incomplete".
        - `1`: open Meld for the file system.
        - `2`: open Meld for the file system, issue warning, and call
          `make_fs`.
@@ -400,15 +399,12 @@ command is executed
         - Check that the captured `stdout` of the user command matches the
           corresponding expected output.
       - If the file system was modified then the task failed.
-  - <a id="exit-stat">**Exit status**</a>:
-    - Prints `success` to `stdout` if the actual output matches expected. Exit
-      code is `0`.
-    - Prints `incomplete` to `stdout` if the actual output does not match
-      expected.
-      - If the task is a file system task, exit code is `1`.
-      - If the task is a select task:
-        - If the file system has been changed, exit code is `2`.
-        - Otherwise, exit code is `3`.
+  - <a id="exit-stat">**Exit code**</a>:
+      - 0: The verification is successful.
+      - 1: The output does not match expected and the task is a file system
+        task.
+      - 2: The file system has been changed and the task is a select task.
+      - 3: The output does not match expected and the task is a select task.
 
 #### Directory for experiment files:
 - The files used for the experiment will be distributed in a TAR file along with
