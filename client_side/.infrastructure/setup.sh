@@ -83,7 +83,7 @@ TASK_ORDERS_CODES=("T1N2" "T2N1" "N1T2" "N2T1")
 TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
 
 # Create user meta-commands.
-# Each user meta-commands will create a file called .noverify in the
+# Each user meta-command will create a file called .noverify in the
 # infrastructure directory.
 
 # abandon writes "abandon" to `.noverify`.
@@ -113,46 +113,40 @@ preexec_func() {
 }
 
 # Executed after the user-entered command is executed
-# - Only one of these cases can happen
-# 1. Check if user has run out of time:
-#    - `time_elapsed=$SECONDS` is more than some time limit constant.
-#    - The check will happen after the command is executed.
-#    - If the user ran out of time, `status="timeout"`,
-#      `time_elapsed=$TIME_LIMIT`.
-# 2. Handle user meta-command:
-#    - Output verification will not be performed on these commands.
-#    - The check is done by looking for the existence of the file
-#       `.noverify` in the `.infrastructure` directory
-#    - If `.noverify` contains the string "abandon", also sets status="abandon"
-#    - Removes `.noverify`.
-# 3. Check if the command in `.command` is correct.
-#    - Does this by setting `status=$(verify_output.py $(cat .task_code) $(cat
-#      .command))`
-#    - This sets `status` to either "success" or "incomplete".
-#    - If `status == "incomplete"` check the [exit code](#exit-stat) of
-#      `verify_output.py`:
-#      - `1`: open Meld for the file system.
-#      - `2`: open Meld for the file system, issue warning, and call
-#        `reset_fs`.
-#      - `3`: open Meld for the `stdout`.
-# - Call `write_log`. This writes information about the most recently executed
-#   user command.
-# - If `status="abandon" || status="timeout" || status="success"`, call
-#   `next_task`.
+#
+# This function does 1 of 2 things:
+# 1. Determine if the user has run out of time.
+# 2. Verify the output of the user command unless it was a meta-command.
+#
+# In either case, $status will be set to either "timeout", "success",
+# "incomplete", or "abandon".
+# If the status is not "incomplete", move on to the next task.
+#
+# This function always writes to the log.
 precmd_func() {
   time_elapsed=${SECONDS}
+
   if (( time_elapsed >= TASK_TIME_LIMIT )); then
+    # Checks if the user has run out of time. If they have, $time_elapsed is
+    # truncated to the time limit
     echo "You have run out of time for task ${task_num}"
 
     status="timeout"
     time_elapsed=${TIME_LIMIT}
   elif [[ -f "${INFRA_DIR}/.noverify" ]]; then
+    # Check if output verification should not be run.
+    # This can happen if the user entered a user meta-command or at the
+    # beginning of the experiment.
+
+    # if the .noverify file has "abandon" in it, then the user used the
+    # "abandon" meta-command.
     if [[ "$(cat "${INFRA_DIR}/.noverify")" == "abandon" ]]; then
       status="abandon"
     fi
 
     rm "${INFRA_DIR}/.noverify"
   else
+    # Verify the command inside of .command
     verify_task
 
     if [[ ${status} == "incomplete" ]]; then
