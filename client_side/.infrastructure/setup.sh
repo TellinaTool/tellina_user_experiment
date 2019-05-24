@@ -2,6 +2,18 @@
 # This script takes 1 argument which is the absolute path to the user experiment
 # directory.
 
+# Automatically export any assigned variables
+set -a
+
+################################################################################
+#                              CONSTANT DEFINITIONS                            #
+################################################################################
+
+# The absolute path to the user experiment directory
+EXP_DIR="$1"
+# The absolute path to the experiment's infrastructure directory
+INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
+
 # Enables infrastructure functions.
 source "${INFRA_DIR}"/infrastructure.sh
 
@@ -11,21 +23,6 @@ if ! xhost &> /dev/null; then
   print_experiment_prompt "no_display"
   return 1
 fi
-
-# Automatically export any assigned variables
-set -a
-
-################################################################################
-#                              CONSTANT DEFINITIONS                            #
-################################################################################
-
-# Saves the old value of PROMPT_COMMAND, since Bash Preexec overwrites it.
-PROMPT_COMMAND_ORIG=${PROMPT_COMMAND}
-
-# The absolute path to the user experiment directory
-EXP_DIR="$1"
-# The absolute path to the experiment's infrastructure directory
-INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
 
 # Establish tasks directories and related variables
 TASKS_DIR="${INFRA_DIR}/tasks"
@@ -107,6 +104,9 @@ alias helpme='echo "task: prints the description of the current task."; \
 ################################################################################
 #                                  BASH PREEXEC                                #
 ################################################################################
+
+# Saves the old value of PROMPT_COMMAND, since Bash Preexec overwrites it.
+PROMPT_COMMAND_ORIG=${PROMPT_COMMAND}
 
 # Install Bash preexec.
 source "${INFRA_DIR}"/bash-preexec.sh
