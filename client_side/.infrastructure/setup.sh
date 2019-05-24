@@ -55,9 +55,7 @@ EXPERIMENT_HOME_URL="${SERVER_HOST}/tellina_user_experiment"
 POST_HANDLER="${EXPERIMENT_HOME_URL}/server_side/post_handler/post_handler.php"
 
 MACHINE_NAME=$(hostname)
-read -p "Enter your UW NetID: " USER_NAME
-
-USER_ID="${USER_NAME}@${MACHINE_NAME}"
+read -p "Enter your UW NetID: " UW_NETID
 
 ################################################################################
 #                              VARIABLE DEFINITIONS                            #
@@ -82,7 +80,7 @@ fi
 # T/N is for Tellina/NoTellina, and the number indicates the task_set used.
 TASK_ORDERS_CODES=("T1N2" "T2N1" "N1T2" "N2T1")
 
-TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))]}
+TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
 
 # Create user meta-commands.
 # Each user meta-commands will create a file called .noverify in the

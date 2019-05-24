@@ -262,7 +262,7 @@ next_task() {
 # request.
 write_log() {
   curl -s -X POST ${POST_HANDLER} \
-    -d user_id="$USER_NAME" \
+    -d user_id="$UW_NETID" \
     -d host_name="$MACHINE_NAME" \
     -d task_order="$TASK_ORDER" \
     -d client_time_stamp="$(date --utc +%FT%TZ)" \
