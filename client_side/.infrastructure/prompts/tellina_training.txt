@@ -1,0 +1,2 @@
+To get familiar with Tellina, please go to the following URL:
+<tellina_training_url>

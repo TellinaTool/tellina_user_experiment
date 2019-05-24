@@ -152,20 +152,18 @@ begin_treatment() {
   print_treatment
 }
 
-# TODO: implement this
 # Trains the user on how the infrastructure itself works. This includes:
 # - User meta-commands.
 # - Tasks and diff printing.
 # - The directory that they should be performing tasks on.
 infra_training() {
-  return 0
+  print_experiment_prompt "infra_training"
 }
 
-# TODO: implement this
 # Introduces the user to Tellina and suggests a couple of known query-command
 # pairs.
 tellina_training() {
-  return 0
+  print_experiment_prompt "tellina_training"
 }
 
 # Prints the text associated with a given experiment prompt.
