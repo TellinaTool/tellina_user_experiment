@@ -30,7 +30,8 @@ load setup
   test_get_task_code 2 1 2 a
 
   # test correctness for task set 2
-  test_get_task_code 2 2 1 b test_get_task_code 2 2 2 b
+  test_get_task_code 2 2 1 b
+  test_get_task_code 2 2 2 b
 }
 
 @test "get_task_code correct - large even task size" {
