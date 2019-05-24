@@ -286,7 +286,7 @@ The script will source `.infrastructure/setup.sh`, which will do the following:
   - Machine name: determined by the `hostname` bash command, stored in
     `MACHINE_NAME`.
   - User name: the user will be asked to enter their UW NetID, stored in
-    `USER_NAME`.
+    `UW_NETID`.
 - Determine the task set ordering:
   - Stored in `.task_order` as the concatenation of the "1st" and "2nd" column
     for a row.
@@ -301,9 +301,9 @@ The script will source `.infrastructure/setup.sh`, which will do the following:
     |3|`s2 NT`|`s1 T`|
     - The task ordering will then be determined by this bash command:
     ```sh
-    echo $((0x$(md5sum <<<$USER_ID | cut -c1) % 4))
+    echo $((0x$(md5sum <<<$UW_NETID | cut -c1) % 4))
     ```
-    - This function makes sure that the same `$USER_NAME` will have the same
+    - This function makes sure that the same `$UW_NETID` will have the same
       task ordering.
     - Writes the treatment to `.treatment`, the true task code to `.task_code`,
       and the current task set to `task_set`.
