@@ -220,6 +220,8 @@ user_experiment/
 |  |                    order determination, and printing task descriptions.
 |  |__file_system.tar - The original version of the directory the user will be
 |  |                    performing tasks on.
+|  |__prompts/        - Directory containing various text files used as prompts
+|  |                    for the experiment.
 |  |__tasks/
 |  |  |__task1/
 |  |  |  |__task1.json      - JSON file with description of task

@@ -2,11 +2,13 @@
 # This script takes 1 argument which is the absolute path to the user experiment
 # directory.
 
+# Enables infrastructure functions.
+source "${INFRA_DIR}"/infrastructure.sh
+
 # Checks if the user has a usable graphical display. Detects X forwarding as
 # well.
 if ! xhost &> /dev/null; then
-  echo "No display detected, please make sure that you are" \
-    "setting up the experiment in an environment with a graphical display."
+  print_experiment_prompt "no_display"
   return 1
 fi
 
@@ -64,10 +66,6 @@ USER_ID="${USER_NAME}@${MACHINE_NAME}"
 #                              VARIABLE DEFINITIONS                            #
 #             This includes bash variables as well as variable files           #
 ################################################################################
-
-# Establish infrastructure variables and functions
-source "${INFRA_DIR}"/infrastructure.sh
-
 # If a task_num file already exists, it means we are trying to resume the
 # experiment
 if [[ -f "${INFRA_DIR}/.task_num" ]]; then
@@ -185,16 +183,5 @@ precmd_func() {
     next_task
   fi
 }
-
-# Prints the introduction here
-echo "Welcome to the user study!"
-echo "At any point, run \"helpme\" to see a list of commands available to" \
-  "you during the study."
-echo "You will have 5 minutes to complete each task. Once the timer is" \
-  "reached, the experiment will move on to the next task."
-echo "Make sure that you are performing the tasks in the" \
-  "$(basename $FS_DIR) directory"
-echo "The experiment interface does not ensure that anything outside" \
-  "of that directory is protected."
 
 start_experiment

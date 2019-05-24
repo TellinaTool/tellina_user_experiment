@@ -89,6 +89,7 @@ start_experiment() {
 
   cd "${FS_DIR}"
 
+  print_experiment_prompt "introduction"
   begin_treatment 1
   next_task
 
@@ -117,9 +118,7 @@ end_experiment() {
   find ${INFRA_DIR} -type f -name ".*" -delete
   cd "${EXP_DIR}"
 
-  echo "Congratulations! You have completed the interactive portion of the" \
-    "experiment!"
-  echo "Please take some time to fill out the survey at ${EXPERIMENT_HOME_URL}."
+  print_experiment_prompt "ending"
 
   return 0
 }
@@ -163,20 +162,29 @@ infra_training() {
 
 # TODO: implement this
 # Introduces the user to Tellina and suggests a couple of known query-command
-# pairs
+# pairs.
 tellina_training() {
   return 0
 }
 
+# Prints the text associated with a given experiment prompt.
+print_experiment_prompt() {
+  local prompt="$1"
+
+  cat "${INFRA_DIR}"/prompts/$prompt.txt
+}
+
 # Prints the list of resources that the user is allowed to use based on the
-# current treatment
+# current treatment.
 print_treatment() {
-  echo -n "For this half of the experiment you can use any online resources," \
-    "man pages"
   if [[ "$treatment" == "T" ]]; then
-    echo ", and Tellina <URL> to help you solve the tasks."
+    print_experiment_prompt "treatment_tellina"
   else
-    echo "."
+    if (( task_num >= TASKS_SIZE / 2 + 1 )); then
+      print_experiment_prompt "treatment_no_tellina_second_half"
+    else
+      print_experiment_prompt "treatment_no_tellina_first_half"
+    fi
   fi
 }
 
