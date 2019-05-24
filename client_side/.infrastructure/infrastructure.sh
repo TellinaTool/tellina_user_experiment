@@ -68,14 +68,13 @@ get_task_code() {
 # otherwise
 set_task_set() {
   local first_half=$1
-  local task_order="$(cat "${INFRA_DIR}/.task_order")"
 
   if (( ${first_half} == 1 )); then
-    echo "${task_order:0:1}" > "${INFRA_DIR}/.treatment"
-    task_set=${task_order:1:1}
+    treatment="${TASK_ORDER:0:1}"
+    task_set=${TASK_ORDER:1:1}
   else
-    echo "${task_order:2:1}" > "${INFRA_DIR}/.treatment"
-    task_set=${task_order:3:1}
+    treatment="${TASK_ORDER:2:1}"
+    task_set=${TASK_ORDER:3:1}
   fi
 }
 
@@ -183,8 +182,6 @@ print_treatment() {
 
 # Prints the current task number and its description.
 print_task() {
-  local task_code=$(cat "${INFRA_DIR}/.task_code")
-
   echo "-----------------------------------------------------------------------"
   echo "Task: ${task_num}/${TASKS_SIZE}"
 
@@ -197,7 +194,6 @@ print_task() {
 # Captures the exit code of verify_task.py into $EXIT
 verify_task() {
   # Verify the output of the previous command.
-  local task_code="$(cat "${INFRA_DIR}/.task_code")"
   local user_command="$(cat "${INFRA_DIR}/.command")"
 
   status=$("${INFRA_DIR}"/verify_task.py ${task_code} ${user_command})
@@ -220,7 +216,7 @@ start_task() {
   fi
 
   # Determines the task code from current_task and task_set.
-  echo $(get_task_code) > "${INFRA_DIR}/.task_code"
+  task_code=$(get_task_code)
   SECONDS=0
   time_elapsed=0
   status="incomplete"
@@ -260,11 +256,11 @@ write_log() {
   curl -s -X POST ${POST_HANDLER} \
     -d user_id="$USER_NAME" \
     -d host_name="$MACHINE_NAME" \
-    -d task_order="$(cat "${INFRA_DIR}/.task_order")" \
+    -d task_order="$TASK_ORDER" \
     -d client_time_stamp="$(date --utc +%FT%TZ)" \
-    -d task_code="$(cat "${INFRA_DIR}/.task_code")" \
-    -d treatment="$(cat "${INFRA_DIR}/.treatment")" \
-    -d time_elapsed="${time_elapsed}" \
-    -d status="${status}" \
+    -d task_code="$task_code" \
+    -d treatment="$treatment" \
+    -d time_elapsed="$time_elapsed" \
+    -d status="$status" \
     -d command="$(cat "${INFRA_DIR}/.command")"
 }

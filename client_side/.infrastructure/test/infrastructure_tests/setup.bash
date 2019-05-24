@@ -22,8 +22,6 @@ setup() {
   USER_OUT=$(mktemp -d)
 
   time_elapsed=0
-
-  touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
 }
 
 teardown() {

@@ -253,15 +253,14 @@ The script will source `.infrastructure/setup.sh`, which will do the following:
   current task, task order, treatment, and the most recent command.
   - This will allow the client side to be resumed if a failure happens.
   - The files will be in the `.infrastructure` directory.
-  - Files:
-    - `.treatment`: the treatment for the current task
+  - Recover files: these files are used by the infrastructure to restore a
+    user's session if they quit mid-way.
     - `.command`: the most recently entered command. Initial value is "start
       task"
-    - `.task_order`: the task ordering for this user.
-    - `.task_code`: the true task code of the current task. This is sent to the
-      server.
     - `.task_num`: if this file exists during setup, the experiment will resume
       at the user task number written in this file.
+    - `.noverify`: if this file exists, output verification will not be
+      performed on the contents of `.command`.
 - Initialize Bash variables that will be used throughout the experiment:
   - `time_elapsed`: the time in seconds that the user spent on a command.
     - This is because `$SECONDS` does not stop incrementing, and the time
@@ -270,6 +269,9 @@ The script will source `.infrastructure/setup.sh`, which will do the following:
   - `status`: the status of the current task. Can be `success`, `timeout`,
     `abandon`, or `incomplete`. Initial value is "incomplete".
   - `task_num`: the user task number, this will be the task number showed
+  - `task_set`: the current task set the user is in.
+  - `treatment`: the current treatment.
+  - `task_order`: the task order for the current user.
     to the user. Initial value is `1`.
 - Initializes Bash constants to keep track of directories, time limits, task
   limits, etc.

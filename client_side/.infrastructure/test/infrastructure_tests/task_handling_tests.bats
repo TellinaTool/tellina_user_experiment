@@ -2,23 +2,23 @@
 load setup
 
 @test "set_task_set correct for first half of experiment" {
-  # Parameters for test_determine_task_set is in the order:
+  # Parameters for test_set_task_set is in the order:
   # <TASK_ORDER> <EXPERIMENT_HALF> <EXPECTED_TREATMENT> <EXPECTED_TASK_SET>
 
-  test_determine_task_set "T1N2" 1 "T" 1
-  test_determine_task_set "T2N1" 1 "T" 2
-  test_determine_task_set "N1T2" 1 "N" 1
-  test_determine_task_set "N2T1" 1 "N" 2
+  test_set_task_set "T1N2" 1 "T" 1
+  test_set_task_set "T2N1" 1 "T" 2
+  test_set_task_set "N1T2" 1 "N" 1
+  test_set_task_set "N2T1" 1 "N" 2
 }
 
 @test "set_task_set correct for second half of experiment" {
-  # Parameters for test_determine_task_set is in the order:
+  # Parameters for test_set_task_set is in the order:
   # <TASK_ORDER> <EXPERIMENT_HALF> <EXPECTED_TREATMENT> <EXPECTED_TASK_SET>
 
-  test_determine_task_set "T1N2" 2 "N" 2
-  test_determine_task_set "T2N1" 2 "N" 1
-  test_determine_task_set "N1T2" 2 "T" 2
-  test_determine_task_set "N2T1" 2 "T" 1
+  test_set_task_set "T1N2" 2 "N" 2
+  test_set_task_set "T2N1" 2 "N" 1
+  test_set_task_set "N1T2" 2 "T" 2
+  test_set_task_set "N2T1" 2 "T" 1
 }
 
 @test "get_task_code correct - small even task size" {
@@ -126,7 +126,6 @@ load setup
   start_task
 
   command=$(cat "${INFRA_DIR}/.command")
-  task_code=$(cat "${INFRA_DIR}/.task_code")
 
   assert_output "$status" "incomplete"
   assert_output "$command" "start_task"
@@ -135,16 +134,13 @@ load setup
 
 @test "start_task switches treatment" {
   local TASKS_SIZE=10
+  local TASK_ORDER="T1N2"
   local task_num task_set time_elapsed status task_code treatment
-  echo "T1N2" > "${INFRA_DIR}/.task_order"
 
   task_num=5
   set_task_set 1
 
   start_task
-
-  treatment=$(cat "${INFRA_DIR}/.treatment")
-  task_code=$(cat "${INFRA_DIR}/.task_code")
 
   assert_output "$treatment" "T"
   assert_output "$task_set" 1
@@ -153,9 +149,6 @@ load setup
   task_num=6
 
   start_task
-
-  treatment=$(cat "${INFRA_DIR}/.treatment")
-  task_code=$(cat "${INFRA_DIR}/.task_code")
 
   assert_output "$treatment" "N"
   assert_output "$task_set" 2

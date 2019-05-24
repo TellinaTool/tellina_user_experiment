@@ -28,12 +28,11 @@ test_get_task_code() {
 # $2: 0 for the first half of the experiment, 1 otherwise
 # $3: the expected value for the treatment
 # $4: the expected value for the task set
-test_determine_task_set() {
-  echo "$1" > "${INFRA_DIR}/.task_order"
+test_set_task_set() {
+  local treatment task_set
+  local TASK_ORDER=$1
 
   set_task_set $2
-
-  local treatment=$(cat "${INFRA_DIR}/.treatment")
 
   assert_output "$treatment" "$3"
   assert_output "$task_set" "$4"
@@ -48,17 +47,18 @@ test_determine_task_set() {
 # $3: the expected status
 # $4: the expected EXIT code
 test_verify_task() {
+  local task_code user_command
+  local expected_status expected_exit
+  local status EXIT
   reset_fs
   cd "${FS_DIR}"
 
-  echo "$1" > "${INFRA_DIR}/.task_code"
+  task_code=$1
   echo "$2" > "${INFRA_DIR}/.command"
-  local expected_status="$3"
-  local expected_exit="$4"
+  expected_status="$3"
+  expected_exit="$4"
 
-  local status EXIT
-
-  local user_command=$(cat "${INFRA_DIR}/.command")
+  user_command=$(cat "${INFRA_DIR}/.command")
   debug "Command: $user_command"
 
   set +e

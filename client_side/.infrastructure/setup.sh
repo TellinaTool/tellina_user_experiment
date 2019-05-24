@@ -67,7 +67,6 @@ USER_ID="${USER_NAME}@${MACHINE_NAME}"
 
 # Establish infrastructure variables and functions
 source "${INFRA_DIR}"/infrastructure.sh
-touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
 
 # If a task_num file already exists, it means we are trying to resume the
 # experiment
@@ -81,20 +80,9 @@ fi
 # Determine the task order based on a truncated md5sum hash of the username.
 # It is two two-character codes.  In each two-character code, the letter
 # T/N is for Tellina/NoTellina, and the number indicates the task_set used.
-case $(echo $((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))) in
-  0)
-    echo "T1N2" > "${INFRA_DIR}/.task_order"
-    ;;
-  1)
-    echo "T2N1" > "${INFRA_DIR}/.task_order"
-    ;;
-  2)
-    echo "N1T2" > "${INFRA_DIR}/.task_order"
-    ;;
-  3)
-    echo "N2T1" > "${INFRA_DIR}/.task_order"
-    ;;
-esac
+TASK_ORDERS_CODES=("T1N2" "T2N1" "N1T2" "N2T1")
+
+TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${USER_NAME} | cut -c1) % 4))]}
 
 # Create user meta-commands.
 # Each user meta-commands will create a file called .noverify in the
