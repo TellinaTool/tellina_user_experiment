@@ -5,11 +5,12 @@ load setup
   local task_num=1
   local preexec_functions=()
   local precmd_functions=()
-  echo "a" > "${INFRA_DIR}/.task_code"
+  local task_code="a"
+  local treatment="T"
 
+  set +e
   start_experiment
-
-  rm "${INFRA_DIR}/.noverify"
+  set -e
 
   preexec_functions=$(echo ${preexec_functions[@]})
   assert_contains "$preexec_functions" "preexec_func"

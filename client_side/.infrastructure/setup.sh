@@ -72,8 +72,13 @@ source "${INFRA_DIR}"/infrastructure.sh
 # experiment
 if [[ -f "${INFRA_DIR}/.task_num" ]]; then
   task_num=$(cat "${INFRA_DIR}/.task_num")
+
+  # Because we are incrementing the initial task num by one, if we are
+  # recovering to the middle of the experiment, we have to set this to one lower
+  # to allow the user to start at the task where they previous stopped.
+  task_num=$((task_num - 1))
 else
-  task_num=1
+  task_num=0
   echo "${task_num}" > "${INFRA_DIR}/.task_num"
 fi
 

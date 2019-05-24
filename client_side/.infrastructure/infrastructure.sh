@@ -90,7 +90,7 @@ start_experiment() {
   cd "${FS_DIR}"
 
   begin_treatment 1
-  start_task
+  next_task
 
   # Because precmd is enabled by this function, precmd will be invoked before
   # the next command line prompt.
@@ -145,7 +145,7 @@ begin_treatment() {
   if (( task_num == 1 )); then
     infra_training
   fi
-  if [[ "$(cat "${INFRA_DIR}/.treatment")" == "T" ]]; then
+  if [[ "$treatment" == "T" ]]; then
     tellina_training
   fi
 
@@ -173,7 +173,7 @@ tellina_training() {
 print_treatment() {
   echo -n "For this half of the experiment you can use any online resources," \
     "man pages"
-  if [[ "$(cat "${INFRA_DIR}/.treatment")" == "T" ]]; then
+  if [[ "$treatment" == "T" ]]; then
     echo ", and Tellina <URL> to help you solve the tasks."
   else
     echo "."
