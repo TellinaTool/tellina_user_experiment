@@ -62,7 +62,7 @@ read -p "Enter your UW NetID: " UW_NETID
 #             This includes bash variables as well as variable files           #
 ################################################################################
 # If a task_num file already exists, it means we are trying to resume the
-# experiment
+# experiment.
 if [[ -f "${INFRA_DIR}/.task_num" ]]; then
   task_num=$(cat "${INFRA_DIR}/.task_num")
 
@@ -84,7 +84,7 @@ TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
 
 # Create user meta-commands.
 # Each user meta-commands will create a file called .noverify in the
-# infrastructure directory
+# infrastructure directory.
 
 # abandon writes "abandon" to `.noverify`.
 # This is to allow `abandon` to be an alias and delegates setting the $status
@@ -109,9 +109,9 @@ PROMPT_COMMAND_ORIG=${PROMPT_COMMAND}
 # Install Bash preexec.
 source "${INFRA_DIR}"/bash-preexec.sh
 
-# Executed before the user-entered command is executed
-# Saves the most recent command into the .command file
-# If the user enters an "empty" command, then the .command file does not change
+# Executed before the user-entered command is executed.
+# Saves the most recent command into the .command file.
+# If the user enters an "empty" command, then the .command file does not change.
 preexec_func() {
   echo "$1" > "${INFRA_DIR}/.command"
 }

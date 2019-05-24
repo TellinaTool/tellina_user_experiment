@@ -108,13 +108,13 @@ start_experiment() {
 # Remove all variable files created by the infrastructure
 # Stops the experiment completely by returning from the sourced scripts.
 end_experiment() {
-  # This effectively uninstalls Bash Pre-exec
+  # This effectively uninstalls Bash Pre-exec.
   # Makes it so any commands typed after the experiment has ended will not be
   # passed through preexec and precmd.
   PROMPT_COMMAND=${PROMPT_COMMAND_OG}
   trap - DEBUG
 
-  # Remove all variable files
+  # Remove all variable files.
   find ${INFRA_DIR} -type f -name ".*" -delete
   cd "${EXP_DIR}"
 
@@ -126,7 +126,8 @@ end_experiment() {
 # Resets the user's file system directory by syncing it with the
 # infrastructure's Extracted file system directory.
 reset_fs() {
-  rsync --omit-dir-times --recursive --quiet --delete "${FS_SYNC_DIR}/" "${FS_DIR}"
+  rsync --omit-dir-times --recursive --quiet --delete \
+    "${FS_SYNC_DIR}/" "${FS_DIR}"
 }
 
 # Prints out the treatment conditions for the experiment and optionally starts
@@ -242,7 +243,7 @@ start_task() {
 next_task() {
   reset_fs
 
-  # Increment the number of tasks finished by the user
+  # Increment the number of tasks finished by the user.
   task_num=$(( task_num + 1 ))
   echo "${task_num}" > "${INFRA_DIR}/.task_num"
 
