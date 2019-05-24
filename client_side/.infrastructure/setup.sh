@@ -91,13 +91,9 @@ TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
 # variable to precmd.
 alias abandon='echo "abandon" > ${INFRA_DIR}/.noverify'
 
-alias reset='reset_fs; touch ${INFRA_DIR}/.noverify'
-alias task='print_task; touch ${INFRA_DIR}/.noverify'
-alias helpme='echo "task: prints the description of the current task."; \
-   echo "reset: restore the file system to its original state."; \
-   echo "abandon: abandon the current task."; \
-   echo "helpme: prints this help message."; \
-   touch ${INFRA_DIR}/.noverify'
+alias reset='reset_fs; touch "${INFRA_DIR}"/.noverify'
+alias task='print_task; touch "${INFRA_DIR}"/.noverify'
+alias helpme='print_experiment_prompt "helpme" ; touch ${INFRA_DIR}/.noverify'
 
 ################################################################################
 #                                  BASH PREEXEC                                #

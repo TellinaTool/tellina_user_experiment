@@ -1,0 +1,4 @@
+task: prints the description of the current task.
+reset: restore the file system to its original state.
+abandon: abandon the current task.
+helpme: prints this help message.
