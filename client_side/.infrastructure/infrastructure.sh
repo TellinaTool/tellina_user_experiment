@@ -218,7 +218,6 @@ verify_task() {
       ;&
     *)
       echo "Actual output does not match expected. A diff has been shown."
-      meld "/tmp/actual" "/tmp/expected" &
       ;;
   esac
 

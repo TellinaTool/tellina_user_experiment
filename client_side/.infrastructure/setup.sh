@@ -146,8 +146,9 @@ precmd_func() {
 
     rm "${INFRA_DIR}/.noverify"
   else
-    # Verify the command inside of .command
-    verify_task
+    # Verify the command inside of .command.
+    # Meld is opened if the exit code is non-zero.
+    verify_task || meld "/tmp/actual" "/tmp/expected"
   fi
 
   write_log
