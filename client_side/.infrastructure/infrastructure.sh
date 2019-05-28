@@ -60,24 +60,6 @@ get_task_code() {
   echo "$(char_from ${task_no})"
 }
 
-# Sets the current treatment and task set based on the task ordering for the
-# experiment.
-#
-# Parameters:
-# $1: 1 to specify that the user is in the first half of the experiment, 2
-# otherwise
-set_task_set() {
-  local first_half=$1
-
-  if (( ${first_half} == 1 )); then
-    treatment="${TASK_ORDER:0:1}"
-    task_set=${TASK_ORDER:1:1}
-  else
-    treatment="${TASK_ORDER:2:1}"
-    task_set=${TASK_ORDER:3:1}
-  fi
-}
-
 # Enables Bash preexec functions, prints out the first treatment and task, and
 # start the first task.
 #
@@ -139,8 +121,17 @@ reset_fs() {
 # Parameters:
 # $1: the half of the experiment to begin treatment for, can be 1 or 2.
 begin_treatment() {
-  # Sets the task set for the given half
-  set_task_set $1
+  # Sets the current treatment and task set based on the task ordering for the
+  # experiment.
+  local experiment_half=$1
+
+  if (( ${experiment_half} == 1 )); then
+    treatment="${TASK_ORDER:0:1}"
+    task_set=${TASK_ORDER:1:1}
+  else
+    treatment="${TASK_ORDER:2:1}"
+    task_set=${TASK_ORDER:3:1}
+  fi
 
   if (( task_num == 1 )); then
     infra_training

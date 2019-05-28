@@ -25,14 +25,14 @@ test_get_task_code() {
 #
 # Parameters:
 # $1: the task order to test for
-# $2: 0 for the first half of the experiment, 1 otherwise
+# $2: 1 for the first half of the experiment, 2 for the second half
 # $3: the expected value for the treatment
 # $4: the expected value for the task set
-test_set_task_set() {
+test_begin_treatment() {
   local treatment task_set
   local TASK_ORDER=$1
 
-  set_task_set $2
+  begin_treatment $2
 
   assert_output "$treatment" "$3"
   assert_output "$task_set" "$4"

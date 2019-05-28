@@ -1,24 +1,24 @@
 #!/usr/bin/env bats
 load setup
 
-@test "set_task_set correct for first half of experiment" {
+@test "begin_treatment correct for first half of experiment" {
   # Parameters for test_set_task_set is in the order:
   # <TASK_ORDER> <EXPERIMENT_HALF> <EXPECTED_TREATMENT> <EXPECTED_TASK_SET>
 
-  test_set_task_set "T1N2" 1 "T" 1
-  test_set_task_set "T2N1" 1 "T" 2
-  test_set_task_set "N1T2" 1 "N" 1
-  test_set_task_set "N2T1" 1 "N" 2
+  test_begin_treatment "T1N2" 1 "T" 1
+  test_begin_treatment "T2N1" 1 "T" 2
+  test_begin_treatment "N1T2" 1 "N" 1
+  test_begin_treatment "N2T1" 1 "N" 2
 }
 
-@test "set_task_set correct for second half of experiment" {
+@test "begin_treatment correct for second half of experiment" {
   # Parameters for test_set_task_set is in the order:
   # <TASK_ORDER> <EXPERIMENT_HALF> <EXPECTED_TREATMENT> <EXPECTED_TASK_SET>
 
-  test_set_task_set "T1N2" 2 "N" 2
-  test_set_task_set "T2N1" 2 "N" 1
-  test_set_task_set "N1T2" 2 "T" 2
-  test_set_task_set "N2T1" 2 "T" 1
+  test_begin_treatment "T1N2" 2 "N" 2
+  test_begin_treatment "T2N1" 2 "N" 1
+  test_begin_treatment "N1T2" 2 "T" 2
+  test_begin_treatment "N2T1" 2 "T" 1
 }
 
 @test "get_task_code correct - small even task size" {
@@ -139,7 +139,7 @@ load setup
   local task_num task_set time_elapsed status task_code treatment
 
   task_num=5
-  set_task_set 1
+  begin_treatment 1
 
   start_task
 
