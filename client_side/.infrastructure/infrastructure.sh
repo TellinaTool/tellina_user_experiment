@@ -7,26 +7,22 @@
 # - Verify the output of a task.
 ##############################################################################
 
-# Converts a numeric ASCII value to a character.
+# Prints to stdout the character with the given numeric ASCII value.
 #
-# Prints the value to stdout and exits with the status code of `printf`
-# (0 if there are no syntax errors).
-#
-# If the passed value is larger than 256 or smaller than 0, exits with status
-# code 1 to indicate failure.
+# Exit status:
+# - 0 if the passed value is within 0...256.
+# - 1 otherwise.
 chr() {
   [ "$1" -gt 0 ] && [ "$1" -lt 256 ] || return 1
   printf "\\$(printf '%03o' "$1")"
 }
 
-# Converts a character to its ASCII value.
-#
-# Prints the character to stdout and exits with the status code of printf.
+# Prints to stdout the numeric ASCII value with the given character.
 ord() {
   LC_CTYPE=C printf '%d' "'$1"
 }
 
-# Outputs the nth alphabetic character. n is 1-based; that is, char_from(1) is
+# Prints the nth alphabetic character. n is 1-based; that is, char_from(1) is
 # "a".
 # $1: the number n specifying which character.
 char_from() {
@@ -38,6 +34,9 @@ char_from() {
 
 # Prints the true task code, from the current user task number and task set.
 # The user task number is always sequential.
+#
+# The user task number is the global variable task_num
+# The task set is the global variable task_set
 #
 # The task can be in either task set 1 or 2.
 # Task set 1 contains tasks 1 up to and including TASK_SIZE / 2.
@@ -61,7 +60,7 @@ get_task_code() {
 }
 
 # Enables Bash preexec functions, prints out the first treatment and task, and
-# start the first task.
+# starts the first task.
 #
 # This function is only called at the very beginning of the experiment.
 start_experiment() {
@@ -106,7 +105,7 @@ end_experiment() {
 }
 
 # Resets the user's file system directory by syncing it with the
-# infrastructure's Extracted file system directory.
+# infrastructure's extracted file system directory.
 reset_fs() {
   rsync --omit-dir-times --recursive --quiet --delete \
     "${FS_SYNC_DIR}/" "${FS_DIR}"
@@ -188,8 +187,17 @@ print_task() {
 }
 
 # See documentation for ./verify_task.py for more details on what it does
-# Captures the stdout of verify_task.py into $status
-# Captures the exit code of verify_task.py into $EXIT
+#
+# Runs ./verify_task.py with the global task_code and the command in .command
+# and captures its exit code.
+#
+# If ./verify_task.py returns exit code:
+# - 0: sets status to success.
+# - 2: prints a prompt warning that the user has changed the file system and
+#      resets the file system.
+# - Otherwise: prints a prompt that the actual output does not match.
+#
+# Returns the exit code of ./verify_task.py
 verify_task() {
   # Verify the output of the previous command.
   local exit_code
@@ -215,6 +223,10 @@ verify_task() {
   return $exit_code
 }
 
+# Ensures that all relevant variables are restored to their inital
+# values and all changes in the file system directory is reverted before
+# printing the description of a new task.
+#
 # Determines whether to move on to the second half of the experiment based on
 # the current task_num and TASK_SIZE.
 #
@@ -256,7 +268,6 @@ next_task() {
   # If we're done with all the tasks
   if (( task_num == TASKS_SIZE )); then
     end_experiment
-
     return 0
   fi
 

@@ -28,7 +28,10 @@ if ! which meld &> /dev/null; then
   return 1
 fi
 
-# Establish tasks directories and related variables
+# Sets tasks directories and related variables
+
+# Note: The infrastructure currently does not support odd TASK_SIZE due to
+# integeter division creating difficulties for splitting up the task sets.
 TASKS_DIR="${INFRA_DIR}/tasks"
 
 TASKS_SIZE=$(ls -1 "${TASKS_DIR}" | wc -l)
@@ -70,20 +73,22 @@ read -p "Enter your UW NetID: " UW_NETID
 if [[ -f "${INFRA_DIR}/.task_num" ]]; then
   task_num=$(cat "${INFRA_DIR}/.task_num")
 
-  # Because we are incrementing the initial task num by one, if we are
-  # recovering to the middle of the experiment, we have to set this to one lower
-  # to allow the user to start at the task where they previous stopped.
+  # The initial task_num will be incremented by one in start_experiment, if the
+  # experiment is being recovered from the middle, the initial task_num needs to
+  # be one lower to allow the user to start at the task where they previously
+  # stopped.
   task_num=$((task_num - 1))
 else
   task_num=0
   echo "${task_num}" > "${INFRA_DIR}/.task_num"
 fi
 
-# Determine the task order based on a truncated md5sum hash of the username.
-# It is two two-character codes.  In each two-character code, the letter
-# T/N is for Tellina/NoTellina, and the number indicates the task_set used.
+# The TASK_ORDER is two two-character codes.  In each two-character code, the
+# letter T/N is for Tellina/NoTellina, and the number indicates the task_set
+# used.
 TASK_ORDERS_CODES=("T1N2" "T2N1" "N1T2" "N2T1")
 
+# Determine the task order based on a truncated md5sum hash of the username.
 TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
 
 # Create user meta-commands.
@@ -110,7 +115,9 @@ PROMPT_COMMAND_ORIG=${PROMPT_COMMAND}
 source "${INFRA_DIR}"/bash-preexec.sh
 
 # Executed before the user-entered command is executed.
-# Saves the most recent command into the .command file.
+# Saves the command that was just entered by the user (and is about to be
+# executed) into the .command file.
+#
 # If the user enters an "empty" command, then the .command file does not change.
 preexec_func() {
   echo "$1" > "${INFRA_DIR}/.command"
@@ -130,15 +137,15 @@ preexec_func() {
 precmd_func() {
   time_elapsed=${SECONDS}
 
+  # Checks if the user has run out of time.
   if (( time_elapsed >= TASK_TIME_LIMIT )); then
-    # Checks if the user has run out of time. If they have, $time_elapsed is
-    # truncated to the time limit
-    echo "You have run out of time for task ${task_num}"
+    echo "You have run out of time for task ${task_num}."
 
     status="timeout"
+    # If they have, $time_elapsed is truncated to the time limit
     time_elapsed=${TIME_LIMIT}
   elif [[ -f "${INFRA_DIR}/.noverify" ]]; then
-    # Check if output verification should not be run.
+    # Output verification should not be run.
     # This can happen if the user entered a user meta-command or at the
     # beginning of the experiment.
 

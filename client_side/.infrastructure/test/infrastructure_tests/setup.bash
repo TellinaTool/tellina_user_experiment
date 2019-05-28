@@ -1,7 +1,6 @@
 load ../libs/assertions
 
-# Enables test_get_task_code. See this file for detailed description of each
-# function it enables.
+# Enables test_get_task_code. This file describes each function it enables.
 load ../libs/infrastructure_test_helper
 
 setup() {

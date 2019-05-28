@@ -8,7 +8,7 @@ user's command.
 
 This script has the following exit codes:
 - 0: The verification is successful.
-- 1: The output does not match expected and the task is a file system task.
+- 1: The file system does not match expected and the task is a file system task.
 - 2: The file system has been changed and the task is a select task.
 - 3: The output does not match expected and the task is a select task.
 
@@ -131,11 +131,11 @@ def normalize_output(out_file, norm_file):
     output.close()
 
 
-def verify(norm_out_path, task_code, check_fs):
+def verify(norm_file, task_code, check_fs):
     """Returns 0 if verification succeeded, non-zero if it failed."""
     task = "task_{}".format(task_code)
 
-    task_verify_path = os.path.join(
+    task_verify_file = os.path.join(
         os.environ['TASKS_DIR'], "{task}/{task}.{out_type}.out"
             .format(task=task, out_type="fs" if check_fs else "select"))
 
@@ -167,9 +167,9 @@ def verify(norm_out_path, task_code, check_fs):
             pass
 
     # compare normalized output file and task verification file
-    files_match = filecmp.cmp(norm_out_path, task_verify_path)
+    files_match = filecmp.cmp(norm_file, task_verify_file)
     if not files_match:
-        shutil.copy(task_verify_path, EXPECTED_FILE)
+        shutil.copy(task_verify_file, EXPECTED_FILE)
 
     return files_match
 
