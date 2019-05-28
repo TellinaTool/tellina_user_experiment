@@ -64,6 +64,10 @@ test_verify_task() {
   debug "Command: $user_command"
 
   set +e
+
+  # Mimick's the fact that verify_task is run after the user command has been
+  # run.
+  bash -c "$user_command"
   verify_task
   EXIT=$?
   set -e
