@@ -223,6 +223,8 @@ verify_task() {
 #
 # Prints the description of the current task.
 start_task() {
+  reset_fs
+
   # Check if we need to switch the task set and the treatment
   if (( task_num == TASKS_SIZE / 2 + 1 )); then
     echo "You have finished the first half of the experiment!"
@@ -247,8 +249,6 @@ start_task() {
 # This function will instead end the experiment if the current task number is
 # equal to TASKS_SIZE.
 next_task() {
-  reset_fs
-
   # Increment the number of tasks finished by the user.
   task_num=$(( task_num + 1 ))
   echo "${task_num}" > "${INFRA_DIR}/.task_num"
