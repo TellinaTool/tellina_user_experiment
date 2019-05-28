@@ -23,6 +23,10 @@ if ! xhost &> /dev/null; then
   print_experiment_prompt "no_display"
   return 1
 fi
+if ! which meld &> /dev/null; then
+  print_experiment_prompt "no_meld"
+  return 1
+fi
 
 # Establish tasks directories and related variables
 TASKS_DIR="${INFRA_DIR}/tasks"
