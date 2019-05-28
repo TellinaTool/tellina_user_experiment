@@ -223,15 +223,12 @@ verify_task() {
   return $exit_code
 }
 
-# Ensures that all relevant variables are restored to their inital
-# values and all changes in the file system directory is reverted before
-# printing the description of a new task.
+# This is called to start the user on a new task.
+# Restores the file system and sets the variables.
 #
-# Determines whether to move on to the second half of the experiment based on
-# the current task_num and TASK_SIZE.
+# May begin a new treatment.
 #
-# Resets all relevent varialbes to their inital values and writes "start task"
-# to `.command`.
+# Writes "start task" to `.command`.
 #
 # Prints the description of the current task.
 start_task() {
@@ -255,11 +252,8 @@ start_task() {
   print_task
 }
 
-# Resets the user's file system directory, increments the current task number,
-# starts a new task.
-#
-# This function will instead end the experiment if the current task number is
-# equal to TASKS_SIZE.
+# Increments the current task number and either starts a new task or ends the
+# experiment.
 next_task() {
   # Increment the number of tasks finished by the user.
   task_num=$(( task_num + 1 ))

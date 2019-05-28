@@ -96,8 +96,8 @@ TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
 # infrastructure directory.
 
 # abandon writes "abandon" to `.noverify`.
-# This is to allow `abandon` to be an alias and delegates setting the $status
-# variable to precmd.
+# This is because aliases can't set variables and abandon needs to set $status
+# to "abandon". precmd_func checks the contents.
 alias abandon='echo "abandon" > ${INFRA_DIR}/.noverify'
 
 alias reset='reset_fs; touch "${INFRA_DIR}"/.noverify'
