@@ -7,7 +7,7 @@ ZIP=zip -qr
 # Directory of distribution which is a symbolic link to CLIENT_DIR.
 # This allows naming the directory distributed to the users without directly
 # changing the CLIENT_DIR's name.
-DIST_NAME=tellina_user_experiment
+DIST_NAME=bash_user_experiment
 
 # The name of the distribution.
 ZIP_DIST_NAME=$(DIST_NAME).zip
@@ -26,7 +26,7 @@ TEST_DIR=$(INFRA_DIR)/test
 all: $(ZIP_DIST_NAME)
 
 test:
-	$(MAKE) -C ${INFRA_DIR} test
+	$(MAKE) -C $(INFRA_DIR) test
 
 clean: clean-dist clean-fs-dir
 
@@ -38,11 +38,11 @@ clean-fs-dir:
 	$(RM) $(FS_DIR)
 
 $(ZIP_DIST_NAME): $(DIST_NAME) $(FS_DIR) test
-	$(ZIP) $(ZIP_DIST_NAME) $<
+	$(ZIP) $@ $<
 
 $(DIST_NAME): $(CLIENT_DIR) $(CLIENT_FILES)
-	ln -s $< $(DIST_NAME)
+	ln -s $< $@
 
 $(FS_DIR):
-	mkdir $(FS_DIR)
-	find . -name "fs.tgz" | xargs -I{} tar -xzf {} -C $(FS_DIR)
+	mkdir $@
+	find . -name "fs.tgz" | xargs -I{} tar -xzf {} -C $@
