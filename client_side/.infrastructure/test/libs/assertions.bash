@@ -53,8 +53,8 @@ assert_output() {
     shift
   fi
 
-  local actual=$1
-  local expected=$2
+  local actual="$1"
+  local expected="$2"
 
   output_failure "$actual" "$expected"
   if [[ -n $no_match ]]; then
