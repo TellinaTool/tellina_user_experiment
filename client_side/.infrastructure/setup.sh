@@ -120,6 +120,7 @@ source "${INFRA_DIR}"/bash-preexec.sh
 #
 # If the user enters an "empty" command, then the .command file does not change.
 preexec_func() {
+  command_dir=$PWD
   echo "$1" > "${INFRA_DIR}/.command"
 }
 
@@ -135,6 +136,8 @@ preexec_func() {
 #
 # This function always writes to the log.
 precmd_func() {
+  pushd "${command_dir}" &> /dev/null
+
   time_elapsed=${SECONDS}
 
   # Checks if the user has run out of time.
@@ -168,6 +171,8 @@ precmd_func() {
      [[ "${status}" == "success" ]]; then
     next_task
   fi
+
+  popd "${command_dir}" &> /dev/null
 }
 
 start_experiment
