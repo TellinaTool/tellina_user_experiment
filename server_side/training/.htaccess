@@ -1,0 +1,6 @@
+AuthType Shibboleth
+
+ShibRequestSetting requireSession false
+
+Require shibboleth
+Allow from all
