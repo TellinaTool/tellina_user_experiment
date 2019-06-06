@@ -21,7 +21,21 @@ FS_DIR=$(CLIENT_DIR)/file_system
 INFRA_DIR=$(CLIENT_DIR)/.infrastructure
 TEST_DIR=$(INFRA_DIR)/test
 
-.PHONY: all test
+# Website
+
+# The machine that is hosting the website
+HOST=atran35@attu.cs.washington.edu
+
+# The website's directory on HOST
+HOST_DIR=/cse/web/homes/atran35/research
+
+# Can be something else if needed
+WEBSITE_NAME=$(DIST_NAME)
+
+PUBLIC_SITE=$(HOST_DIR)/$(WEBSITE_NAME)
+STAGING_SITE=$(HOST_DIR)/staging/$(WEBSITE_NAME)
+
+.PHONY: all test publish-distribution stage-distribution
 
 all: $(ZIP_DIST_NAME)
 
@@ -46,3 +60,19 @@ $(DIST_NAME):
 $(FS_DIR):
 	mkdir $@
 	find . -name "fs.tgz" | xargs -I{} tar -xzf {} -C $@
+
+# Copy the ZIP distribution on the public site specified by PUBLIC_SITE.
+publish-distribution: $(ZIP_DIST_NAME) $(PUBLIC_SITE)
+	@echo "Publishing $<"
+	@scp $< $(HOST):$(PUBLIC_SITE)
+
+# Copy the ZIP distribution on the staging site specified by STAGING_SITE.
+stage-distribution: $(ZIP_DIST_NAME) $(STAGING_SITE)
+	@echo "Staging $<"
+	@scp $< $(HOST):$(STAGING_SITE)
+
+# Check that the host has the website directory.
+%/$(WEBSITE_NAME):
+	@echo -n "Checking that host directory $@ exists... "
+	@ssh $(HOST) '[ -d $@ ]'
+	@echo "OK."
