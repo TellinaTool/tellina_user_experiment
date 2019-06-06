@@ -15,7 +15,7 @@ ZIP_DIST_NAME=$(DIST_NAME).zip
 CLIENT_DIR=client_side
 # This operation is safe because the test frame work will clean up any backup,
 # temporary files, etc.
-CLIENT_FILES=$(shell find $(CLIENT_DIR))
+CLIENT_FILES=$(shell find $(CLIENT_DIR) -type f)
 FS_DIR=$(CLIENT_DIR)/file_system
 
 INFRA_DIR=$(CLIENT_DIR)/.infrastructure
@@ -37,11 +37,11 @@ clean-dist:
 clean-fs-dir:
 	$(RM) $(FS_DIR)
 
-$(ZIP_DIST_NAME): $(DIST_NAME) $(FS_DIR) test
+$(ZIP_DIST_NAME): $(DIST_NAME) $(CLIENT_FILES) $(FS_DIR) test
 	$(ZIP) $@ $<
 
-$(DIST_NAME): $(CLIENT_DIR) $(CLIENT_FILES)
-	ln -s $< $@
+$(DIST_NAME):
+	ln -s $(CLIENT_DIR) $@
 
 $(FS_DIR):
 	mkdir $@
