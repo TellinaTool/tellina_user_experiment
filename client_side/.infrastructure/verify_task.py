@@ -96,6 +96,13 @@ def main():
             else:
                 with open(USER_STDOUT_FILE, 'w') as user_out:
                     with open(USER_STDERR, 'w') as user_err:
+                        # shell=True is needed here for several reasons:
+                        # 1. It preserves quoting for user commands given that
+                        # the command argument passed to the call is a string.
+                        # (see https://docs.python.org/3/library/subprocess.html#popen-constructor starting at "On POSIX with shell=True")
+                        # 2. It allows reduces the need to replace shell
+                        # piplines.
+                        # (see https://docs.python.org/3/library/subprocess.html#replacing-shell-pipeline)
                         stdout = subprocess.call(command, shell=True, stderr=user_err, stdout=user_out)
 
                 normalize_output(USER_STDOUT_FILE, ACTUAL_FILE)
