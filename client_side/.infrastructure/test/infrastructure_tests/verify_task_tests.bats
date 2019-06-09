@@ -83,6 +83,14 @@ export TASKS_DIR
   # find ... "*.html" ...
   cmd='find . -name "*.html" -exec tar -rvf html.tar {} \;'
   test_verify_task "b" "$cmd" "success" 0
+
+  # cd lib ; mv showdown showup
+  cmd='cd lib ; mv showdown showup'
+  test_verify_task "o" "$cmd" "success" 0
+
+  # find css/ -type f | xargs rm
+  cmd='find css/ -type f | xargs rm'
+  test_verify_task "v" "$cmd" "success" 0
 }
 
 @test "verify_task file system task failure" {
