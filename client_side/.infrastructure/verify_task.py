@@ -42,7 +42,7 @@ EXPECTED_FILE = os.path.join('/tmp', 'expected')
 
 # There are two types of tasks: those that expect output, and
 # those that expect a modification to the file system.
-FILESYSTEM_TASKS = {'b', 'c', 'd', 'e', 'f', 'k', 'l', 'o', 'p', 't', 'v'}
+FILESYSTEM_TASKS = {'b', 'c', 'd', 'e', 'f', 'k', 'l', 'o', 'q', 't', 'v'}
 
 def main():
     class cd:
