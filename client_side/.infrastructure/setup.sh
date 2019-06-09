@@ -160,10 +160,15 @@ precmd_func() {
 
     rm "${INFRA_DIR}/.noverify"
   else
+    # Kills any old instances of Meld that hasn't already been closed.
+    #
     # Verify the command inside of .command.
     # Meld is opened if the exit code is non-zero.
+    pkill meld 2> /dev/null
     if ! verify_task; then
-      meld "/tmp/actual" "/tmp/expected"
+      # Starting a background task in a subshell silences the job ID and PID
+      # output
+      (meld "/tmp/actual" "/tmp/expected" &)
     fi
   fi
 
