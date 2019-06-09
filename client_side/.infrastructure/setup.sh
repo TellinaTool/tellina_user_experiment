@@ -20,11 +20,13 @@ source "${INFRA_DIR}"/infrastructure.sh
 # Checks if the user has a usable graphical display. Detects X forwarding as
 # well.
 if ! xhost &> /dev/null; then
-  print_experiment_prompt "no_display"
+  echo "No display detected. Please make sure that you are setting up the experiment, in"
+  echo "an environment with a graphical display."
   return 1
 fi
 if ! which meld &> /dev/null; then
-  print_experiment_prompt "no_meld"
+  echo "The program Meld is not installed. Please switch to a machine that uses it or"
+  echo "install it using this link: https://meldmerge.org/."
   return 1
 fi
 
@@ -102,7 +104,7 @@ alias abandon='echo "abandon" > ${INFRA_DIR}/.noverify'
 
 alias reset='reset_fs; touch "${INFRA_DIR}"/.noverify'
 alias task='print_task; touch "${INFRA_DIR}"/.noverify'
-alias helpme='print_experiment_prompt "helpme" ; touch ${INFRA_DIR}/.noverify'
+alias helpme='echo "task: prints the description of the current task." ; echo "reset: restores the file system to its original state." ; echo "abandon: abandons the current task." ; echo "helpme: prints this help message." ; touch ${INFRA_DIR}/.noverify'
 
 ################################################################################
 #                                  BASH PREEXEC                                #

@@ -70,7 +70,12 @@ start_experiment() {
 
   cd "${FS_DIR}"
 
-  print_experiment_prompt "introduction"
+  echo "Welcome to the user study! At any point, run \"helpme\" to see a list of commands"
+  echo "available to you during the study.  You will have 5 minutes to complete each"
+  echo "task. Once the timer is reached, the experiment will move on to the next task."
+  echo "The experiment interface does not ensure that anything outside of that directory"
+  echo "is protected."
+
   begin_treatment 1
   next_task
 
@@ -99,7 +104,8 @@ end_experiment() {
   find ${INFRA_DIR} -type f -name ".*" -delete
   cd "${EXP_DIR}"
 
-  print_experiment_prompt "ending"
+  echo "Congratulations! You have completed the interactive portion of the, experiment,"
+  echo "Please take some time to fill out the survey on the experiment home page."
 
   return 0
 }
@@ -135,11 +141,12 @@ begin_treatment() {
   if (( task_num == 1 )); then
     infra_training
   fi
+
+  print_treatment
+
   if [[ "$treatment" == "T" ]]; then
     tellina_training
   fi
-
-  print_treatment
 }
 
 # Trains the user on how the infrastructure itself works. This includes:
@@ -147,32 +154,30 @@ begin_treatment() {
 # - Tasks and diff printing.
 # - The directory that they should be performing tasks on.
 infra_training() {
-  print_experiment_prompt "infra_training"
+  echo "For the first couple of tasks, please follow the instructions here:"
+  echo "<infra_training_url>"
+  echo "to get familiar with how the infrastructure works."
 }
 
 # Introduces the user to Tellina and suggests a couple of known query-command
 # pairs.
 tellina_training() {
-  print_experiment_prompt "tellina_training"
-}
-
-# Prints the text associated with a given experiment prompt.
-print_experiment_prompt() {
-  local prompt="$1"
-
-  cat "${INFRA_DIR}"/prompts/$prompt.txt
+  echo "To get familiar with Tellina, please go to the following URL:"
+  echo "<tellina_training_url>"
 }
 
 # Prints the list of resources that the user is allowed to use based on the
 # current treatment.
 print_treatment() {
   if [[ "$treatment" == "T" ]]; then
-    print_experiment_prompt "treatment_tellina"
+    echo "For this half of the experiment you can use any online resources and man pages,"
+    echo "and Tellina (https://tellina.rocks)."
   else
     if (( task_num >= TASKS_SIZE / 2 + 1 )); then
-      print_experiment_prompt "treatment_no_tellina_second_half"
+      echo "For this half of the experiment you can use any online resources and man pages,"
+      echo "but you should not use Tellina."
     else
-      print_experiment_prompt "treatment_no_tellina_first_half"
+      echo "For this half of the experiment you can use any online resources and man pages."
     fi
   fi
 }
