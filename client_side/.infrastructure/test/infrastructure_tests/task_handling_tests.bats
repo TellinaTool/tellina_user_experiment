@@ -141,6 +141,9 @@ load setup
   task_num=5
   begin_treatment 1
 
+  INF_TRAINING=false
+  TEL_TRAINING=false
+
   start_task
 
   assert_output "$treatment" "T"

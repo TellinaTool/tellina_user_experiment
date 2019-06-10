@@ -138,14 +138,53 @@ begin_treatment() {
     task_set=${TASK_ORDER:3:1}
   fi
 
-  if (( task_num == 1 )); then
-    infra_training
-  fi
-
   print_treatment
 
-  if [[ "$treatment" == "T" ]]; then
-    tellina_training
+  if (( task_num == 0 )); then
+    if ! [[ -f "${INFRA_DIR}/.task_num" ]]; then
+      # If the user is at the very beginning and is not resuming to task 1, then
+      # enables infrastructure training.
+      INF_TRAINING=true
+
+      if [[ "$treatment" == "T" ]]; then
+        # If the treatment is T, enables Tellina training.
+        TEL_TRAINING=true
+      fi
+    fi
+  else
+    # If the treatment is T and the user is not at the beginning, enables
+    # Tellina training.
+    if [[ "$treatment" == "T" ]]; then
+      TEL_TRAINING=true
+    fi
+  fi
+}
+
+# Checks whether infrastructure training or Tellina training is enabled and
+# disables them if possible.
+#
+# Prioritizes infrastructure training.
+check_and_update_training_status() {
+  if [[ "${INF_TRAINING:-false}" == "true" ]]; then
+    if [[ "${status}" == "success" ]]; then
+      # If the user successfully did the infrastructure training, disables it.
+      unset INF_TRAINING
+
+      if [[ "${TEL_TRAINING:-false}" == "true" ]]; then
+        tellina_training
+      fi
+    else
+      # Otherwise, print out the information of the training.
+      infra_training
+    fi
+  elif [[ "${TEL_TRAINING:-false}" == "true" ]]; then
+    if [[ "${status}" == "success" ]]; then
+      # if the user successfully did the Tellina training, disables it.
+      unset TEL_TRAINING
+    else
+      # Otherwise, print out the information of the training.
+      tellina_training
+    fi
   fi
 }
 
@@ -154,16 +193,22 @@ begin_treatment() {
 # - Tasks and diff printing.
 # - The directory that they should be performing tasks on.
 infra_training() {
-  echo "For the first couple of tasks, please follow the instructions here:"
-  echo "<infra_training_url>"
-  echo "to get familiar with how the infrastructure works."
+  echo "--------------------------------------------------------------------------------"
+  echo "To get you familiar with how the infrastructure works, the following task is"
+  echo "paired with the instructions here:"
+  echo "https://homes.cs.washington.edu/~atran35/research/bash_user_experiment/server_side/training/infrastructure_training.html"
+  echo "Please follow the instructions carefully."
 }
 
 # Introduces the user to Tellina and suggests a couple of known query-command
 # pairs.
 tellina_training() {
-  echo "To get familiar with Tellina, please go to the following URL:"
+  echo "--------------------------------------------------------------------------------"
+  echo "This half of the experiment asks you to use our tool Tellina. To get you"
+  echo "acquainted with Tellina, the following task is paired with the instructions"
+  echo "here:"
   echo "<tellina_training_url>"
+  echo "Once again, please follow the instructions carefully."
 }
 
 # Prints the list of resources that the user is allowed to use based on the
@@ -246,8 +291,19 @@ start_task() {
     begin_treatment 2
   fi
 
-  # Determines the task code from current_task and task_set.
-  task_code=$(get_task_code)
+  # If the user is in training, set the task_code to the appropriate training
+  # tasks. "task_u" for infrastructure training, and "task_v" for Tellina
+  # training.
+  #
+  # Otherwise, calculate the task_code from the current_task and task_set.
+  if [[ ${INF_TRAINING:-false} == "true" ]]; then
+    task_code="u"
+  elif [[ ${TEL_TRAINING:-false} == "true" ]]; then
+    task_code="v"
+  else
+    task_code=$(get_task_code)
+  fi
+
   SECONDS=0
   time_elapsed=0
   status="incomplete"
@@ -259,10 +315,17 @@ start_task() {
 
 # Increments the current task number and either starts a new task or ends the
 # experiment.
+#
+# If the user is in training, the current task number does not increment.
 next_task() {
-  # Increment the number of tasks finished by the user.
-  task_num=$(( task_num + 1 ))
-  echo "${task_num}" > "${INFRA_DIR}/.task_num"
+  check_and_update_training_status
+
+  if [[ "${TEL_TRAINING:-false}" != "true" ]] && \
+     [[ "${INF_TRAINING:-false}" != "true" ]]; then
+    # Increment the number of tasks finished by the user.
+    task_num=$(( task_num + 1 ))
+    echo "${task_num}" > "${INFRA_DIR}/.task_num"
+  fi
 
   # If we're done with all the tasks
   if (( task_num == TASKS_SIZE )); then

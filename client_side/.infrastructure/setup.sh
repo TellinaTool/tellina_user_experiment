@@ -37,6 +37,7 @@ fi
 TASKS_DIR="${INFRA_DIR}/tasks"
 
 TASKS_SIZE=$(ls -1 "${TASKS_DIR}" | wc -l)
+TASKS_SIZE=$(( TASKS_SIZE - 2 )) # reserve the two final tasks for training.
 TASK_TIME_LIMIT=300
 
 # Contains output of user commands.
@@ -82,7 +83,6 @@ if [[ -f "${INFRA_DIR}/.task_num" ]]; then
   task_num=$((task_num - 1))
 else
   task_num=0
-  echo "${task_num}" > "${INFRA_DIR}/.task_num"
 fi
 
 # The TASK_ORDER is two two-character codes.  In each two-character code, the
@@ -171,6 +171,17 @@ precmd_func() {
       # Starting a background task in a subshell silences the job ID and PID
       # output
       (meld "/tmp/actual" "/tmp/expected" &)
+    fi
+  fi
+
+  # Disables abandon and timeout while in training.
+  if [[ "${INF_TRAINING:-false}" == "true" ]] || \
+     [[ "${TEL_TRAINING:-false}" == "true" ]]; then
+    if [[ "${status}" != "success" ]]; then
+      if [[ "${status}" == "abandon" ]]; then
+        echo "You can't abandon tasks during training."
+      fi
+      status="incomplete"
     fi
   fi
 
