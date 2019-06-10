@@ -65,7 +65,7 @@ fi
 # Establish the server information
 SERVER_HOST="https://homes.cs.washington.edu/~atran35"
 # Establish survey URL
-EXPERIMENT_HOME_URL="${SERVER_HOST}/tellina_user_experiment"
+EXPERIMENT_HOME_URL="${SERVER_HOST}/research/bash_user_experiment"
 
 POST_HANDLER="${EXPERIMENT_HOME_URL}/server_side/post_handler/post_handler.php"
 
