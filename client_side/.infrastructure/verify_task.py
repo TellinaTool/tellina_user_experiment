@@ -3,8 +3,10 @@
 """
 Determine whether the user's command has solved the task.
 
-The first input is the current true task code. The remaining inputs are the
-user's command.
+Parameters:
+- args[1]: the current true task code.
+- args[2]: the directory that should be used to run the given user command in.
+- args[3:]: the user's command.
 
 This script has the following exit codes:
 - 0: The verification is successful.
@@ -59,8 +61,9 @@ def main():
 
     # the true task code
     task_code = sys.argv[1]
+    command_dir = sys.argv[2]
     # the current command
-    command = ' '.join(sys.argv[2:])
+    command = ' '.join(sys.argv[3:])
 
     try:
 
@@ -103,7 +106,8 @@ def main():
                         # 2. It allows reduces the need to replace shell
                         # piplines.
                         # (see https://docs.python.org/3/library/subprocess.html#replacing-shell-pipeline)
-                        stdout = subprocess.call(command, shell=True, stderr=user_err, stdout=user_out)
+                        with cd(command_dir):
+                            stdout = subprocess.call(command, shell=True, stderr=user_err, stdout=user_out)
 
                 normalize_output(USER_STDOUT_FILE, ACTUAL_FILE)
 

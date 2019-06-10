@@ -143,8 +143,6 @@ preexec_func() {
 #
 # This function always writes to the log.
 precmd_func() {
-  pushd "${command_dir}" &> /dev/null
-
   time_elapsed=${SECONDS}
 
   # Checks if the user has run out of time.

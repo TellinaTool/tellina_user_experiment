@@ -68,7 +68,7 @@ test_verify_task() {
   # Mimick's the fact that verify_task is run after the user command has been
   # run.
   bash -c "$user_command"
-  verify_task
+  verify_task "$PWD"
   EXIT=$?
   set -e
 

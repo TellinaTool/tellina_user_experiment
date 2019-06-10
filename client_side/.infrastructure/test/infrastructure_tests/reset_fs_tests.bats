@@ -27,7 +27,7 @@ load setup
 
   # We are using verify_task.py and the fact that it checks the integrity of the
   # original file system directory on a "select" task.
-  run "${INFRA_DIR}/verify_task.py" "a" find .
+  run "${INFRA_DIR}/verify_task.py" "a" "${FS_DIR}" find .
 
   # Assert that verify_task failed with a status of 3 and printed "incomplete"
   assert_failure

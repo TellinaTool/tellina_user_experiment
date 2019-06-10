@@ -238,6 +238,9 @@ print_task() {
 
 # See documentation for ./verify_task.py for more details on what it does
 #
+# Parameters:
+# - $1: the directory that the user command was run in.
+#
 # Runs ./verify_task.py with the global task_code and the command in .command
 # and captures its exit code.
 #
@@ -253,7 +256,7 @@ verify_task() {
   local exit_code
   local user_command="$(cat "${INFRA_DIR}/.command")"
 
-  "${INFRA_DIR}"/verify_task.py ${task_code} ${user_command}
+  "${INFRA_DIR}"/verify_task.py ${task_code} "$1" ${user_command}
   exit_code=$?
 
   case $exit_code in
