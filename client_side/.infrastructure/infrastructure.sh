@@ -350,5 +350,5 @@ write_log() {
     -d treatment="$treatment" \
     -d time_elapsed="$time_elapsed" \
     -d status="$status" \
-    -d command="$(cat "${INFRA_DIR}/.command")" &> /dev/null
+    -d command="$(cat "${INFRA_DIR}/.command")" &>> ${INF_LOG_FILE}
 }

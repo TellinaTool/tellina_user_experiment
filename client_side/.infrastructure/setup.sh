@@ -2,6 +2,11 @@
 # This script takes 1 argument which is the absolute path to the user experiment
 # directory.
 
+# Use this variable when trying to suppress stderr/stdout for any commands.
+# For example, pushd path/to/dir &>> $INF_LOG_FILE
+# instead of pushd path/to/dir &> /dev/null.
+INF_LOG_FILE=/tmp/tellina_infrastructure.log
+
 # Automatically export any assigned variables
 set -a
 
@@ -19,12 +24,12 @@ source "${INFRA_DIR}"/infrastructure.sh
 
 # Checks if the user has a usable graphical display. Detects X forwarding as
 # well.
-if ! xhost &> /dev/null; then
+if ! xhost &>> ${INF_LOG_FILE}; then
   echo "No display detected. Please make sure that you are setting up the experiment, in"
   echo "an environment with a graphical display."
   return 1
 fi
-if ! which meld &> /dev/null; then
+if ! which meld &>> ${INF_LOG_FILE}; then
   echo "The program Meld is not installed. Please switch to a machine that uses it or"
   echo "install it using this link: https://meldmerge.org/."
   return 1
@@ -166,8 +171,8 @@ precmd_func() {
     #
     # Verify the command inside of .command.
     # Meld is opened if the exit code is non-zero.
-    pkill meld 2> /dev/null
-    if ! verify_task; then
+    pkill meld 2>> ${INF_LOG_FILE}
+    if ! verify_task "${command_dir}"; then
       # Starting a background task in a subshell silences the job ID and PID
       # output
       (meld "/tmp/actual" "/tmp/expected" &)
@@ -191,8 +196,6 @@ precmd_func() {
      [[ "${status}" == "success" ]]; then
     next_task
   fi
-
-  popd "${command_dir}" &> /dev/null
 }
 
 start_experiment
