@@ -283,6 +283,7 @@ verify_task() {
 # Prints the description of the current task.
 start_task() {
   reset_fs
+  cd ${FS_DIR}
 
   # Check if we need to switch the task set and the treatment
   if (( task_num == TASKS_SIZE / 2 + 1 )); then
