@@ -17,7 +17,7 @@ chr() {
   printf "\\$(printf '%03o' "$1")"
 }
 
-# Prints to stdout the numeric ASCII value with the given character.
+# Prints to stdout the numeric ASCII value of the given character.
 ord() {
   LC_CTYPE=C printf '%d' "'$1"
 }
@@ -33,16 +33,14 @@ char_from() {
 }
 
 # Prints the true task code, from the current user task number and task set.
-# The user task number is always sequential.
+# The user task numbering is always sequential.
 #
-# The user task number is the global variable task_num
-# The task set is the global variable task_set
+# The user task number is the global variable task_num.
+# The task set is the global variable task_set (either 1 or 2).
+# Task set 1 contains tasks 1 through TASK_SIZE / 2.
+# Task set 2 contains tasks (TASK_SIZE / 2) + 1 through TASK_SIZE.
 #
-# The task can be in either task set 1 or 2.
-# Task set 1 contains tasks 1 up to and including TASK_SIZE / 2.
-# Task set 2 contains tasks (TASK_SIZE / 2) + 1 up to and incuding TASK_SIZE.
-#
-# Example with TASK_SIZE == 22, task_set == 1, and task_num == 12, the output
+# Example:  with TASK_SIZE == 22, task_set == 1, and task_num == 12, the output
 # will be "a".
 get_task_code() {
   if ((task_set == 1)); then
@@ -70,21 +68,18 @@ start_experiment() {
 
   cd "${FS_DIR}"
 
-  echo "Welcome to the user study! At any point, run \"helpme\" to see a list of commands"
-  echo "available to you during the study.  You will have 5 minutes to complete each"
-  echo "task. Once the timer is reached, the experiment will move on to the next task."
-  echo "The experiment interface does not ensure that anything outside of that directory"
-  echo "is protected."
+  echo "Welcome to the bash user study!"
+  echo "At any point, run \"helpme\" to see a list of commands available to you."
+
+  echo "You will have 5 minutes to complete each task."
 
   begin_treatment 1
   next_task
 
   # Because precmd is enabled by this function, precmd will be invoked before
   # the next command line prompt.
-
-  # ".noverify" is touched so that precmd does
-  # not attempt to verify user output on the "start_task" command that was
-  # written to `.command`.
+  # ".noverify" is touched so that precmd does not attempt to verify
+  # user output on the "start_task" command that was written to `.command`.
   touch "${INFRA_DIR}/.noverify"
 
   # write_log does not need to be called because it is called by precmd.

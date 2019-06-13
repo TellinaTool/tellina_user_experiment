@@ -137,14 +137,14 @@ preexec_func() {
   echo "$1" > "${INFRA_DIR}/.command"
 }
 
-# Executed after the user-entered command is executed
+# Executed after the user-entered command is executed.
 #
-# This function does 1 of 2 things:
-# 1. Determine if the user has run out of time.
-# 2. Verify the output of the user command unless it was a meta-command.
-#
-# In either case, $status will be set to either "timeout", "success",
+# This function sets $status to one of "timeout", "success",
 # "incomplete", or "abandon".
+# This is based on:
+#  * whether the user has run out of time, and
+#  * verifying the output of the user command unless it was a meta-command.
+#
 # If the status is not "incomplete", move on to the next task.
 #
 # This function always writes to the log.
@@ -163,7 +163,7 @@ precmd_func() {
     # This can happen if the user entered a user meta-command or at the
     # beginning of the experiment.
 
-    # if the .noverify file has "abandon" in it, then the user used the
+    # If the .noverify file has "abandon" in it, then the user used the
     # "abandon" meta-command.
     if [[ "$(cat "${INFRA_DIR}/.noverify")" == "abandon" ]]; then
       status="abandon"
@@ -171,14 +171,13 @@ precmd_func() {
 
     rm "${INFRA_DIR}/.noverify"
   else
-    # Kills any old instances of Meld that hasn't already been closed.
-    #
-    # Verify the command inside of .command.
-    # Meld is opened if the exit code is non-zero.
+    # 1. Kills any old instances of Meld that hasn't already been closed.
+    # 2. Verify the command inside of .command.
+    # 3. Open Meld if the exit code is non-zero.
     pkill meld 2>> ${INF_LOG_FILE}
     if ! verify_task "${command_dir}"; then
       # Starting a background task in a subshell silences the job ID and PID
-      # output
+      # output.
       (meld "/tmp/actual" "/tmp/expected" &)
     fi
   fi
