@@ -113,7 +113,7 @@ alias task='print_task; touch "${INFRA_DIR}"/.noverify'
 alias helpme='
 echo "task     prints the description of the current task."
 echo "reset    restores the file system to its original state."
-echo "abandon  abandons the current task."
+echo "abandon  abandons the current task and starts the next task."
 echo "helpme   prints this help message."
 touch ${INFRA_DIR}/.noverify'
 
