@@ -30,7 +30,9 @@ if ! xhost &>> ${INF_LOG_FILE}; then
 fi
 if ! which meld &>> ${INF_LOG_FILE}; then
   echo "The program Meld is not installed. Please switch to a machine that uses it or"
-  echo "install it using \"Getting it\" section of: https://meldmerge.org/."
+  echo "install it."
+  echo "For Mac OS X, see the \"Getting it\" section of: https://meldmerge.org/."
+  echo "For Ubuntu, run:  sudo apt-get install meld"
   return 1
 fi
 
@@ -108,7 +110,12 @@ alias abandon='echo "abandon" > ${INFRA_DIR}/.noverify'
 
 alias reset='reset_fs; touch "${INFRA_DIR}"/.noverify'
 alias task='print_task; touch "${INFRA_DIR}"/.noverify'
-alias helpme='echo "task: prints the description of the current task." ; echo "reset: restores the file system to its original state." ; echo "abandon: abandons the current task." ; echo "helpme: prints this help message." ; touch ${INFRA_DIR}/.noverify'
+alias helpme='
+echo "task     prints the description of the current task."
+echo "reset    restores the file system to its original state."
+echo "abandon  abandons the current task."
+echo "helpme   prints this help message."
+touch ${INFRA_DIR}/.noverify'
 
 ################################################################################
 #                                  BASH PREEXEC                                #
@@ -124,7 +131,7 @@ source "${INFRA_DIR}"/bash-preexec.sh
 # Saves the command that was just entered by the user (and is about to be
 # executed) into the .command file.
 #
-# If the user enters an "empty" command, then the .command file does not change.
+# If the user enters an empty command, then the .command file does not change.
 preexec_func() {
   command_dir=$PWD
   echo "$1" > "${INFRA_DIR}/.command"
