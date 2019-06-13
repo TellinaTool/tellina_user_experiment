@@ -1,3 +1,0 @@
-For the first couple of tasks, please follow the instructions here:
-<infra_training_url>
-to get familiar with how the infrastructure works.

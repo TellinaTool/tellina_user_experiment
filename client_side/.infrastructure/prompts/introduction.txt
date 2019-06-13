@@ -1,5 +1,0 @@
-Welcome to the user study! At any point, run "helpme" to see a list of commands
-available to you during the study.  You will have 5 minutes to complete each
-task. Once the timer is reached, the experiment will move on to the next task.
-The experiment interface does not ensure that anything outside of that directory
-is protected.

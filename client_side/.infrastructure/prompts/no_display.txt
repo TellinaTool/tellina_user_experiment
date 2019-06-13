@@ -1,2 +1,0 @@
-No display detected. Please make sure that you are setting up the experiment, in
-an environment with a graphical display.
