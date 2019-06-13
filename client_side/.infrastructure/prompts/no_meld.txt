@@ -1,2 +1,0 @@
-The program Meld is not installed. Please switch to a machine that uses it or
-install it using this link: https://meldmerge.org/.

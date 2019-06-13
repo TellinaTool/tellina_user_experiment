@@ -1,4 +1,0 @@
-task: prints the description of the current task.
-reset: restores the file system to its original state.
-abandon: abandons the current task.
-helpme: prints this help message.
