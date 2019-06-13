@@ -100,13 +100,13 @@ end_experiment() {
   cd "${EXP_DIR}"
 
   echo "Congratulations! You have completed the interactive portion of the experiment."
-  echo "Please take some time to fill out the survey on the experiment home page."
+  echo "Please fill out the survey on the experiment home page."
 
   return 0
 }
 
 # Resets the user's file system directory by syncing it with the
-# infrastructure's extracted file system directory.
+# infrastructure's file system directory.
 reset_fs() {
   rsync --omit-dir-times --recursive --quiet --delete \
     "${FS_SYNC_DIR}/" "${FS_DIR}"
@@ -169,7 +169,7 @@ check_and_update_training_status() {
         tellina_training
       fi
     else
-      # Otherwise, print out the information of the training.
+      # Otherwise, print the information about the training.
       infra_training
     fi
   elif [[ "${TEL_TRAINING:-false}" == "true" ]]; then
@@ -177,7 +177,7 @@ check_and_update_training_status() {
       # if the user successfully did the Tellina training, disables it.
       unset TEL_TRAINING
     else
-      # Otherwise, print out the information of the training.
+      # Otherwise, print the information about the training.
       tellina_training
     fi
   fi
