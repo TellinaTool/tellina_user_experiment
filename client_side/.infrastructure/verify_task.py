@@ -5,7 +5,7 @@ Determine whether the user's command has solved the task.
 
 Parameters:
 - args[1]: the current true task code.
-- args[2]: the directory that should be used to run the given user command in.
+- args[2]: the directory in which to run the given user command.
 - args[3:]: the user's command.
 
 This script has the following exit codes:

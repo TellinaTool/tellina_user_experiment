@@ -35,7 +35,7 @@ The experiment infrastructure consists of several components:
   experiments. This includes information about users, issued commands, time
   spent on tasks, etc.  It will not collect the user's browsing history.
   - The server will only handle POST requests from clients, convert the request
-    into CSV format and append them to a single log file.
+    into CSV format, and append them to a single log file.
 - Experiment Instructions (a web page):
   Information about the experiment.
 
@@ -73,7 +73,7 @@ The experiment infrastructure consists of several components:
     - Logs information about each command from the user for the experiment to
       the server (see [log file format](#logging) on what information is sent).
       - It also [saves some information locally](#variable_files) as well.
-  - The directory in which the user will perform tasks in.
+  - The directory where the user will perform tasks.
 - Tasks:
   - We will have `N` tasks for each user.
   - Each task has two different labels:
@@ -88,8 +88,8 @@ The experiment infrastructure consists of several components:
     system output and standard output.
   - The two initial tasks that the user will be doing will be tutorial
     tasks. The tutorial will print instructions on what to do for each step to the
-    shell as well. Tutorial would also teach users about `abandon`, `task`, and
-    `reset`.
+    shell as well. Tutorial would also teach users about `abandon`, `task`,
+    `reset`, and `helpme`.
 - Analysis scripts to process server logs: determine relative
   performance of subjects using Tellina versus those who are not, via
   statistical analysis.  This will be done with a post-processing program.
@@ -136,7 +136,7 @@ department. This recudes the likelihood that the server goes down without
 The server will only handle `POST` requests.  It will log each `POST`
 request to a CSV file.
 
-The server implementation will be similar to:
+The server implementation will be:
 ```PHP
 <?php
 if (isset($_POST) && ($_POST)) {
@@ -156,7 +156,7 @@ server will have the following columns:
 - **server_time_stamp**: the current time that the server received the `POST`
   request from the client.
   - ISO-8601 formatted with UTC.
-- **user_name**: the username and machine name associated with the information on the
+- **user_name**: the username associated with the information on the
   current row
 - **machine_name**:
 - **task_order**: the task order that was assigned to this user.
@@ -251,18 +251,14 @@ The instructions on how to set up the experiment will be on the website where
 the user is also downloading the ZIP archive.
 
 The script will source `.infrastructure/setup.sh`, which will do the following:
-- Set up <a id=variable_files>variable files</a> that will keep track of the
-  current task, task order, treatment, and the most recent command.
-  - This will allow the client side to be resumed if a failure happens.
-  - The files will be in the `.infrastructure` directory.
-  - Recover files: these files are used by the infrastructure to restore a
-    user's session if they quit mid-way.
-    - `.command`: the most recently entered command. Initial value is "start
-      task"
-    - `.task_num`: if this file exists during setup, the experiment will resume
-      at the user task number written in this file.
-    - `.noverify`: if this file exists, output verification will not be
-      performed on the contents of `.command`.
+- Set up <a id=variable_files>variable files</a> in the `.infrastructure` directory.
+  This allows the client side to be resumed if a failure happens.
+  - `.command`: the most recently entered command. Initial value is "start
+    task"
+  - `.task_num`: if this file exists during setup, the experiment will resume
+    at the user task number written in this file.
+  - `.noverify`: if this file exists, output verification will not be
+    performed on the contents of `.command`.
 - Initialize Bash variables that will be used throughout the experiment:
   - `time_elapsed`: the time in seconds that the user spent on a command.
     - This is because `$SECONDS` does not stop incrementing, and the time
@@ -299,14 +295,8 @@ The script will source `.infrastructure/setup.sh`, which will do the following:
     |1|`s2 T`|`s1 NT`|
     |2|`s1 NT`|`s2 T`|
     |3|`s2 NT`|`s1 T`|
-    - The task ordering will then be determined by this bash command:
-    ```sh
-    echo $((0x$(md5sum <<<$UW_NETID | cut -c1) % 4))
-    ```
-    - This function makes sure that the same `$UW_NETID` will have the same
-      task ordering.
-    - Writes the treatment to `.treatment`, the true task code to `.task_code`,
-      and the current task set to `task_set`.
+  - Writes the treatment to `.treatment`, the true task code to `.task_code`,
+    and the current task set to `task_set`.
 - Source `infrastructure.sh`, which defines the following functions:
   - `next_task`:
     - Increments the user task number, resets the `file_system` directory, and

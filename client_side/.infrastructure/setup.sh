@@ -22,16 +22,15 @@ INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
 # Enables infrastructure functions.
 source "${INFRA_DIR}"/infrastructure.sh
 
-# Checks if the user has a usable graphical display. Detects X forwarding as
-# well.
+# Checks if the user has a usable graphical display. X forwarding counts.
 if ! xhost &>> ${INF_LOG_FILE}; then
-  echo "No display detected. Please make sure that you are setting up the experiment, in"
+  echo "No display detected. Please run the experiment in"
   echo "an environment with a graphical display."
   return 1
 fi
 if ! which meld &>> ${INF_LOG_FILE}; then
   echo "The program Meld is not installed. Please switch to a machine that uses it or"
-  echo "install it using this link: https://meldmerge.org/."
+  echo "install it using \"Getting it\" section of: https://meldmerge.org/."
   return 1
 fi
 
