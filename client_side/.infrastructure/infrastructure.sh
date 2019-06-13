@@ -189,21 +189,19 @@ check_and_update_training_status() {
 # - The directory that they should be performing tasks on.
 infra_training() {
   echo "--------------------------------------------------------------------------------"
-  echo "To get you familiar with how the infrastructure works, the following task is"
-  echo "paired with the instructions here:"
+  echo "Please follow the instructions at"
   echo "https://homes.cs.washington.edu/~atran35/research/bash_user_experiment/server_side/training/infrastructure_training.html"
-  echo "Please follow the instructions carefully."
+  echo "to learn how to do the experiment."
 }
 
 # Introduces the user to Tellina and suggests a couple of known query-command
 # pairs.
 tellina_training() {
   echo "--------------------------------------------------------------------------------"
-  echo "This half of the experiment asks you to use our tool Tellina. To get you"
-  echo "acquainted with Tellina, the following task is paired with the instructions"
-  echo "here:"
+  echo "This half of the experiment permits you to use the Tellina tool."
+  echo "Follow the instructions at"
   echo "<tellina_training_url>"
-  echo "Once again, please follow the instructions carefully."
+  echo "to acquaint yourself with Tellina:"
 }
 
 # Prints the list of resources that the user is allowed to use based on the
