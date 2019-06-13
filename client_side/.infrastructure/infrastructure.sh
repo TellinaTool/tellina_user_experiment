@@ -238,7 +238,7 @@ print_task() {
 # and captures its exit code.
 #
 # If ./verify_task.py returns exit code:
-# - 0: sets status to success.
+# - 0: sets $status to success.
 # - 2: prints a prompt warning that the user has changed the file system and
 #      resets the file system.
 # - Otherwise: prints a prompt that the actual output does not match.
@@ -270,12 +270,10 @@ verify_task() {
 }
 
 # This is called to start the user on a new task.
+#
 # Restores the file system and sets the variables.
-#
 # May begin a new treatment.
-#
 # Writes "start task" to `.command`.
-#
 # Prints the description of the current task.
 start_task() {
   reset_fs
