@@ -1,7 +1,7 @@
 {
   "task_id": "3",
   "type": "filesystem_change",
-  "description": "Find all files under the directory \"lib\" (recursively) owned by the user \"me\", and change their owner to \"me2\". (Tips: add \"sudo\" before your command in case a permission error happened. The password of the sudo account is \"me\".)",
+  "description": "Find all files under the directory \"lib\" (recursively) not owned by you, and change their owner to you.",
   "file_attributes": [1],
   "target_dir": "website/lib",
   "difficulty": 1,
