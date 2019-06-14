@@ -24,7 +24,7 @@ setup() {
 }
 
 teardown() {
-  find ${INFRA_DIR} -type f -name ".*" -not -path "./file_system/*" -delete
+  find ${INFRA_DIR} -type f -name ".*" -not -path "*/file_system/*" -delete
   rm -rf ${FS_DIR}
   rm -rf ${USER_OUT}
 }
