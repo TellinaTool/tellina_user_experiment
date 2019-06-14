@@ -107,7 +107,7 @@ end_experiment() {
 # infrastructure's file system directory.
 reset_fs() {
   rsync --exclude=".*" --omit-dir-times --recursive --quiet --delete \
-    --times --perms --group --owner \
+    --times \
     "${FS_SYNC_DIR}/" "${FS_DIR}"
 }
 
