@@ -199,7 +199,7 @@ check_and_update_training_status() {
 infra_training() {
   echo "--------------------------------------------------------------------------------"
   echo "For this task, please follow the instructions at"
-  echo "https://homes.cs.washington.edu/~atran35/research/bash_user_experiment/server_side/training/infrastructure_training.html"
+  echo "${EXPERIMENT_HOME_URL}/website/training/infrastructure_training.html"
   echo "to learn how to do the experiment."
 }
 
