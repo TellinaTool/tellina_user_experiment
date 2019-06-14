@@ -116,7 +116,7 @@ following differences to the shell's interface (assume print means "print to
 `stdout`" unless specified otherwise):
 - The user will be able to run the following **user meta-commands**:
   - `task`: prints the current task's description and number
-  - `abandon`: abandons the current task and goes to the next task.
+  - `giveup`: abandons the current task and goes to the next task.
   - `reset`: reset the file system, without changing the user's current
     working directory.
     - This command will return the user to the directory where they called it.
@@ -160,12 +160,12 @@ server will have the following columns:
   current row
 - **machine_name**:
 - **task_order**: the task order that was assigned to this user.
-- **client_time_stamp**: the current time that the command was entered on the client
-  side.
-  - ISO-8601 formatted with UTC.
 - **task_code**: the true task code of the current task.
 - **treatment** for the current task: Tellina/NoTellina.
 - **time_elapsed** (seconds): time in seconds the user took to formulate the command.
+- **client_time_stamp**: the current time that the command was entered on the client
+  side.
+  - ISO-8601 formatted with UTC.
 - **status**: `success` if the user succeeded, `timeout` if the user ran out of time,
   `abandon` if the user abandoned the task, and `incomplete` if the task is
   incomplete but the user still has time.
@@ -173,16 +173,16 @@ server will have the following columns:
 
 Example content of what `log.csv` could look like:
 
-|server_time_stamp|user_name|machine_name|task_order|client_time_stamp|task_code|treatment|time_elapsed|status|command|
+|server_time_stamp|user_name|machine_name|task_order|task_code|treatment|time_elapsed|client_time_stamp|status|command|
 |-|-|-|-|-|-|-|-|-|-|
-|2019-04-05T18:12:00Z|abc|machineA|s1Ts2NT|2019-04-05T18:12:00Z|a|Tellina|33|incomplete|find . -name "*.txt" -delete|
-|2019-04-05T18:12:03Z|ddd|machineD|s1NTs2T|2019-04-05T18:12:00Z|a|NoTellina|40|success|find . -name "*.txt"|
-|2019-04-05T18:12:04Z|abc|machineA|s1Ts2NT|2019-04-05T18:12:00Z|a|Tellina|37|incomplete|reset|
-|2019-04-05T18:12:07Z|abc|machineA|s1Ts2NT|2019-04-05T18:12:00Z|a|Tellina|40|success|find . -name "*.txt"|
+|2019-04-05T18:12:00Z|abc|machineA|s1Ts2NT|a|Tellina|33|2019-04-05T18:12:00Z|incomplete|find . -name "*.txt" -delete|
+|2019-04-05T18:12:03Z|ddd|machineD|s1NTs2T|a|NoTellina|40|2019-04-05T18:12:00Z|success|find . -name "*.txt"|
+|2019-04-05T18:12:04Z|abc|machineA|s1Ts2NT|a|Tellina|37|2019-04-05T18:12:00Z|incomplete|reset|
+|2019-04-05T18:12:07Z|abc|machineA|s1Ts2NT|a|Tellina|40|2019-04-05T18:12:00Z|success|find . -name "*.txt"|
 |...|...|...|...|...|...|...|...|...|...|
-|2019-04-05T18:42:10Z|abc|machineB|s2Ts1NT|2019-04-05T18:12:00Z|u|Tellina|100|abandon|abandon|
+|2019-04-05T18:42:10Z|abc|machineB|s2Ts1NT|u|Tellina|100|2019-04-05T18:12:00Z|abandon|abandon|
 |...|...|...|...|...|...|...|...|...|...|
-|2019-04-08T18:48:02Z|bcd|machineB|s2Ts1NT|2019-04-05T18:12:00Z|v|Tellina|300|timeout|...|
+|2019-04-08T18:48:02Z|bcd|machineB|s2Ts1NT|v|Tellina|300|2019-04-05T18:12:00Z|timeout|...|
 
 The start time of a task is the **client_time_stamp** of the row where the
 **command** column is "task started".  Its **time_elapsed** is 0.
@@ -273,30 +273,12 @@ The script will source `.infrastructure/setup.sh`, which will do the following:
     to the user. Initial value is `1`.
 - Initializes Bash constants to keep track of directories, time limits, task
   limits, etc.
-- Defines user meta-commands:
-  - Each meta-command except `abandon` will be in the form`alias
-    <command_name>='<commands> ; touch .noverify'`. Where `<commands>` could be
-    `make_fs`, `echo`, etc. The `.noverify` file will be empty in this case.
-  - The `abandon` command will *write* to the `.noverify` file `abandon`.
-  - Gather user information including the user name and machine name:
-  - Machine name: determined by the `hostname` bash command, stored in
-    `MACHINE_NAME`.
-  - User name: the user will be asked to enter their UW NetID, stored in
-    `UW_NETID`.
-- Determine the task set ordering:
-  - Stored in `.task_order` as the concatenation of the "1st" and "2nd" column
-    for a row.
-  - We will have 4 task orderings, with `s1, s2` as task set 1 and 2, and `T,
-    NT` for Tellina and No Tellina
-
-    ||1st|2nd|
-    |-|-|-|
-    |0|`s1 T`|`s2 NT`|
-    |1|`s2 T`|`s1 NT`|
-    |2|`s1 NT`|`s2 T`|
-    |3|`s2 NT`|`s1 T`|
-  - Writes the treatment to `.treatment`, the true task code to `.task_code`,
-    and the current task set to `task_set`.
+- Defines user meta-commands.
+- Gather user information including the machine name and the user's UWNetID.
+- Determine the task order, which is which includes the order of the task set as
+  well as the treatments.
+  - An example task order would be: Task set 1 and no Tellina for the first
+    half, task set 2 and Tellina for the second.
 - Source `infrastructure.sh`, which defines the following functions:
   - `next_task`:
     - Increments the user task number, resets the `file_system` directory, and
@@ -307,25 +289,30 @@ The script will source `.infrastructure/setup.sh`, which will do the following:
   - `make_fs`:
     - Resets the `file_system` directory.
       - This method does not change the user's working directory.
-  - `write_log`:
-    - Gather information needed for the log file:
-      - The server time stamp is handled by the server.
-      - `user_id`: `$USER_ID`
-      - `task_order`: `$(cat .task_order)`
-      - `client_time_stamp`: `$(date --utc +%FT%TZ)`
-      - `task_code`: `$(cat .task_code)`
-      - `treatment`: `$(cat .treatment)`
-      - `time_elapsed`: `$time_elapsed`
-      - `status`: `$status`
-      - `command`: `.command`
-    - Use `curl` to send the form with all gathered information to the server to
-      write to the log. See `server_side/post_handler/example` for an example of
-      what this would look like.
+  - `write_log`: Gather information needed for the log file:
 - Install [Bash-Preexec](https://github.com/rcaloras/bash-preexec) by sourcing
   `bash-preexec.sh`.
 - Set up the experiment prompts to follow the determined task order.
 - Creates the `file_system` directory and changes the user into it.
 - Begin the experiment.
+
+#### Training
+To familiarize the user to the infrastrcture, there will be two tasks provided
+as training - one for the infrastructure and the other for Tellina.
+
+The infrastructure training will be enabled at the beginning of the experiment,
+right after the setup is complete. The Tellina training will only be enabled if
+Tellina is to be used for the current half of the experiment.
+If both infrastructure training and Tellina training is enabled, infrastructure
+training will happen first, then Tellina training will happen right after.
+
+The training is complete once the user succeeds the training task.
+
+During the training:
+- The user is expected to follow the instructions linked to by the training
+  prompt.
+- The user will not timeout.
+- The user cannot `giveup` the training task.
 
 #### Bash-Preexec
 Bash-preexec allows running code before and after the execution of a command

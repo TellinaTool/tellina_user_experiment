@@ -55,6 +55,7 @@ TASK_TIME_LIMIT=300
 TASK_ORDERS_CODES=("T1N2" "T2N1" "N1T2" "N2T1")
 
 # Determine the task order based on a truncated md5sum hash of the username.
+# The has will return a number from 0 to 3.
 TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
 
 # The directory the user will perform tasks on
