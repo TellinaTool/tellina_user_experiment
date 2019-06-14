@@ -188,7 +188,7 @@ check_and_update_training_status() {
 # - The directory that they should be performing tasks on.
 infra_training() {
   echo "--------------------------------------------------------------------------------"
-  echo "Please follow the instructions at"
+  echo "For this task, please follow the instructions at"
   echo "https://homes.cs.washington.edu/~atran35/research/bash_user_experiment/server_side/training/infrastructure_training.html"
   echo "to learn how to do the experiment."
 }
@@ -197,8 +197,7 @@ infra_training() {
 # pairs.
 tellina_training() {
   echo "--------------------------------------------------------------------------------"
-  echo "This half of the experiment permits you to use the Tellina tool."
-  echo "Follow the instructions at"
+  echo "For this task, follow the instructions at"
   echo "<tellina_training_url>"
   echo "to acquaint yourself with Tellina:"
 }
@@ -206,6 +205,7 @@ tellina_training() {
 # Prints the list of resources that the user is allowed to use based on the
 # current treatment.
 print_treatment() {
+  echo "--------------------------------------------------------------------------------"
   if [[ "$treatment" == "T" ]]; then
     echo "For this half of the experiment you can use any online resources and man pages,"
     echo "and Tellina (https://tellina.rocks)."
@@ -259,7 +259,7 @@ verify_task() {
       echo "You have modified the file system. It will now be reset to its" \
         "original state."
       reset_fs
-      ;&
+      ;;
     *)
       echo "Actual output does not match expected. A diff has been shown."
       ;;

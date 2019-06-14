@@ -100,10 +100,13 @@ alias giveup='echo "abandon" > ${INFRA_DIR}/.noverify'
 alias reset='reset_fs; touch "${INFRA_DIR}"/.noverify'
 alias task='print_task; touch "${INFRA_DIR}"/.noverify'
 alias helpme='
+echo "--------------------------------------------------------------------------------"
+echo "Commands:"
 echo "task     prints the description of the current task."
 echo "reset    restores the file system to its original state."
 echo "giveup   abandons the current task and starts the next task."
 echo "helpme   prints this help message."
+print_treatment
 touch ${INFRA_DIR}/.noverify'
 
 ################################################################################
