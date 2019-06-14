@@ -95,14 +95,14 @@ fi
 # abandon writes "abandon" to `.noverify`.
 # This is because aliases can't set variables and abandon needs to set $status
 # to "abandon". precmd_func checks the contents.
-alias abandon='echo "abandon" > ${INFRA_DIR}/.noverify'
+alias giveup='echo "abandon" > ${INFRA_DIR}/.noverify'
 
 alias reset='reset_fs; touch "${INFRA_DIR}"/.noverify'
 alias task='print_task; touch "${INFRA_DIR}"/.noverify'
 alias helpme='
 echo "task     prints the description of the current task."
 echo "reset    restores the file system to its original state."
-echo "abandon  abandons the current task and starts the next task."
+echo "giveup   abandons the current task and starts the next task."
 echo "helpme   prints this help message."
 touch ${INFRA_DIR}/.noverify'
 
