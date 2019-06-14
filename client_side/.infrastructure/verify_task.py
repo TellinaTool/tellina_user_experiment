@@ -25,6 +25,14 @@ import subprocess
 import filecmp
 import tarfile
 
+# Exit codes
+VERIFICATION_SUCCESS = 0
+FILE_SYSTEM_FAILURE  = 1
+FILE_SYSTEM_MODIFIED = 2
+STANDARD_OUT_FAILURE = 3
+UNEXPECTED_FAILURE   = 4
+SUBPROCESS_FAILURE   = 5
+
 # Gets all the environment variables
 FS_DIR = os.environ['FS_DIR']
 
@@ -42,15 +50,6 @@ EXPECTED_FILE = os.path.join('/tmp', 'expected')
 # There are two types of tasks: those that expect output, and
 # those that expect a modification to the file system.
 FILESYSTEM_TASKS = {'b', 'c', 'd', 'e', 'f', 'k', 'l', 'o', 'q', 't', 'v'}
-
-# Exit codes
-VERIFICATION_SUCCESS = 0
-FILE_SYSTEM_FAILURE  = 1
-FILE_SYSTEM_MODIFIED = 2
-STANDARD_OUT_FAILURE = 3
-
-UNEXPECTED_FAILURE   = 4
-SUBPROCESS_FAILURE   = 5
 
 def main():
     class cd:
@@ -81,7 +80,6 @@ def main():
         # - Re-execute the user command and capture the `stdout`.
         # - Check that the captured `stdout` of the user command matches the
         #   corresponding expected output.
-
 
         devnull = open(os.devnull, 'wb')
 
