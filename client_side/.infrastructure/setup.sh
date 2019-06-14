@@ -96,10 +96,10 @@ HLINE="-------------------------------------------------------------------------
 # Each user meta-command will create a file called .noverify in the
 # infrastructure directory.
 
-# abandon writes "abandon" to `.noverify`.
-# This is because aliases can't set variables and abandon needs to set $status
-# to "abandon". precmd_func checks the contents.
-alias giveup='echo "abandon" > ${INFRA_DIR}/.noverify'
+# giveup writes "giveup" to `.noverify`.
+# This is because aliases can't set variables and giveup needs to set $status
+# to "giveup". precmd_func checks the contents.
+alias giveup='echo "giveup" > ${INFRA_DIR}/.noverify'
 alias reset='reset_fs; touch "${INFRA_DIR}"/.noverify'
 alias task='print_task; touch "${INFRA_DIR}"/.noverify'
 alias helpme='
@@ -107,7 +107,7 @@ alias helpme='
   echo "Commands:"
   echo "task     prints the description of the current task."
   echo "reset    restores the file system to its original state."
-  echo "giveup   abandons the current task and starts the next task."
+  echo "giveup   gives up on the current task and starts the next task."
   echo "helpme   prints this help message."
   print_treatment
   touch ${INFRA_DIR}/.noverify'
@@ -148,7 +148,7 @@ preexec_func() {
 # Executed after the user-entered command is executed.
 #
 # This function sets $status to one of "timeout", "success",
-# "incomplete", or "abandon".
+# "incomplete", or "giveup".
 # This is based on:
 #  * whether the user has run out of time, and
 #  * verifying the output of the user command unless it was a meta-command.
@@ -171,10 +171,10 @@ precmd_func() {
     # This can happen if the user entered a user meta-command or at the
     # beginning of the experiment.
 
-    # If the .noverify file has "abandon" in it, then the user used the
-    # "abandon" meta-command.
-    if [[ "$(cat "${INFRA_DIR}/.noverify")" == "abandon" ]]; then
-      status="abandon"
+    # If the .noverify file has "giveup" in it, then the user used the
+    # "giveup" meta-command.
+    if [[ "$(cat "${INFRA_DIR}/.noverify")" == "giveup" ]]; then
+      status="giveup"
     fi
 
     rm "${INFRA_DIR}/.noverify"
@@ -190,19 +190,19 @@ precmd_func() {
     fi
   fi
 
-  # Disables abandon and timeout while in training.
+  # Disables giveup and timeout while in training.
   if [[ "${INF_TRAINING:-false}" == "true" ]] || \
      [[ "${TEL_TRAINING:-false}" == "true" ]]; then
     if [[ "${status}" != "success" ]]; then
-      if [[ "${status}" == "abandon" ]]; then
-        echo "You can't abandon tasks during training."
+      if [[ "${status}" == "giveup" ]]; then
+        echo "You can't givup during training."
       fi
       status="incomplete"
     fi
   fi
 
   write_log
-  if [[ "${status}" == "abandon" ]] || \
+  if [[ "${status}" == "giveup" ]] || \
      [[ "${status}" == "timeout" ]] || \
      [[ "${status}" == "success" ]]; then
     next_task

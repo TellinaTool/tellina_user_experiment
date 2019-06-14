@@ -88,7 +88,7 @@ The experiment infrastructure consists of several components:
     system output and standard output.
   - The two initial tasks that the user will be doing will be tutorial
     tasks. The tutorial will print instructions on what to do for each step to the
-    shell as well. Tutorial would also teach users about `abandon`, `task`,
+    shell as well. Tutorial would also teach users about `giveup`, `task`,
     `reset`, and `helpme`.
 - Analysis scripts to process server logs: determine relative
   performance of subjects using Tellina versus those who are not, via
@@ -116,7 +116,7 @@ following differences to the shell's interface (assume print means "print to
 `stdout`" unless specified otherwise):
 - The user will be able to run the following **user meta-commands**:
   - `task`: prints the current task's description and number
-  - `giveup`: abandons the current task and goes to the next task.
+  - `giveup`: giveups the current task and goes to the next task.
   - `reset`: reset the file system, without changing the user's current
     working directory.
     - This command will return the user to the directory where they called it.
@@ -167,7 +167,7 @@ server will have the following columns:
   side.
   - ISO-8601 formatted with UTC.
 - **status**: `success` if the user succeeded, `timeout` if the user ran out of time,
-  `abandon` if the user abandoned the task, and `incomplete` if the task is
+  `giveup` if the user gave up on the task, and `incomplete` if the task is
   incomplete but the user still has time.
 - **command**: the command that the user entered.
 
@@ -180,7 +180,7 @@ Example content of what `log.csv` could look like:
 |2019-04-05T18:12:04Z|abc|machineA|s1Ts2NT|a|Tellina|37|2019-04-05T18:12:00Z|incomplete|reset|
 |2019-04-05T18:12:07Z|abc|machineA|s1Ts2NT|a|Tellina|40|2019-04-05T18:12:00Z|success|find . -name "*.txt"|
 |...|...|...|...|...|...|...|...|...|...|
-|2019-04-05T18:42:10Z|abc|machineB|s2Ts1NT|u|Tellina|100|2019-04-05T18:12:00Z|abandon|abandon|
+|2019-04-05T18:42:10Z|abc|machineB|s2Ts1NT|u|Tellina|100|2019-04-05T18:12:00Z|giveup|giveup|
 |...|...|...|...|...|...|...|...|...|...|
 |2019-04-08T18:48:02Z|bcd|machineB|s2Ts1NT|v|Tellina|300|2019-04-05T18:12:00Z|timeout|...|
 
@@ -188,7 +188,7 @@ The start time of a task is the **client_time_stamp** of the row where the
 **command** column is "task started".  Its **time_elapsed** is 0.
 
 The total time for a task is the **time_elapsed** of the row where the
-**status** is either "success", "abandon", or "timeout". If the **status** is
+**status** is either "success", "giveup", or "timeout". If the **status** is
 "timeout", **time_elapsed** will be the time limit.
 
 ### Client side
@@ -265,7 +265,7 @@ The script will source `.infrastructure/setup.sh`, which will do the following:
       between the log write and the command being entered could be different by
       a few seconds. Initial value is `0`.
   - `status`: the status of the current task. Can be `success`, `timeout`,
-    `abandon`, or `incomplete`. Initial value is "incomplete".
+    `giveup`, or `incomplete`. Initial value is "incomplete".
   - `task_num`: the user task number, this will be the task number showed
   - `task_set`: the current task set the user is in.
   - `treatment`: the current treatment.
@@ -341,8 +341,8 @@ command is executed
      - The check is done by looking for the existence of the file
         `.noverify` in the `.infrastructure` directory.
       - The file is removed immediately after the check.
-    - If `.noverify` is not empty and the content is "abandon", set the status
-      to "abandon".
+    - If `.noverify` is not empty and the content is "giveup", set the status
+      to "giveup".
   3. Check if the command in `.command` is correct.
      - Does this by running `verify_output.py $task_code $(cat .command)` and
        checking its exit code.
@@ -354,7 +354,7 @@ command is executed
        - `3`: open Meld for the `stdout`.
 - Writes information about the most recently executed user command to the server
   log.
-- If the status is either "abandon", "timeout" , or "success", call `next_task`.
+- If the status is either "giveup", "timeout" , or "success", call `next_task`.
 
 #### Output verification:
 - Verification will be done using a python script called
