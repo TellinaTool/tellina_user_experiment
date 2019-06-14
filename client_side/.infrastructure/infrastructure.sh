@@ -106,7 +106,8 @@ end_experiment() {
 # Resets the user's file system directory by syncing it with the
 # infrastructure's file system directory.
 reset_fs() {
-  rsync --omit-dir-times --recursive --quiet --delete \
+  rsync --exclude=".*" --omit-dir-times --recursive --quiet --delete \
+    --times --perms --group --owner \
     "${FS_SYNC_DIR}/" "${FS_DIR}"
 }
 
