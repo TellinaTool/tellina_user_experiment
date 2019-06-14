@@ -2,7 +2,7 @@
 #
 # Each correctness test checks the correctness for different ways the user's
 # command can be quoted.
-load setup
+load ../libs/setup
 
 export FS_DIR
 export USER_OUT

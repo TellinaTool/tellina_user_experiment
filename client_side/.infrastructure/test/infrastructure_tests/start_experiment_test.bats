@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-load setup
+load ../libs/setup
 
 @test "start_experiment enables Bash-preexec functions" {
   local task_num=1

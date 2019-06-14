@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-load setup
+load ../libs/setup
 
 @test "reset_fs produces no output" {
   run reset_fs

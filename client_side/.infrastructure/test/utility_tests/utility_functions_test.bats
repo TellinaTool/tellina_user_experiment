@@ -2,27 +2,7 @@
 #
 # Tests utility code used by the client side infrastructure to handle internal
 # information.
-load ../libs/assertions
-
-setup() {
-  source "${BATS_TEST_DIRNAME}/../../infrastructure.sh"
-
-  INFRA_DIR="${BATS_TEST_DIRNAME}/../.."
-  TASKS_DIR="${INFRA_DIR}/tasks"
-
-  FS_DIR=$(mktemp -d)
-  USER_OUT=$(mktemp -d)
-
-  time_elapsed=0
-
-  touch "${INFRA_DIR}"/.{task_code,treatment,task_order,command}
-}
-
-teardown() {
-  find "${INFRA_DIR}" -type f -name ".*" -not -path "*/file_system/*" -delete
-  rm -rf "${FS_DIR}"
-  rm -rf "${USER_OUT}"
-}
+load ../libs/setup
 
 @test "chr correct lower case output" {
   run chr 97

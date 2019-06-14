@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-load setup
+load ../libs/setup
 
 @test "begin_treatment correct for first half of experiment" {
   # Parameters for test_set_task_set is in the order:
