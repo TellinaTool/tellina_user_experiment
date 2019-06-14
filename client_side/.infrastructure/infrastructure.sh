@@ -71,8 +71,6 @@ start_experiment() {
   echo "Welcome to the bash user study!"
   echo "At any point, run \"helpme\" to see a list of commands available to you."
 
-  echo "You will have 5 minutes to complete each task."
-
   begin_treatment 1
   next_task
 
@@ -232,6 +230,9 @@ print_treatment() {
 
 # Prints the current task number and its description.
 print_task() {
+  if (( task_num == 1 )); then
+    echo "You will now have 5 minutes to complete each task."
+  fi
   echo "-----------------------------------------------------------------------"
   echo "Task: ${task_num}/${TASKS_SIZE}"
 
