@@ -164,21 +164,20 @@ check_and_update_training_status() {
     if [[ "${status}" == "success" ]]; then
       # If the user successfully did the infrastructure training, disables it.
       unset INF_TRAINING
-
-      if [[ "${TEL_TRAINING:-false}" == "true" ]]; then
-        tellina_training
-      fi
     else
       # Otherwise, print the information about the training.
       infra_training
     fi
-  elif [[ "${TEL_TRAINING:-false}" == "true" ]]; then
-    if [[ "${status}" == "success" ]]; then
-      # if the user successfully did the Tellina training, disables it.
-      unset TEL_TRAINING
-    else
-      # Otherwise, print the information about the training.
-      tellina_training
+  fi
+  if [[ "${TEL_TRAINING:-false}" == "true" ]]; then
+    if [[ "${INF_TRAINING:-false}" != "true" ]]; then
+      if [[ "${status}" == "success" ]]; then
+        # if the user successfully did the Tellina training, disables it.
+        unset TEL_TRAINING
+      else
+        # Otherwise, print the information about the training.
+        tellina_training
+      fi
     fi
   fi
 }
