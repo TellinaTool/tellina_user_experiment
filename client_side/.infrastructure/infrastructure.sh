@@ -160,6 +160,16 @@ begin_treatment() {
 #
 # Prioritizes infrastructure training.
 check_and_update_training_status() {
+  # The check is based on the status of the task assigned to the training. The
+  # training is then complete when the $status of the task is "success", in
+  # which case the corresponding training variable ($INF_TRAINING or
+  # $TEL_TRAINING) gets unset.
+
+  # In the case that both $INF_TRAINING and $TEL_TRAINING are true, the priority
+  # for $INF_TRAINING is especially important.
+  # At this point, $status is "success", meaning if $INF_TRAINING and
+  # $TEL_TRAINING are checked separately, they will both be unset, thus skipping
+  # the training for Tellina.
   if [[ "${INF_TRAINING:-false}" == "true" ]]; then
     if [[ "${status}" == "success" ]]; then
       # If the user successfully did the infrastructure training, disables it.
