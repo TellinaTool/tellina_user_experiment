@@ -10,7 +10,7 @@
 # Prints to stdout the character with the given numeric ASCII value.
 #
 # Exit status:
-# - 0 if the passed value is within 0...256.
+# - 0 if the passed value is within 0...256.  (And does no output.)
 # - 1 otherwise.
 chr() {
   [ "$1" -gt 0 ] && [ "$1" -lt 256 ] || return 1
@@ -84,7 +84,7 @@ start_experiment() {
 }
 
 # "Uninstalls" Bash Preexec by removing its triggers.
-# Remove all variable files created by the infrastructure
+# Remove all variable files created by the infrastructure.
 # Stops the experiment completely by returning from the sourced scripts.
 end_experiment() {
   # This effectively uninstalls Bash Pre-exec.
@@ -155,7 +155,7 @@ begin_treatment() {
 }
 
 # Checks whether infrastructure training or Tellina training is enabled and
-# disables them if possible.
+# disables them if complete..
 #
 # Prioritizes infrastructure training.
 check_and_update_training_status() {
@@ -209,7 +209,7 @@ tellina_training() {
   echo "--------------------------------------------------------------------------------"
   echo "For this task, follow the instructions at"
   echo "<tellina_training_url>"
-  echo "to acquaint yourself with Tellina:"
+  echo "to acquaint yourself with Tellina."
 }
 
 # Prints the list of resources that the user is allowed to use based on the
@@ -232,7 +232,7 @@ print_treatment() {
 # Prints the current task number and its description.
 print_task() {
   if (( task_num == 1 )); then
-    echo "You will now have 5 minutes to complete each task."
+    echo "You have 5 minutes to complete each task."
   fi
   echo "-----------------------------------------------------------------------"
   echo "Task: ${task_num}/${TASKS_SIZE}"
@@ -241,7 +241,7 @@ print_task() {
     "${TASKS_DIR}/task_${task_code}/task_${task_code}.json"
 }
 
-# See documentation for ./verify_task.py for more details on what it does
+# See documentation for ./verify_task.py for more details on what it does.
 #
 # Parameters:
 # - $1: the directory that the user command was run in.
