@@ -11,7 +11,6 @@ log.csv
 
 # Ignore generated directories
 user_out/
-file_system/
 tellina_user_experiment/
 
 # Ignore .vim files
