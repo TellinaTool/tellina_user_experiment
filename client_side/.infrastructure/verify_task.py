@@ -25,13 +25,10 @@ import subprocess
 import filecmp
 import tarfile
 
-# Gets all the environment variables and creates the user output directory if it
-# doesn't already exist.
+# Gets all the environment variables
 FS_DIR = os.environ['FS_DIR']
 
 USER_OUT_DIR = os.environ['USER_OUT']
-if not os.path.exists(USER_OUT_DIR):
-    os.mkdir(USER_OUT_DIR)
 
 # Establishes files for all the outputs
 USER_STDERR = os.path.join(USER_OUT_DIR, 'std_err')
@@ -45,6 +42,15 @@ EXPECTED_FILE = os.path.join('/tmp', 'expected')
 # There are two types of tasks: those that expect output, and
 # those that expect a modification to the file system.
 FILESYSTEM_TASKS = {'b', 'c', 'd', 'e', 'f', 'k', 'l', 'o', 'q', 't', 'v'}
+
+# Exit codes
+VERIFICATION_SUCCESS = 0
+FILE_SYSTEM_FAILURE  = 1
+FILE_SYSTEM_MODIFIED = 2
+STANDARD_OUT_FAILURE = 3
+
+UNEXPECTED_FAILURE   = 4
+SUBPROCESS_FAILURE   = 5
 
 def main():
     class cd:
@@ -83,19 +89,19 @@ def main():
             with cd(FS_DIR):
                 filesystem = subprocess.call('find .', shell=True, stderr=devnull, stdout=user_out)
 
-        normalize_output(USER_FS_FILE, ACTUAL_FILE)
+        normalize_and_copy_output(USER_FS_FILE, ACTUAL_FILE)
 
         # Verify checks whether or not the file system state is as expected.
         fs_good = verify(ACTUAL_FILE, task_code, True)
 
         if not fs_good:
             if task_code in FILESYSTEM_TASKS:
-                sys.exit(1)
+                sys.exit(FILE_SYSTEM_FAILURE)
             else:
-                sys.exit(2)
+                sys.exit(FILE_SYSTEM_MODIFIED)
         else:
             if task_code in FILESYSTEM_TASKS:
-                sys.exit(0)
+                sys.exit(VERIFICATION_SUCCESS)
             else:
                 with open(USER_STDOUT_FILE, 'w') as user_out:
                     with open(USER_STDERR, 'w') as user_err:
@@ -103,47 +109,43 @@ def main():
                         # 1. It preserves quoting for user commands given that
                         # the command argument passed to the call is a string.
                         # (see https://docs.python.org/3/library/subprocess.html#popen-constructor starting at "On POSIX with shell=True")
-                        # 2. It allows reduces the need to replace shell
-                        # piplines.
+                        # 2. It reduces the need to replace shell piplines.
                         # (see https://docs.python.org/3/library/subprocess.html#replacing-shell-pipeline)
                         with cd(command_dir):
                             stdout = subprocess.call(command, shell=True, stderr=user_err, stdout=user_out)
 
-                normalize_output(USER_STDOUT_FILE, ACTUAL_FILE)
+                normalize_and_copy_output(USER_STDOUT_FILE, ACTUAL_FILE)
 
                 if verify(ACTUAL_FILE, task_code, False):
-                    sys.exit(0)
+                    sys.exit(VERIFICATION_SUCCESS)
                 else:
-                    sys.exit(3)
+                    sys.exit(STANDARD_OUT_FAILURE)
         print("This can't happen")
-        sys.exit(4)
+        sys.exit(UNEXPECTED_FAILURE)
     except (OSError, subprocess.CalledProcessError) as e:
         print(e)
-        sys.exit(5)
+        sys.exit(SUBPROCESS_FAILURE)
 
-def normalize_output(out_file, norm_file):
+def normalize_and_copy_output(out_file, norm_file):
     """
     Normalizes the contents of file out_file (sorts lines, removes leading './')
     and writes the result to file norm_file.
     """
-    norm_out = open(norm_file, 'w')
-    output = open(out_file)
+    with open(norm_file, 'w') as norm_out:
+        with open(out_file) as output:
+            lines = []
+            for line in output.read().splitlines():
+                if line == './' or line == '.':
+                    lines.append(line)
+                else:
+                    lines.append(line.lstrip('./'))
 
-    lines = sorted(output.read().splitlines())
-    for line in lines:
-        if line == './' or line == '.':
-            p_line = line
-        else:
-            p_line = line.lstrip('./')
-
-        print(p_line, file=norm_out)
-
-    norm_out.close()
-    output.close()
-
+            lines = sorted(lines)
+            for line in lines:
+                print(line, file=norm_out)
 
 def verify(norm_file, task_code, check_fs):
-    """Returns 0 if verification succeeded, non-zero if it failed."""
+    """Returns true if verification succeeded, false if it failed."""
     task = "task_{}".format(task_code)
 
     task_verify_file = os.path.join(
