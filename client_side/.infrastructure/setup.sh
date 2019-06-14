@@ -2,7 +2,7 @@
 # This script takes 1 argument which is the absolute path to the user experiment
 # directory.
 
-# Use this variable when trying to suppress stderr/stdout for any commands.
+# Use this variable when preventing the user from seeing stderr/stdout.
 # For example, pushd path/to/dir &>> $INF_LOG_FILE
 # instead of pushd path/to/dir &> /dev/null.
 INF_LOG_FILE=/tmp/tellina_infrastructure.log

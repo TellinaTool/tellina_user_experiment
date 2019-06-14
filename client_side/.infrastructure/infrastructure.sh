@@ -334,7 +334,7 @@ next_task() {
     echo "${task_num}" > "${INFRA_DIR}/.task_num"
   fi
 
-  # If we're done with all the tasks
+  # If done with all the tasks
   if (( task_num == TASKS_SIZE )); then
     end_experiment
     return 0
