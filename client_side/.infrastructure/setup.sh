@@ -2,25 +2,13 @@
 # This script takes 1 argument which is the absolute path to the user experiment
 # directory.
 
+# Automatically export any assigned variables
+set -a
+
 # Use this variable when preventing the user from seeing stderr/stdout.
 # For example, pushd path/to/dir &>> $INF_LOG_FILE
 # instead of pushd path/to/dir &> /dev/null.
 INF_LOG_FILE=/tmp/tellina_infrastructure.log
-
-# Automatically export any assigned variables
-set -a
-
-################################################################################
-#                              CONSTANT DEFINITIONS                            #
-################################################################################
-
-# The absolute path to the user experiment directory
-EXP_DIR="$1"
-# The absolute path to the experiment's infrastructure directory
-INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
-
-# Enables infrastructure functions.
-source "${INFRA_DIR}"/infrastructure.sh
 
 # Checks if the user has a usable graphical display. X forwarding counts.
 if ! xhost &>> ${INF_LOG_FILE}; then
@@ -36,27 +24,34 @@ if ! which meld &>> ${INF_LOG_FILE}; then
   return 1
 fi
 
-MACHINE_NAME=$(hostname)
-read -p "Enter your UW NetID: " UW_NETID
+################################################################################
+#                              CONSTANT DEFINITIONS                            #
+################################################################################
 
-# Sets tasks directories and related variables
+### Experiment configuration
 
-# Note: The infrastructure currently does not support odd TASK_SIZE due to
-# integeter division creating difficulties for splitting up the task sets.
-TASKS_DIR="${INFRA_DIR}/tasks"
-
-TASKS_SIZE=$(ls -1 "${TASKS_DIR}" | wc -l)
-TASKS_SIZE=$(( TASKS_SIZE - 2 )) # reserve the two final tasks for training.
 TASK_TIME_LIMIT=300
 
-# The TASK_ORDER is two two-character codes.  In each two-character code, the
-# letter T/N is for Tellina/NoTellina, and the number indicates the task_set
-# used.
-TASK_ORDERS_CODES=("T1N2" "T2N1" "N1T2" "N2T1")
+# Establish the server information
+SERVER_HOST="https://homes.cs.washington.edu/~atran35"
+# Establish survey URL
+EXPERIMENT_HOME_URL="${SERVER_HOST}/research/bash_user_experiment"
 
-# Determine the task order based on a truncated md5sum hash of the username.
-# The has will return a number from 0 to 3.
-TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
+POST_HANDLER="${EXPERIMENT_HOME_URL}/server_side/post_handler/post_handler.php"
+
+### Infrastructure
+
+# The absolute path to the user experiment directory
+EXP_DIR="$1"
+# The absolute path to the experiment's infrastructure directory
+INFRA_DIR="${EXP_DIR}/$(dirname ${BASH_SOURCE[0]})"
+
+# Enables infrastructure functions.
+source "${INFRA_DIR}"/infrastructure.sh
+
+### Directories
+
+TASKS_DIR="${INFRA_DIR}/tasks"
 
 # The directory the user will perform tasks on
 FS_DIR="${EXP_DIR}/file_system"
@@ -68,12 +63,17 @@ FS_SYNC_DIR="${INFRA_DIR}/file_system"
 USER_OUT="${INFRA_DIR}/user_out"
 mkdir -p "${USER_OUT}"
 
-# Establish the server information
-SERVER_HOST="https://homes.cs.washington.edu/~atran35"
-# Establish survey URL
-EXPERIMENT_HOME_URL="${SERVER_HOST}/research/bash_user_experiment"
+### Task-related variables
 
-POST_HANDLER="${EXPERIMENT_HOME_URL}/server_side/post_handler/post_handler.php"
+# The TASK_ORDER is two two-character codes.  In each two-character code, the
+# letter T/N is for Tellina/NoTellina, and the number indicates the task_set
+# used.
+TASK_ORDERS_CODES=("T1N2" "T2N1" "N1T2" "N2T1")
+
+# Note: The infrastructure currently does not support odd TASK_SIZE due to
+# integer division creating difficulties for splitting up the task sets.
+TASKS_SIZE=$(ls -1 "${TASKS_DIR}" | wc -l)
+TASKS_SIZE=$(( TASKS_SIZE - 2 )) # reserve the two final tasks for training.
 
 # If a task_num file already exists, it means we are trying to resume the
 # experiment.
@@ -89,7 +89,10 @@ else
   task_num=0
 fi
 
-# Create user meta-commands.
+### User meta-commands
+
+HLINE="--------------------------------------------------------------------------------"
+
 # Each user meta-command will create a file called .noverify in the
 # infrastructure directory.
 
@@ -97,18 +100,28 @@ fi
 # This is because aliases can't set variables and abandon needs to set $status
 # to "abandon". precmd_func checks the contents.
 alias giveup='echo "abandon" > ${INFRA_DIR}/.noverify'
-
 alias reset='reset_fs; touch "${INFRA_DIR}"/.noverify'
 alias task='print_task; touch "${INFRA_DIR}"/.noverify'
 alias helpme='
-echo "--------------------------------------------------------------------------------"
-echo "Commands:"
-echo "task     prints the description of the current task."
-echo "reset    restores the file system to its original state."
-echo "giveup   abandons the current task and starts the next task."
-echo "helpme   prints this help message."
-print_treatment
-touch ${INFRA_DIR}/.noverify'
+  echo ${HLINE}
+  echo "Commands:"
+  echo "task     prints the description of the current task."
+  echo "reset    restores the file system to its original state."
+  echo "giveup   abandons the current task and starts the next task."
+  echo "helpme   prints this help message."
+  print_treatment
+  touch ${INFRA_DIR}/.noverify'
+
+
+### Variables that differ per user
+
+MACHINE_NAME=$(hostname)
+read -p "Enter your UW NetID: " UW_NETID
+
+# Determine the task order based on a truncated md5sum hash of the username.
+# The has will return a number from 0 to 3.
+TASK_ORDER=${TASK_ORDERS_CODES[$((0x$(md5sum <<<${UW_NETID} | cut -c1) % 4))]}
+
 
 ################################################################################
 #                                  BASH PREEXEC                                #
@@ -125,9 +138,8 @@ source "${INFRA_DIR}"/bash-preexec.sh
 # executed) into the .command file.
 #
 # If the user enters an empty command, then the .command file does not change.
-# This is because $PROMPT_COMMAND does not change when the most recently
-# entered command is blank and preexec_func gets the most recent command from
-# $PROMPT_COMMAND.
+# preexec_func gets the most recent command from $PROMPT_COMMAND, which does
+# not change when the most recently entered command is blank.
 preexec_func() {
   command_dir=$PWD
   echo "$1" > "${INFRA_DIR}/.command"

@@ -7,6 +7,8 @@
 # - Verify the output of a task.
 ##############################################################################
 
+HLINE="--------------------------------------------------------------------------------"
+
 # Prints to stdout the character with the given numeric ASCII value.
 #
 # Exit status:
@@ -197,7 +199,7 @@ check_and_update_training_status() {
 # - Tasks and diff printing.
 # - The directory that they should be performing tasks on.
 infra_training() {
-  echo "--------------------------------------------------------------------------------"
+  echo ${HLINE}
   echo "For this task, please follow the instructions at"
   echo "${EXPERIMENT_HOME_URL}/website/training/infrastructure_training.html"
   echo "to learn how to do the experiment."
@@ -206,7 +208,7 @@ infra_training() {
 # Introduces the user to Tellina and suggests a couple of known query-command
 # pairs.
 tellina_training() {
-  echo "--------------------------------------------------------------------------------"
+  echo ${HLINE}
   echo "For this task, follow the instructions at"
   echo "<tellina_training_url>"
   echo "to acquaint yourself with Tellina."
@@ -215,7 +217,7 @@ tellina_training() {
 # Prints the list of resources that the user is allowed to use based on the
 # current treatment.
 print_treatment() {
-  echo "--------------------------------------------------------------------------------"
+  echo ${HLINE}
   if [[ "$treatment" == "T" ]]; then
     echo "For this half of the experiment you can use any online resources and man pages,"
     echo "and Tellina (https://tellina.rocks)."
@@ -234,7 +236,7 @@ print_task() {
   if (( task_num == 1 )); then
     echo "You have 5 minutes to complete each task."
   fi
-  echo "-----------------------------------------------------------------------"
+  echo ${HLINE}
   echo "Task: ${task_num}/${TASKS_SIZE}"
 
   ${INFRA_DIR}/jq-linux64 -r '.description' \
