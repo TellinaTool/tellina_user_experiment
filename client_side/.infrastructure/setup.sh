@@ -164,7 +164,7 @@ precmd_func() {
     echo "You have run out of time for task ${task_num}."
 
     status="timeout"
-    # If they have, $time_elapsed is truncated to the time limit
+    # If they have, $time_elapsed is truncated to the time limit.
     time_elapsed=${TIME_LIMIT}
   elif [[ -f "${INFRA_DIR}/.noverify" ]]; then
     # Output verification should not be run.
