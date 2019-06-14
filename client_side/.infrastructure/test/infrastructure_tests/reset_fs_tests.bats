@@ -30,6 +30,7 @@ load setup
   run "${INFRA_DIR}/verify_task.py" "a" "${FS_DIR}" find .
 
   # Assert that verify_task failed with a status of 3 and printed "incomplete"
+  debug "Actual: $(cat /tmp/actual)" "Expected: $(cat /tmp/expected)"
   assert_failure
   [[ $status == 3 ]]
 }

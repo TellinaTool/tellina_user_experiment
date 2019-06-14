@@ -74,6 +74,7 @@ test_verify_task() {
 
   debug "User stderr: $(cat ${USER_OUT}/std_err)"
   debug "User stdout: $(cat ${USER_OUT}/std_out)"
+  debug "Actual: $(cat /tmp/actual)" "Expected: $(cat /tmp/expected)"
 
   assert_output "$status" "$expected_status"
   assert_output "$EXIT" $expected_exit
