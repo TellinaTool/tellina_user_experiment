@@ -16,7 +16,9 @@ CLIENT_DIR=client_side
 # This operation is safe because the test frame work will clean up any backup,
 # temporary files, etc.
 CLIENT_FILES=$(shell find $(CLIENT_DIR) -type f)
+
 FS_DIR=$(CLIENT_DIR)/file_system
+TASKS_MODIFICATION_TIMES=TASK_G_TIME TASK_H_TIME TASK_P_TIME
 
 INFRA_DIR=$(CLIENT_DIR)/.infrastructure
 TEST_DIR=$(INFRA_DIR)/test
@@ -51,15 +53,39 @@ clean-dist:
 clean-fs-dir:
 	$(RM) $(FS_DIR)
 
-$(ZIP_DIST_NAME): $(DIST_NAME) $(CLIENT_FILES) $(FS_DIR) test
+$(ZIP_DIST_NAME): $(DIST_NAME) $(CLIENT_FILES) $(TASKS_MODIFICATION_TIMES) test
 	$(ZIP) $@ $<
 
 $(DIST_NAME):
 	ln -s $(CLIENT_DIR) $@
 
 $(FS_DIR):
-	mkdir $@
-	find . -name "fs.tgz" | xargs -I{} tar -xzf {} -C $@
+	cp -r $(INFRA_DIR)/file_system $@
+	find $@ -type f -exec chmod a+w {} \;
+
+TASK_G_TIME: $(FS_DIR)
+	$(eval TIME=$(shell date -d "-300 days" +%Y%m%d%H%M))
+	$(eval TOUCH=touch -m -t $(TIME))
+
+	find "$</css/" -type f -exec touch -m {} \;
+
+	$(TOUCH) $</css/bootstrap3/bootstrap-glyphicons.css
+	$(TOUCH) $</css/fonts/glyphiconshalflings-regular.eot
+	$(TOUCH) $</css/fonts/glyphiconshalflings-regular.otf
+	$(TOUCH) $</css/fonts/glyphiconshalflings-regular.svg
+	$(TOUCH) $</css/fonts/glyphiconshalflings-regular.ttf
+
+TASK_H_TIME: $(FS_DIR)
+	$(eval TIME=201602050900)
+	$(eval TOUCH=touch -m -t $(TIME))
+
+	find "$</content/" -type f -exec $(TOUCH) {} \;
+
+TASK_P_TIME: $(FS_DIR)
+	$(eval TIME=201701100036)
+	$(eval TOUCH=touch -m -t $(TIME))
+
+	find "$</content/labs/2013" -type f -exec $(TOUCH) {} \;
 
 # Copy the ZIP distribution on the public site specified by PUBLIC_SITE.
 publish-distribution: $(ZIP_DIST_NAME) $(PUBLIC_SITE)
