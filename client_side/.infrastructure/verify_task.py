@@ -124,15 +124,15 @@ def main():
         print(e)
         sys.exit(SUBPROCESS_FAILURE)
 
-def normalize_and_copy_output(out_file, norm_file):
+def normalize_and_copy_output(subprocess_output_file, normalized_output_file):
     """
-    Normalizes the contents of file out_file (sorts lines, removes leading './')
-    and writes the result to file norm_file.
+    Normalizes the contents of file subprocess_output (sorts lines, removes
+    leading './') and writes the result to file normalized_output.
     """
-    with open(norm_file, 'w') as norm_out:
-        with open(out_file) as output:
+    with open(normalized_output_file, 'w') as normalized_output:
+        with open(subprocess_output_file) as subprocess_output:
             lines = []
-            for line in output.read().splitlines():
+            for line in subprocess_output.read().splitlines():
                 if line == './' or line == '.':
                     lines.append(line)
                 else:
@@ -140,9 +140,9 @@ def normalize_and_copy_output(out_file, norm_file):
 
             lines = sorted(lines)
             for line in lines:
-                print(line, file=norm_out)
+                print(line, file=normalized_output)
 
-def verify(norm_file, task_code, check_fs):
+def verify(normalized_output_file, task_code, check_fs):
     """Returns true if verification succeeded, false if it failed."""
     task = "task_{}".format(task_code)
 
@@ -178,7 +178,7 @@ def verify(norm_file, task_code, check_fs):
             pass
 
     # compare normalized output file and task verification file
-    files_match = filecmp.cmp(norm_file, task_verify_file)
+    files_match = filecmp.cmp(normalized_output_file, task_verify_file)
     if not files_match:
         shutil.copy(task_verify_file, EXPECTED_FILE)
 
