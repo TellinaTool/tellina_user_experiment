@@ -107,14 +107,16 @@ load ../libs/setup
 }
 
 @test "start_task resets time variables" {
+  local SLEEP_TIME=5
+  local ACCEPTABLE_TIME=$((SLEEP_TIME / 2))
   local time_elapsed=$SECONDS
   SECONDS=0
 
-  sleep 3
+  sleep $SLEEP_TIME
 
   start_task
 
-  [[ $SECONDS -lt 1 ]]
+  [[ $SECONDS -lt $ACCEPTABLE_TIME ]]
   assert_output "$time_elapsed" 0
 }
 
