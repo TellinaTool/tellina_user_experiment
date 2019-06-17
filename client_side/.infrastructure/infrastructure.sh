@@ -271,14 +271,14 @@ verify_task() {
       status="success"
       ;;
     1)
-      echo "Resulting file system does not match expected. A diff has been shown."
+      echo "File system does not match expected. A diff has been shown."
       ;;
     2)
       echo "You have modified the file system. It will now be reset to its original state."
       reset_fs
       ;;
     3)
-      echo "Actual command output does not match expected output. A diff has been shown."
+      echo "Command output does not match expected output. A diff has been shown."
       ;;
   esac
 
