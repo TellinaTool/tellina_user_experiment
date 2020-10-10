@@ -1,11 +1,14 @@
 [![Build Status](https://travis-ci.org/anhnamtran/tellina_user_experiment.svg?branch=master)](https://travis-ci.org/anhnamtran/tellina_user_experiment)
 # Tellina User Experiment
+Tellina is a natural language -> command translation tool. Tellina accepts a natural language description of file system operations, and displays a ranked list of bash one-liner suggestions made by the model. The user can scroll down the web page to explore more suggestions.
 
-## Directory explanation
-- `server_side`: the code used for the server side of the experiment, this
+This repository contain the infrastructure for formally conducting user experiments for Tellina.
+
+- [**server_side**](https://github.com/TellinaTool/tellina_user_experiment/tree/master/client_side): the code used for the server side of the experiment, this
   includes both the post handler and the post-processor.
-- `client_side`: this is the directory that contains the files to be distributed
+- [**client_side**](https://github.com/TellinaTool/tellina_user_experiment/tree/master/server_side): this is the directory that contains the files to be distributed
   to the users of the experiment.
+- [**experiment_design_doc.md**](https://github.com/TellinaTool/tellina_user_experiment/blob/master/experiment_design_doc.md): instructions for setting up and conducting the user experiments.
 
 ## Distributing experiment
 To distribute the files, run `make` or `make all`. This will run all tests and create the `.zip` file for distribution.
