@@ -395,11 +395,14 @@ command is executed
 The client side is tested using [Bats](https://github.com/bats-core/bats-core).
 
 ## Maintenance
+
 ### Creating a new host
+
 1. Clone the repository locally
-2. Update the Makefile in the local repo with the inteded `HOST` and `HOST_DIR`,
+2. Update the Makefile in the local repo with the intended `HOST` and `HOST_DIR`,
 3. Create `HOST_DIR` on `HOST`, and clone the repository into `HOST_DIR`.
-   a. Note that the directory name for the repository on `HOST` should match `DIST_NAME` in the local repo
+
+    a. Note that the directory name for the repository on `HOST` should match `DIST_NAME` in the local repo
 4. (Optional) Create a `HOST_DIR/staging` and repeat step 3 there if you would like to have a testing website.
 5. Run  `make all publish-distribution`
 
