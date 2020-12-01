@@ -20,3 +20,5 @@ tags
 # Distribution files
 *.zip
 *.tar*
+
+experiment_design/.ipynb_checkpoints/
