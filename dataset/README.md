@@ -23,7 +23,7 @@ ORDER BY q.Score DESC
 
 The query will return a quintuplet of the question's title, id (used to create a link to the question), tags, score, and raw html body. The `INNER JOIN` on `PostTags` and `Tags` enable to filter questions that are tagged with 'bash' and the last `INNER JOIN` on Posts enable to filter questions that have an accepted answer for the top 500 questions ordered by score.
 
-# Manual exploration
+## Manual exploration
 The web scraping and SQL query are based on available webpages for each site:
 * Stack Overflow: https://stackoverflow.com/search?tab=Votes&q=%5bbash%5d%20hasaccepted%3ayes
 * Super User: https://superuser.com/search?tab=votes&q=%5bbash%5d%20hasaccepted%3ayes
