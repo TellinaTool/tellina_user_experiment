@@ -4,7 +4,7 @@ This folder contains the various scripts and datasets to produce or replicate th
 
 # Sources
 The tasks are sourced from StackOverflow, SuperUser, Unix&Linux, CommandLineFu, and Bash One-Liners. 
-For each source, we retrieve the most popular questions or one-liners up to 500 items. 
+For each source, we retrieve the most popular questions or one-liners up to 500 items.
 We retrieve the data from the StackExchange websites (i.e., StackOverflow, SuperUser, Unix&Linux) using the [Stack Exchange Data Explorer](https://data.stackexchange.com/). For CommandLineFu and Bash One-Liners, we use the web scraping scripts developed in `web-scrapers/`.
 
 ## SQL Query
@@ -30,3 +30,6 @@ The web scraping and SQL query are based on available webpages for each site:
 * Unix & Linux: https://unix.stackexchange.com/questions/tagged/bash?tab=Votes
 * CommandLineFu: https://www.commandlinefu.com/commands/browse/sort-by-votes
 * Bash One-Liners: http://www.bashoneliners.com/oneliners/popular/
+
+# Data
+The collected data from the previous paragraph is stored in the folder `data-collected`. This data is unclean and unfiltered. It totals 2287 records (Bash One-Liners has only 287 records for the entire website). We verified that the most popular questions have at score of at least 0.
