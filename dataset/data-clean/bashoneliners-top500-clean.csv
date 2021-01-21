@@ -1,0 +1,287 @@
+http://www.bashoneliners.com/oneliners/187/, Show 10 Largest Open Files, lsof / | awk '{ if($7 > 1048576) print $7/1048576 "MB" " " $9 " " $1 }' | sort -n -u | tail
+http://www.bashoneliners.com/oneliners/225/, List status of all GIT repos, find ~ -name ".git" 2> /dev/null | sed 's/\/.git/\//g' | awk '{print "-------------------------\n\033[1;32mGit Repo:\033[0m " $1; system("git --git-dir="$1".git --work-tree="$1" status")}'
+http://www.bashoneliners.com/oneliners/214/, Generate a sequence of numbers, echo {01..10}
+http://www.bashoneliners.com/oneliners/192/, Displays the quantity of connections to port 80 on a per IP basis, clear;while x=0; do clear;date;echo "";echo "  [Count] | [IP ADDR]";echo "-------------------";netstat -np|grep :80|grep -v LISTEN|awk '{print $5}'|cut -d: -f1|uniq -c; sleep 5;done
+http://www.bashoneliners.com/oneliners/172/, Convert directory of videos to MP4 in parallel, for INPUT in *.avi ; do echo "${INPUT%.avi}" ; done | xargs -i -P9  HandBrakeCLI -i "{}".avi -o "{}".mp4
+http://www.bashoneliners.com/oneliners/212/, Nmap scan every interface that is assigned an IP, ifconfig -a | grep -Po '\b(?!255)(?:\d{1,3}\.){3}(?!255)\d{1,3}\b' | xargs nmap -A -p0-
+http://www.bashoneliners.com/oneliners/201/, Corporate random bullshit generator (cbsg), curl -s http://cbsg.sourceforge.net/cgi-bin/live | grep -Eo '^<li>.*</li>' | sed s,\</\\?li\>,,g | shuf -n 1
+http://www.bashoneliners.com/oneliners/154/, Rename all items in a directory to lower case, for i in *; do mv "$i" "${i,,}"; done
+http://www.bashoneliners.com/oneliners/142/, Show dd status every so often, watch --interval 5 killall -USR1 dd
+http://www.bashoneliners.com/oneliners/270/, Find all log files modified 24 hours ago, and zip them, find . -type f -mtime +1 -name "*.log" -exec zip -m {}.zip {} \; >/dev/null
+http://www.bashoneliners.com/oneliners/269/, List IP addresses connected to your server on port 80, netstat -tn 2>/dev/null | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head
+http://www.bashoneliners.com/oneliners/244/, Ternary conditional clause, [ test_statement ] && ( then_statement ) || ( else_statement );
+http://www.bashoneliners.com/oneliners/217/, Ban all IPs that attempted to access phpmyadmin on your site, grep "phpmyadmin" $path_to_access.log | grep -Po "^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" | sort | uniq | xargs -I% sudo iptables -A INPUT -s % -j DROP
+http://www.bashoneliners.com/oneliners/213/, Run a command and copy its output to clipboard (Mac OSX), echo "Here comes the output of my failing code" | tee >(pbcopy)
+http://www.bashoneliners.com/oneliners/209/, Change the encoding of all files in a directory and subdirectories, find . -type f  -name '*.java' -exec sh -c 'iconv -f cp1252 -t utf-8 "$1" > converted && mv converted "$1"' -- {} \;
+http://www.bashoneliners.com/oneliners/157/, Tree-like output in ls, ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+http://www.bashoneliners.com/oneliners/243/, Get executed script's current working directory, CWD=$(cd "$(dirname "$0")" && pwd)
+http://www.bashoneliners.com/oneliners/242/, Random Git Commit, git commit -m "$(w3m whatthecommit.com | head -n 1)"
+http://www.bashoneliners.com/oneliners/232/, Open another terminal at current location, $TERMINAL & disown
+http://www.bashoneliners.com/oneliners/208/, Generate a sequence of numbers, for ((i=1; i<=10; ++i)); do echo $i; done
+http://www.bashoneliners.com/oneliners/195/, Compute factorial of positive integer, fac() { (echo 1; seq $1) | paste -s -d\* | bc; }
+http://www.bashoneliners.com/oneliners/193/, Find all files recursively with specified string in the filename and output any lines found containing a different string., find . -name *conf* -exec grep -Hni 'matching_text' {} \; > matching_text.conf.list
+http://www.bashoneliners.com/oneliners/186/, Extract your external IP address using dig, dig +short myip.opendns.com @resolver1.opendns.com
+http://www.bashoneliners.com/oneliners/184/, Remove offending key from known_hosts file with one swift move, ssh-keygen -R <hostname>
+http://www.bashoneliners.com/oneliners/162/, Convert a music file (mp3) to a mp4 video with a static image, ffmpeg -loop_input -i cover.jpg -i soundtrack.mp3 -shortest -acodec copy output_video.mp4
+http://www.bashoneliners.com/oneliners/147/, Remove offending key from known_hosts file with one swift move, sed -i 18d .ssh/known_hosts
+http://www.bashoneliners.com/oneliners/98/, Create a visual report of the contents of a usb drive, find /path/to/drive -type f -exec file -b '{}' \; -printf '%s\n' | awk -F , 'NR%2 {i=$1} NR%2==0 {a[i]+=$1} END {for (i in a) printf("%12u %s\n",a[i],i)}' | sort -nr
+http://www.bashoneliners.com/oneliners/299/, Generate a sequence of numbers, printf '%s\n' {1..10}
+http://www.bashoneliners.com/oneliners/292/, Find files/dirs modified within a given period, find . -type d -newermt "2019-01-01" \! -newermt "2019-02-01" -exec ls -ld {} \;
+http://www.bashoneliners.com/oneliners/286/, Generate a random 32 characters password, tr -dc 'a-zA-Z0-9~!@#$%^&*_()+}{?></";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1
+http://www.bashoneliners.com/oneliners/271/, Search man pages and present a PDF, man -k . | awk '{ print $1 " " $2 }' | dmenu -i -p man | awk '{ print $2 " " $1 }' | tr -d '()' | xargs man -t | ps2pdf - - | zathura -
+http://www.bashoneliners.com/oneliners/253/, Kill a process running on port 8080, lsof -i :8080 | awk '{l=$2} END {print l}' | xargs kill
+http://www.bashoneliners.com/oneliners/248/, Big CSV > batches > JSON array > CURL POST data with sleep, cat post-list.csv | split -l 30 - --filter='jq -R . | jq --slurp -c .' | xargs -d "\n" -I % sh -c 'curl -H "Content-Type: application/json" -X POST -d '"'"'{"type":1,"entries":%}'"'"' http://127.0.0.1:8080/purge-something && sleep 30'
+http://www.bashoneliners.com/oneliners/247/, List all packages with at least a class defined in a JAR file, jar tf "$1" | grep '/.*\.class$' | xargs dirname | sort -u | tr / .
+http://www.bashoneliners.com/oneliners/246/, Output an arbitrary number of open TCP or UDP ports in an arbitrary range, comm -23 <(seq "$FROM" "$TO") <(ss -tan | awk '{print $4}' | cut -d':' -f2 | grep "[0-9]\{1,5\}" | sort | uniq) | shuf | head -n "$HOWMANY"
+http://www.bashoneliners.com/oneliners/239/, Retrieve dropped connections from firewalld journaling, sudo journalctl -b | grep -o "PROTO=.*" | sed -r 's/(PROTO|SPT|DPT|LEN)=//g' | awk '{print $1, $3}' | sort | uniq -c
+http://www.bashoneliners.com/oneliners/235/, Make a new folder and cd into it., mkcd(){ NAME=$1; mkdir -p "$NAME"; cd "$NAME"; }
+http://www.bashoneliners.com/oneliners/221/, Convert all flac files in dir to mp3 320kbps using ffmpeg, for FILE in *.flac; do ffmpeg -i "$FILE" -b:a 320k "${FILE[@]/%flac/mp3}"; done;
+http://www.bashoneliners.com/oneliners/199/, Generates random texts, tr -dc a-z1-4 </dev/urandom | tr 1-2 ' \n' | awk 'length==0 || length>50' | tr 3-4 ' ' | sed 's/^ *//' | cat -s | fmt
+http://www.bashoneliners.com/oneliners/198/, Find recent logs that contain the string "Exception", find . -name '*.log' -mtime -2 -exec grep -Hc Exception {} \; | grep -v :0$
+http://www.bashoneliners.com/oneliners/197/, Parse nginx statistics output, i=$(curl -s server/nginx_stats); IFS=$'\n'; i=($i); a=${i[0]/Active connections: } && a=${a/ }; r=${i[2]# [0-9]* [0-9]* }; echo "Active: $a, requests: $r"
+http://www.bashoneliners.com/oneliners/196/, Install profiling versions of all libghc dpkg packages, sudo dpkg -l | grep libghc | grep "\-dev" | cut -d " " -f 3 | tr '\n' ' ' | sed -e 's/\-dev/\-prof/g' | xargs sudo apt-get install --yes
+http://www.bashoneliners.com/oneliners/188/, Have script run itself in a virtual terminal, tty >/dev/null || { urxvt -hold -e "$0" "$@" & exit; }
+http://www.bashoneliners.com/oneliners/185/, Remove .DS_Store from the repository you happen to staging by mistake, find . -name .DS_Store -exec git rm --ignore-unmatch --cached {} +
+http://www.bashoneliners.com/oneliners/173/, Get mac address from default interface OS X , netstat -rn | awk '/default/ { print $NF }' | head -1 | xargs -I {}  ifconfig {} | awk '/ether/ {print $2}'
+http://www.bashoneliners.com/oneliners/160/, Dump network traffic with tcpdump to file with time-stamp in its filename, date +"%Y-%m-%d_%H-%M-%Z" | xargs -I {} bash -c "sudo tcpdump -nq -s 0 -i eth0 -w ./dump-{}.pcap"
+http://www.bashoneliners.com/oneliners/158/, Remove files and directories whose name is a timestamp older than a certain time, ls | grep '....-..-..-......' | xargs -I {} bash -c "[[ x{} < x$(date -d '3 days ago' +%Y-%m-%d-%H%M%S) ]] && rm -rfv {}"
+http://www.bashoneliners.com/oneliners/156/, Unhide all hidden files in the current directory., find . -maxdepth 1 -type f -name '\.*' | sed -e 's,^\./\.,,' | sort | xargs -iname mv .name name
+http://www.bashoneliners.com/oneliners/149/, Create a thumbnail from the first page of a PDF file, convert -thumbnail x80 file.pdf[0] thumb.png
+http://www.bashoneliners.com/oneliners/76/, Send HTTP POST to a website with a file input field, curl -L -v -F "value=@myfile" "http://domain.tld/whatever.php"
+http://www.bashoneliners.com/oneliners/34/, Rename all files in the current directory by capitalizing the first letter of every word in the filenames, ls | perl -ne 'chomp; $f=$_; tr/A-Z/a-z/; s/(?<![.'"'"'])\b\w/\u$&/g; print qq{mv "$f" "$_"\n}'
+http://www.bashoneliners.com/oneliners/20/, Remove spaces recursively from all subdirectories of a directory, find /path/to/dir -type d | tac | while read LINE; do target=$(dirname "$LINE")/$(basename "$LINE" | tr -d ' '); echo mv "$LINE" "$target"; done
+http://www.bashoneliners.com/oneliners/2/, Rename all files in a directory to lowercase names, paste <(ls) <(ls | tr A-Z a-z) | while read OLD NEW; do echo mv -v $OLD $NEW; done
+http://www.bashoneliners.com/oneliners/297/, Using a single sudo to run multiple && arguments, sudo -s <<< 'apt update -y && apt upgrade -y'
+http://www.bashoneliners.com/oneliners/296/, Generate a sequence of numbers, for i in {1..10};do echo $i;done
+http://www.bashoneliners.com/oneliners/291/, Scan all open ports without any required program, for i in {1..65535}; do (echo < /dev/tcp/127.0.0.1/$i) &>/dev/null && printf "\n[+] Open Port at\n: \t%d\n" "$i" || printf "."; done
+http://www.bashoneliners.com/oneliners/279/, Using tcpdump with port ranges and file count/size, sudo /usr/sbin/tcpdump -i any -s 0 -n -Z <user_name> -C 500 -W 100 -w /home/<user_name>/$(hostname).pcap -f '(port (# or # or # or # or # or # or ...) or portrange <start>-<end>)' &>/dev/null
+http://www.bashoneliners.com/oneliners/278/, Compare (diff) vim-generated backup of a file with that file's current version., diff~() { diff "$1"~ "$1"; }
+http://www.bashoneliners.com/oneliners/277/, Count the total number of hours of your music collection, find . -print0 | xargs -0 -P 40 -n 1 sh -c 'ffmpeg -i "$1" 2>&1 | grep "Duration:" | cut -d " " -f 4 | sed "s/.$//" | tr "." ":"' - | awk -F ':' '{ sum1+=$1; sum2+=$2; sum3+=$3; sum4+=$4; if (sum4 > 100) { sum3+=1; sum4=0 }; if (sum3 > 60) { sum2+=1; sum3=0 }; if (sum2 > 60) { sum1+=1; sum2=0 } if (NR % 100 == 0) { printf "%.0f:%.0f:%.0f.%.0f\n", sum1, sum2, sum3, sum4 } } END { printf "%.0f:%.0f:%.0f.%.0f\n", sum1, sum2, sum3, sum4 }'
+http://www.bashoneliners.com/oneliners/274/, Clear the Exim Queue (remove all messages), exim -bp | exiqgrep -i | xargs exim -Mrm
+http://www.bashoneliners.com/oneliners/272/, Inspect the HTTP headers of a website, curl -I amazon.com
+http://www.bashoneliners.com/oneliners/268/, Random 6-digit number, python -c 'import random; print(random.randint(0,1000000-1))'
+http://www.bashoneliners.com/oneliners/267/, Very fast history search with Ripgrep, rh() { rg "$1" ~/.bash_history }
+http://www.bashoneliners.com/oneliners/265/, Scan entire Git repo for dangerous Amazon Web Service IDs, git grep -Ew '[A-Z0-9]{20}'
+http://www.bashoneliners.com/oneliners/262/, Dump all AWS IAM users/roles to a Terraform file for editing / reusing in another environment, echo iamg iamgm iamgp iamip iamp iampa iamr iamrp iamu iamup | AWS_PROFILE=myprofile xargs -n1  terraforming
+http://www.bashoneliners.com/oneliners/259/, List open processes ordered by it's number of open files, ps -ef |awk '{ print $2 }' \ 	|tail -n +2 \ 	|while read pid; do echo "$pid	$(lsof -p $pid |wc -l)"; done \ 	|sort -r -n -k 2 \ 	|while read pid count; do echo "$pid	$count	$(ps -o command= -p $pid)"; done
+http://www.bashoneliners.com/oneliners/251/, Take values from a list (file) and search them on another file, for ITEM in $(cat values_to_search.txt); do  (egrep $ITEM full_values_list.txt && echo $ITEM found) | grep "found" >> exit_FOUND.txt; done
+http://www.bashoneliners.com/oneliners/249/, Have script run itself in a virtual terminal, tty >/dev/null || { urxvt -e /bin/sh -c "tty >/tmp/proc$$; while test x; do sleep 1; done" & while test ! -f /tmp/proc$$; do sleep .1; done; FN=$(cat /tmp/proc$$); rm /tmp/proc$$; exec >$FN 2>$FN <$FN; }
+http://www.bashoneliners.com/oneliners/241/, Blackhole ru zone, echo "address=/ru/0.0.0.0" | sudo tee /etc/NetworkManager/dnsmasq.d/dnsmasq-ru-blackhole.conf && sudo systemctl restart network-manager
+http://www.bashoneliners.com/oneliners/238/, Kill a process running on port 8080, lsof -i :8080 | awk 'NR > 1 {print $2}' | xargs --no-run-if-empty kill
+http://www.bashoneliners.com/oneliners/237/, Kill a process running on port 8080, lsof -i :8080 | awk '{print $2}' | tail -n 1 | xargs kill
+http://www.bashoneliners.com/oneliners/236/, Get the latest Arch Linux news, w3m https://www.archlinux.org/ | sed -n "/Latest News/,/Older News/p" | head -n -1
+http://www.bashoneliners.com/oneliners/234/, Listen to the radio (radio2 in example), mpv http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_med/llnw/bbc_radio_two.m3u8
+http://www.bashoneliners.com/oneliners/233/, Go up to a particular folder, alias ph='cd ${PWD%/public_html*}/public_html'
+http://www.bashoneliners.com/oneliners/231/, Preserve your fingers from cd ..; cd ..; cd..; cd..;, up(){ DEEP=$1; for i in $(seq 1 ${DEEP:-"1"}); do cd ../; done; }
+http://www.bashoneliners.com/oneliners/227/, List the content of a GitHub repository without cloning it, svn ls https://github.com/user/repo/trunk/some/path
+http://www.bashoneliners.com/oneliners/226/, Delete static and dynamic arp for /24 subnet, for i in {1..254}; do arp -d 192.168.0.$i; done
+http://www.bashoneliners.com/oneliners/224/, Shuffle lines, ... | perl -MList::Util=shuffle -e 'print shuffle <>;'
+http://www.bashoneliners.com/oneliners/220/, Preserve your fingers from cd ..; cd ..; cd..; cd..;, upup(){ DEEP=$1; [ -z "${DEEP}" ] && { DEEP=1; }; for i in $(seq 1 ${DEEP}); do cd ../; done; }
+http://www.bashoneliners.com/oneliners/218/, Get number of all Python Behave scenarios (including all examples from Scenario Outlines), behave -d | grep "scenarios passed" | cut -d, -f4 | sed -e 's/^[[:space:]]*//' | sed 's/untested/scenarios/g'
+http://www.bashoneliners.com/oneliners/211/, Download a file from a webserver with telnet, (echo 'GET /'; echo; sleep 1; ) | telnet www.google.com 80
+http://www.bashoneliners.com/oneliners/206/, Print a flat list of dependencies of a Maven project, mvn dependency:list | sed -ne s/..........// -e /patterntoexclude/d -e s/:compile//p -e s/:runtime//p | sort | uniq
+http://www.bashoneliners.com/oneliners/205/, Open Windows internet shortcut (*.url) files in firefox, grep -i url='*' file.url | cut -b 5- | xargs firefox
+http://www.bashoneliners.com/oneliners/203/, Remove all at jobs, atq | sed 's_\([0-9]\{1,8\}\).*_\1_g' | xargs atrm
+http://www.bashoneliners.com/oneliners/200/, Deletes orphan vim undo files, find . -type f -iname '*.un~' | while read UNDOFILE ; do FILE=$( echo "$UNDOFILE" | sed -r -e 's/.un~$//' -e 's&/\.([^/]*)&/\1&' ) ; [[ -e "$FILE" ]] || rm "$UNDOFILE" ; done
+http://www.bashoneliners.com/oneliners/194/, Extensive "cleanup" operations following "sudo yum upgrade", sudo yum upgrade && for pkg in $(package-cleanup --orphans -q); do repoquery $(rpm -q $pkg --queryformat="%{NAME}") | grep -q ".*" && echo $pkg; done | xargs sudo yum -y remove && for pkg in $(package-cleanup --leaves --all -q); do repoquery --groupmember $pkg | grep -q "@" || echo $pkg; done
+http://www.bashoneliners.com/oneliners/191/, Get average CPU temperature from all cores., __=`sensors | grep Core` && echo \(`echo $__ | sed 's/.*+\(.*\).C\(\s\)\+(.*/\1/g' | tr "\n" "+" | head -c-1`\)\/`echo $__ | wc -l` | bc && unset __
+http://www.bashoneliners.com/oneliners/190/, Concatenate multiple SSL certificate files to make one PEM file, files=("yourcert.crt" "provider.ca.pem") && for i in ${files[@]} ; do $(cat $i >> yourcert.pem && echo "" >> yourcert.pem) ; done
+http://www.bashoneliners.com/oneliners/189/, List all non Git comited files and make a gzip archive with them, GITFOLDER="/srv/some/folder"   ls-files --others --exclude-standard | tar czf ${GITFOLDER}-archives/uploads-$(date '+%Y%m%d%H%M').tar.gz -T -
+http://www.bashoneliners.com/oneliners/182/, Converts DD/MM/YYYY date format to ISO-8601 (YYYY-MM-DD), sed 's_\([0-9]\{1,2\}\)/\([0-9]\{1,2\}\)/\([0-9]\{4\}\)_\3-\2-\1_g'
+http://www.bashoneliners.com/oneliners/180/, Counting the number of commas in CSV format, perl -ne 'print tr/,//, "\n"' < file.csv | sort -u
+http://www.bashoneliners.com/oneliners/176/, Find which log files contain or don't contain a specific error message, for i in *.log; do grep OutOfMemo $i >/dev/null && echo $i oom || echo $i ok; done
+http://www.bashoneliners.com/oneliners/175/, Convert text from decimal to little endian hexadecimal, echo $(printf %08X 256 | grep -o .. | tac | tr -d '\n')
+http://www.bashoneliners.com/oneliners/174/, Md5sum the last 5 files in a folder, find /directory1/directory2/ -maxdepth 1 -type f | sort | tail -n 5 | xargs md5sum
+http://www.bashoneliners.com/oneliners/171/, Create a transparent image of given dimensions, convert -size 100x100 xc:none transparency.png
+http://www.bashoneliners.com/oneliners/170/, Print a random cat, wget -O - http://placekitten.com/$[500 + RANDOM % 500] | lp
+http://www.bashoneliners.com/oneliners/167/, Insert lines from one text file to another one, sed -re ':a;Rfile1' -e 'x;s/^/./;/.{10}/!{x;ba};s/.*//;x' file2
+http://www.bashoneliners.com/oneliners/164/, Send a file by email as attachment, uuencode /var/log/messages messages.txt | mailx -s "/var/log/messages on $HOST" me@example.com
+http://www.bashoneliners.com/oneliners/152/, Get only the latest version of a file from across mutiple directories., find . -name 'filename' | xargs -r ls -tc | head -n1
+http://www.bashoneliners.com/oneliners/151/, Sort and remove duplicate lines from two (or more files). Display only uniq lines from files., sort file1 file2 | uniq -u
+http://www.bashoneliners.com/oneliners/145/, Get load average in a more parse-able format, python -c 'import os; print os.getloadavg()[0]'
+http://www.bashoneliners.com/oneliners/144/, Function to extract columns from an input stream, col() { awk '{print $('$(echo $* | sed -e s/-/NF-/g -e 's/ /),$(/g')')}'; }
+http://www.bashoneliners.com/oneliners/140/, Define an own watch(1)-like function, watch () { interrupted=false; trap "interrupted=true" INT; while ! $interrupted; do $*; sleep 1 || interrupted=true; done; }
+http://www.bashoneliners.com/oneliners/137/, Remove offending key from known_hosts file with one swift move, vi +18d +wq ~/.ssh/known_hosts
+http://www.bashoneliners.com/oneliners/136/, Replace the header of all files found., find . -type f -name '*.html' -exec sed -i -e '1r common_header' -e '1,/STRING/d' {} \;
+http://www.bashoneliners.com/oneliners/130/, Redirect stdout to a file you don't have write permission on, echo hello | sudo tee -a /path/to/file
+http://www.bashoneliners.com/oneliners/129/, `tail -f` a file until text is seen, tail -f /path/to/file.log | sed '/^Finished: SUCCESS$/ q'
+http://www.bashoneliners.com/oneliners/127/, Recording SSH sessions, ssh -l USER HOST | tee -a /path/to/file
+http://www.bashoneliners.com/oneliners/123/, Record audio from microphone or sound input from the console, sox -t ossdsp -w -s -r 44100 -c 2 /dev/dsp -t raw - | lame -x -m s - File.mp3
+http://www.bashoneliners.com/oneliners/122/, Use vim to pretty-print code with syntax highlighting, vim +'hardcopy > output.ps' +q style.css 
+http://www.bashoneliners.com/oneliners/121/, Log and verify files received via FTP, for i in $(cat /var/log/vsftpd.log | grep $DATE_TIME | grep UPLOAD | grep OK); do ls /FTP/HOME/$i >> /dev/null 2> \&1; if \[ $? = 0 \]; then echo "$i" >> $FILES_OK_UPLOADS.log; else  echo "$DATE ERROR: File $i not found" >> $FTP_FILES_NOTOK_$DATE_TIME.log; fi; done
+http://www.bashoneliners.com/oneliners/120/, Edit the Gimp launcher file to disable the splash screen, printf '%s\n' ',s/^Exec=[^ ]*/& -s/' w q | ed /usr/share/applications/gimp.desktop
+http://www.bashoneliners.com/oneliners/108/, Faster disk imaging with dd, dd if=/dev/sda bs=$(hdparm -i /dev/sda | grep BuffSize | cut -d ' ' -f 3 | tr [:lower:] [:upper:] | tr -d BUFFSIZE=,) conv=noerror | dd of=image.dd conv=noerror
+http://www.bashoneliners.com/oneliners/95/, Convert a decimal number to octal, hexadecimal, binary, or anything, bc <<< 'obase=2;1234'
+http://www.bashoneliners.com/oneliners/85/, Remove carriage return '\r' character in many files, without looping and intermediary files, vi +'bufdo set ff=unix' +'bufdo %s/^M$//' +q file1 file2 file3
+http://www.bashoneliners.com/oneliners/83/, Sort and remove duplicate lines in a file in one step without intermediary files, vi +'%!sort | uniq' +wq file.txt
+http://www.bashoneliners.com/oneliners/82/, Show files containing "foo" and "bar" and "baz", grep -l 'baz' $(grep -l 'bar' $(grep -lr 'foo' *) )
+http://www.bashoneliners.com/oneliners/77/, Find in files, recursively, grep -rn 'nameserver' /etc 2>/dev/null
+http://www.bashoneliners.com/oneliners/75/, Calculate the total disk space used by a list of files or directories, du -cshx ./a ./b
+http://www.bashoneliners.com/oneliners/74/, Create a compressed tar file that rsync will transfer efficiently, GZIP='--rsyncable' tar cvzf bobsbackup.tar.gz /home/bob
+http://www.bashoneliners.com/oneliners/73/, Cut select pages from a pdf file and create a new file from those pages., ps2pdf -dFirstPage=3 -dLastPage=10 input.pdf output.pdf
+http://www.bashoneliners.com/oneliners/71/, View a file with line numbers, cat -n /path/to/file | less
+http://www.bashoneliners.com/oneliners/70/, Print the lines of file2 that are missing in file1, comm -23 file2 file1
+http://www.bashoneliners.com/oneliners/67/, Uses 'at' to run an arbitrary command at a specified time., echo 'play alarmclock.wav 2>/dev/null' | at 07:30 tomorrow
+http://www.bashoneliners.com/oneliners/66/, Calculate an h index from an EndNote export, MAX=$(NUM=1;cat author.xml |perl -p -e 's/(Times Cited)/\n$1/g'|grep "Times Cited" |perl -p -e 's/^Times Cited:([0-9]*).*$/$1/g'|sort -nr | while read LINE; do if [ $LINE -ge $NUM ]; then echo "$NUM"; fi; NUM=$[$NUM+1]; done;); echo "$MAX"|tail -1
+http://www.bashoneliners.com/oneliners/65/, Cut select pages from a pdf file and create a new file from those pages.,  pdftk input.pdf cat 2-4 7 9-10 output output.pdf
+http://www.bashoneliners.com/oneliners/63/, Re-compress a gzip (.gz) file to a bzip2 (.bz2) file, time gzip -cd file1.tar.gz 2>~/logfile.txt | pv -t -r -b -W -i 5 -B 8M | bzip2 > file1.tar.bz2 2>>~/logfile .txt
+http://www.bashoneliners.com/oneliners/62/, Test your hard drive speed, time (dd if=/dev/zero of=zerofile bs=1M count=500;sync);rm zerofile
+http://www.bashoneliners.com/oneliners/61/, Recursively remove all empty sub-directories from a directory tree, find . -depth  -type d  -empty -exec rmdir {} \;
+http://www.bashoneliners.com/oneliners/60/, Group count sort a log file, A=$(FILE=/var/log/myfile.log; cat $FILE | perl -p -e 's/.*,([A-Z]+)[\:\+].*/$1/g' | sort -u | while read LINE; do grep "$LINE" $FILE | wc -l | perl -p -e 's/[^0-9]+//g'; echo -e "\t$LINE"; done;);echo "$A"|sort -nr
+http://www.bashoneliners.com/oneliners/59/, Use ghostscript to shrink PDF files, gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
+http://www.bashoneliners.com/oneliners/58/, How to find all hard links to a file, find /home -xdev -samefile file1
+http://www.bashoneliners.com/oneliners/57/, Find all the unique 4-letter words in a text, cat ipsum.txt | perl -ne 'print map("$_\n", m/\w+/g);' | tr A-Z a-z | sort | uniq | awk 'length($1) == 4 {print}'
+http://www.bashoneliners.com/oneliners/49/, Concatenate two or more movie files into one using mencoder, mencoder cd1.avi cd2.avi -o movie.avi -ovc copy -oac copy
+http://www.bashoneliners.com/oneliners/48/, Calculate the average execution time (of short running scripts) with awk, for i in {1..10}; do time some_script.sh; done 2>&1 | grep ^real | sed -e s/.*m// | awk '{sum += $1} END {print sum / NR}'
+http://www.bashoneliners.com/oneliners/46/, A convenient way to re-run the previous command with sudo, sudo !!
+http://www.bashoneliners.com/oneliners/44/, Rotate a movie file with mencoder, mencoder video.avi -o rotated-right.avi -oac copy -ovc lavc -vf rotate=1
+http://www.bashoneliners.com/oneliners/25/, View specific column of data from a large file with long lines, cat /tmp/log.data |colrm 1 155|colrm 60 300
+http://www.bashoneliners.com/oneliners/19/, Replace a regexp pattern in many files at once, vi +'bufdo %s/pattern/replacement/g | update' +q $(grep -rl pattern /path/to/dir)
+http://www.bashoneliners.com/oneliners/304/, Generate a sequence of numbers, seq 1 10
+http://www.bashoneliners.com/oneliners/302/, Listen to a song from youtube, listen-to-yt() { if [[ -z "$1" ]]; then echo "Enter a search string!"; else mpv "$(youtube-dl --default-search 'ytsearch1:' \"$1\" --get-url | tail -1)"; fi }
+http://www.bashoneliners.com/oneliners/228/, Generate a sequence of numbers, perl -e 'print "$_\n" for (1..10);'
+http://www.bashoneliners.com/oneliners/161/, Find all of the distinct file extensions in a folder, find . -type f | perl -ne 'print $1 if m/\.([^.\/]+)$/' | sort -u
+http://www.bashoneliners.com/oneliners/310/, Convert pip list --outdated for reuse in pip install -U, pip install -U $(pip list --outdated 2> /dev/null | grep -v 'Version' | grep -v '------' | awk '{printf $1 " " }' && echo)
+http://www.bashoneliners.com/oneliners/250/, Delete all untagged Docker images, docker rmi $(docker images -f "dangling=true" -q)
+http://www.bashoneliners.com/oneliners/216/, Get a free shell account on a community server, sh <(curl hashbang.sh | gpg)
+http://www.bashoneliners.com/oneliners/114/, Run a local shell script on a remote server without copying it there, ssh user@server bash < /path/to/local/script.sh
+http://www.bashoneliners.com/oneliners/312/, Report disk usage by file type, find . -type f -empty -prune -o -type f -printf "%s\t" -exec file --brief --mime-type '{}' \; | awk 'BEGIN {printf("%12s\t%12s\n","bytes","type")} {type=$2; a[type]+=$1} END {for (i in a) printf("%12u\t%12s\n", a[i], i)|"sort -nr"}'
+http://www.bashoneliners.com/oneliners/311/, Find with invert match - e.g. find every file that is not mp3, find . -name '*' -type f -not -path '*.mp3'
+http://www.bashoneliners.com/oneliners/309/, Convert pip list --outdated for reuse in pip install -U, python3 -m pip install -U $(python3 -m pip list outdated 2> /dev/null | grep -v 'Version' | grep -v '\-\-\-\-\-\-' | awk '{printf $1 " " }' && echo)
+http://www.bashoneliners.com/oneliners/308/, Recursively remove all "node_modules" folders, find . -name "node_modules" -exec rm -rf '{}' +
+http://www.bashoneliners.com/oneliners/306/, Read other user's shell history, and convert epoch to human-readable date, cat /home/john/.bash_history | awk '/#[0-9]*$/ {split($0, arr, "#"); print "#", strftime("%c",arr[2]);getline; print; }'
+http://www.bashoneliners.com/oneliners/305/, Outputs list of $PATH dirs sorted by line length, echo -e ${PATH//:/\\n} | awk '{print length, $0}' | sort -n | cut -f2- -d' '
+http://www.bashoneliners.com/oneliners/303/, Prints "Good" in green if the sha256 sum of a file matches the sum listed in a dist/checksum file and "Bad" in red if it does not match, [[ $(sha256sum _downloaded_file_ | cut -d' ' -f 1) == $(grep -Po '\b[a-zA-Z0-9]{64}\b' _checksum_fle_) ]] && printf "\033[0;32mGood" || printf "\033[0;31mBad"
+http://www.bashoneliners.com/oneliners/301/, (Pseudo)random 6-digit number, let N=0 N=N+10**{0..5}*${RANDOM:0:1}
+http://www.bashoneliners.com/oneliners/300/, Compute factorial of positive integer using only built-ins, bang() ( eval let N=1 N*={1..$1} ; echo $N; )
+http://www.bashoneliners.com/oneliners/298/, Recursively compute factorial of positive integer using only built-ins, bang() ( IFS=\*; let N=$1-1 k="$*" && bang $N $k || echo ${2-1} )
+http://www.bashoneliners.com/oneliners/295/, List docker log sizes and remind how to empty them, docker ps -qa | xargs docker inspect --format='{{.LogPath}}' | xargs sudo du -hl; sleep 1; printf "\r\n  echo '' > \$(docker inspect --format={{.LogPath}} container_name_or_id) \r\n*****COPY****ABOVE****TO******CLEAR*****LOG*****CHANGE***CONTAINER_ID******* \r\n \n"
+http://www.bashoneliners.com/oneliners/290/, Extract audio only from video files using ffmpeg, ffmpeg -i video.any -vn -acodec libvorbis audio.ogg
+http://www.bashoneliners.com/oneliners/276/, Print the list of your Git commits this month, git log --since='last month' --author="$(git config user.name)" --oneline
+http://www.bashoneliners.com/oneliners/275/, Store the output of find in an array, mapfile -d $'\0' arr < <(find /path/to -print0)
+http://www.bashoneliners.com/oneliners/273/, Check if a text snippet is valid C code, gcc -fsyntax-only -xc - <<< "text snippet"
+http://www.bashoneliners.com/oneliners/266/, While loop to pretty print system load (1, 5 & 15 minutes), while :; do date; awk '{printf "1 minute load: %.2f\n", $1; printf "5 minute load: %.2f\n", $2; printf "15 minute load: %.2f\n", $3}' /proc/loadavg; sleep 3; done
+http://www.bashoneliners.com/oneliners/264/, Scan entire Git repos for dangerous Amazon Web Service IDs, git ls-tree --full-tree -r --name-only HEAD | xargs egrep -w '[A-Z0-9]{20}'
+http://www.bashoneliners.com/oneliners/263/, While loop to pretty print system load (1, 5 & 15 minutes), while [ 1 == 1 ]; do  cat /proc/loadavg | awk '{printf "1 minute load: %.2f\n", $(NF-5)}' && cat /proc/loadavg |awk '{printf "5 minute load: %.2f\n", $(NF-3)}' && cat /proc/loadavg |awk '{printf "15 minute load: %.2f\n", $(NF-2)}'; sleep 3; date; done
+http://www.bashoneliners.com/oneliners/261/, Organise image by portrait and landscape, mkdir "portraits"; mkdir "landscapes"; for f in ./*.jpg; do WIDTH=$(identify -format "%w" "$f")> /dev/null; HEIGHT=$(identify -format "%h" "$f")> /dev/null; if [[ "$HEIGHT" > "$WIDTH" ]]; then mv "$f" portraits/ ; else mv "$f" landscapes/ ; fi; done
+http://www.bashoneliners.com/oneliners/260/, Create a txt files with 10000 rows, for FILE in *.full ; do split -l 100000 $FILE; mv -f xaa `echo "$FILE" | cut -d'.' -f1`.txt; rm -f x*; done
+http://www.bashoneliners.com/oneliners/258/, Remove all container from an specific network (docker), docker ps -a -f network=$NETWORK --format='{{.ID}}' | xargs docker rm -f
+http://www.bashoneliners.com/oneliners/257/, Up all docker services as detached mode over all immediate subdirectories, for dir in $(ls -d */); do eval $(cd $PWD/$dir && docker-compose up -d && cd ..); done;
+http://www.bashoneliners.com/oneliners/256/, Find and replace string inside specific files, grep -ril '$SEARCH_PATTERN' src | sed -i 's/$FIND_PATTERN/$REPLACE_PATTERN/g'
+http://www.bashoneliners.com/oneliners/255/, Puppet/Bash:  test compare json objects., unless => "client_remote=\"$(curl localhost:9200/_cluster/settings | python -c \"import json,sys;obj=json.load(sys.stdin);print(obj['persistent']['search']['remote'])\")\"; new_remote=\"$( echo $persistent_json | python -c \"import json,sys;obj=json.load(sys.stdin);print(obj['persistent']['search']['remote'])\")\"; [ \"$client_remote\" = \"$new_remote\" ]",
+http://www.bashoneliners.com/oneliners/254/, Print wifi access points sorted by signal, iw dev IFACE scan | egrep "SSID|signal" | awk -F ":" '{print $2}' | sed 'N;s/\n/:/' | sort
+http://www.bashoneliners.com/oneliners/252/, Delete all untagged Docker images, docker images -q -f dangling=true | xargs --no-run-if-empty --delim='\n' docker rmi
+http://www.bashoneliners.com/oneliners/245/, Source without circular reference, [ ! "${LIB}" ] && ( readonly LIB; . "${ $( cd $( dirname $0 ) && pwd ) }/<path_to>/LIB.sh" )
+http://www.bashoneliners.com/oneliners/240/, Remove new lines from files and folders, rename 's/[\r\n]//g' *
+http://www.bashoneliners.com/oneliners/230/, Get the HTTP status code of a URL, curl -Lw '%{http_code}' -s -o /dev/null -I SOME_URL
+http://www.bashoneliners.com/oneliners/229/, Corporate random bullshit generator (cbsg), curl -s http://cbsg.sourceforge.net/cgi-bin/live | grep -Eo '^<li>.*</li>' | sed s,\</\\?li\>,,g | shuf -n 1 | cowsay
+http://www.bashoneliners.com/oneliners/223/, Create an array of CPU frequencies in GHz, cpus=($({ echo scale=2; awk '/cpu MHz/ {print $4 " / 1000"}' /proc/cpuinfo; } | bc))
+http://www.bashoneliners.com/oneliners/222/, Test git archive before actually creating an archive // fake dry run, git archive master some/project/subdir | tar t
+http://www.bashoneliners.com/oneliners/215/, Shuffle lines, seq 5 | shuf
+http://www.bashoneliners.com/oneliners/210/, Print the window title of current mpv session to display what is playing, wmctrl -pl | grep $(pidof mpv) | cut -d- -f2-
+http://www.bashoneliners.com/oneliners/207/, Shuffle lines, ... | perl -MList::Util -e 'print List::Util::shuffle <>'
+http://www.bashoneliners.com/oneliners/204/, Open Windows internet shortcut (*.url) files in firefox, firefox $(grep -i ^url='*' file.url | cut -b 5-)
+http://www.bashoneliners.com/oneliners/183/, Check if a file exists and has a size greater than X, [[ $(find /path/to/file -type f -size +51200c 2>/dev/null) ]] && echo true || echo false
+http://www.bashoneliners.com/oneliners/181/, Replace sequences of the same characters with a single character, echo heeeeeeelllo | sed 's/\(.\)\1\+/\1/g'
+http://www.bashoneliners.com/oneliners/179/, Count the lines of each file extension in a list of files, git ls-files | xargs wc -l | awk -F ' +|\\.|/' '{ sumlines[$NF] += $2 } END { for (ext in sumlines) print ext, sumlines[ext] }'
+http://www.bashoneliners.com/oneliners/178/, Add all unknown files in a Subversion checkout, svn add . --force
+http://www.bashoneliners.com/oneliners/177/, Find files that are not executable, find /some/path -type f ! -perm -111 -ls
+http://www.bashoneliners.com/oneliners/169/, Create a heap dump of a Java process, jmap -dump:format=b,file=/var/tmp/dump.hprof 1234
+http://www.bashoneliners.com/oneliners/168/, Insert lines from one text file to another one, awk 'NR % 10 == 1 {getline f2 < "file1"; print f2} 1' file2 | cat -n
+http://www.bashoneliners.com/oneliners/166/, Check that a directory is a parent of another, is_parent() { [[ "$2" =~ $1/? ]]; }
+http://www.bashoneliners.com/oneliners/165/, Create fattal tone mapped images from a directory of raw images, for img in /path/to/rawimages/*.RW2; do pfsin ${img} | pfssize -x 1024 -y 768 | pfstmo_fattal02 -v -s 1 | pfsout /path/to/finished/${img%%}.jpg; done
+http://www.bashoneliners.com/oneliners/163/, Calculate md5sum from an input string, md5sum <<< YOUR_TEXT | cut -f1 -d' '
+http://www.bashoneliners.com/oneliners/159/, Get streamed FLV from Chrome with lsof, export psid=$(pgrep -f libflashplayer.so); cp /proc/$psid/fd/$(lsof -p $psid | grep eleted | awk {' print $4 '} | sed -e "s/[a-z]//g") saved.flv
+http://www.bashoneliners.com/oneliners/155/, Rename all files in a directory to upper case, for i in *; do mv "$i" "${i^^}"; done
+http://www.bashoneliners.com/oneliners/153/, Print file owners and permissions of a directory tree, find /path/to/dir1 -printf "%U %G %m %p\n" > /tmp/dir1.txt
+http://www.bashoneliners.com/oneliners/150/, Get only the latest version of a file from across mutiple directories, find . -name custlist\* | perl -ne '$path = $_; s?.*/??; $name = $_; $map{$name} = $path; ++$c; END { print $map{(sort(keys(%map)))[$c-1]} }'
+http://www.bashoneliners.com/oneliners/148/, Recreate or update an existing zip file and remove files that do not exist anymore, zip --filesync -r /path/to/out.zip /path/to/dir
+http://www.bashoneliners.com/oneliners/146/, How to expand a CIDR notation to its IPs, for j in $(seq 0 255); do for i in $(seq 0 255) ; do seq -f "10.$j.$i.%g" 0 255; done; done
+http://www.bashoneliners.com/oneliners/141/, Make the output of the `time` builtin easier to parse, TIMEFORMAT=%R
+http://www.bashoneliners.com/oneliners/135/, Remove EXIF data such as orientation from images, mogrify -strip /path/to/image.jpg
+http://www.bashoneliners.com/oneliners/134/, Get the last modification date of a file in any format you want, date -r /etc/motd +%Y%m%d_%H%M%S
+http://www.bashoneliners.com/oneliners/133/, Forget all remembered path locations, hash -r
+http://www.bashoneliners.com/oneliners/132/, Rename files with numeric padding, perl -e 'for (@ARGV) { $o = $_; s/\d+/sprintf("%04d", $&)/e; print qq{mv "$o" "$_"\n}}'
+http://www.bashoneliners.com/oneliners/131/, Copy or create files with specific permissions and ownership, install -b -m 600 /dev/null NEWFILE
+http://www.bashoneliners.com/oneliners/128/, Run command multiple times with a for loop and a sequence expression, for i in {1..10}; do date; sleep 1; done
+http://www.bashoneliners.com/oneliners/126/, Clear the swap space forcing everything back to main memory in Linux, sudo swapoff -a; sudo swapon -a
+http://www.bashoneliners.com/oneliners/125/, Redirection operator to override the noclobber option, some_command >| output.txt
+http://www.bashoneliners.com/oneliners/124/, How to set the ip address in Solaris 11, ipadm create-addr -T static -a 192.168.1.10/24 eth0/staticaddr
+http://www.bashoneliners.com/oneliners/118/, Edit the Gimp launcher file to disable the splash screen, sudo sed -i 's/^Exec=[^ ]*/& -s/' /usr/share/applications/gimp.desktop
+http://www.bashoneliners.com/oneliners/117/, `less` is more convenient with the `-F` flag, less -F FILE1
+http://www.bashoneliners.com/oneliners/116/, Append to a file text, a blank line, and the last line of another file, { echo some text; echo; tail -n1 /var/log/apache2/error.log; } >> /path/to/file
+http://www.bashoneliners.com/oneliners/115/, Append to a file text, a blank line, and the last line of another file, echo -e "From: me\n\n$(tail -n1 /var/log/apache2/error.log)" >> file
+http://www.bashoneliners.com/oneliners/113/, Convert a list of terms in slug format to capitalized words, sed -e 's/^./\U&/' -e 's/_./\U&/g' -e 's/_/ /g' /path/to/input
+http://www.bashoneliners.com/oneliners/112/, Execute different commands with find depending on file type, find /path/to/dir -type d -exec chmod 0755 '{}' \; -o -type f -exec chmod 0644 '{}' \;
+http://www.bashoneliners.com/oneliners/111/, Convert m4a files to mp3 using faad and lame, faad -o tmp.wav music.m4a && lame -b 192 tmp.wav music.mp3
+http://www.bashoneliners.com/oneliners/110/, Write both stdout and stderr to the same file, do_something.sh &> out.log
+http://www.bashoneliners.com/oneliners/109/, Create or mount an encrypted directory using encfs, encfs -i 5 $PWD/raw $PWD/content
+http://www.bashoneliners.com/oneliners/107/, Run a never-ending process in the background in a way that you can check on its status anytime, screen -d -m -S some_name ping my_router
+http://www.bashoneliners.com/oneliners/106/, Make a hexdump or do the reverse with the xxd command, xxd /path/to/binary/file
+http://www.bashoneliners.com/oneliners/105/, Really lazy way to print the first instance of $foo that occurs after $bar, ifconfig | grep ^en1 -A5 | grep inet | head -n 1
+http://www.bashoneliners.com/oneliners/104/, Print the first instance of $foo that occurs after $bar, sed -n '\@interface Ethernet3/1@,/!/ s/ip address/&/p' file...
+http://www.bashoneliners.com/oneliners/103/, Print the first instance of $foo that occurs after $bar, awk '/interface Ethernet3\/1/ {instanza=1} /!/ {instanza=0} instanza && /ip address/ {print}' file...
+http://www.bashoneliners.com/oneliners/102/, Sort du output in Human-readable format, du -hsx * | sort -rh
+http://www.bashoneliners.com/oneliners/101/, Replace symlinks with the actual files they are pointing at, find /path/to/dir -type l -exec sh -c 'cp --remove-destination "$(readlink "{}")" "{}"' \; 
+http://www.bashoneliners.com/oneliners/100/, Expire a user's password immediately, chage -d 0 USERNAME
+http://www.bashoneliners.com/oneliners/99/, Convert any 16:9 video to play on a QHD widescreen Android phone, ffmpeg -i $1 -y -threads 0 -subq 6 -deinterlace -level 30 -f mp4 -acodec libfaac -ab 160k -ar 24000 -ac 2 -vcodec libx264 -b 1000k -maxrate 1000k -bufsize 2000k -rc_eq 'blurCplx^(1-qComp)' -qcomp 0.6 -qmin 10 -qmax 51 -qdiff 4 -coder 0 -refs 2 -flags +loop -vol 256 -trellis 1 -me_method umh -async 1 $2
+http://www.bashoneliners.com/oneliners/97/, Sort du output in Human-readable format, for i in G M K; do du -hsx * | grep "[0-9]$i\b" | sort -nr; done 2>/dev/null
+http://www.bashoneliners.com/oneliners/96/, Sort du output in Human-readable format, for i in $(echo -e 'G\nM\nK'); do du -hsx /* 2>/dev/null | grep '[0-9]'$i | sort -rn; done
+http://www.bashoneliners.com/oneliners/93/, Convert a decimal number to octal, hexadecimal, binary, or anything, echo 'obase=2;1234' | bc
+http://www.bashoneliners.com/oneliners/92/, Convert from avi format to mp4 encoding, ffmpeg -i file.avi file.mp4
+http://www.bashoneliners.com/oneliners/91/, Format input into multiple columns, like a table, useful or pretty-printing, mount | column -t
+http://www.bashoneliners.com/oneliners/90/, Function to extract columns from an input stream, col() { awk '{print $'$(echo $* | sed -e 's/ /,$/g')'}'; }
+http://www.bashoneliners.com/oneliners/89/, Resize an image proportionally to some specified width or height, mogrify -geometry x31 path/to/image.gif
+http://www.bashoneliners.com/oneliners/88/, Do something in another directory without going there, (cd /path/to/somewhere; tar c .) > somewhere.tar
+http://www.bashoneliners.com/oneliners/87/, Remove carriage return '\r' character in many files, without looping and intermediary files, recode pc..l1 file1 file2 file3
+http://www.bashoneliners.com/oneliners/86/, Find the target path a symlink is pointing to, readlink a_symbolic_link_to_somewhere
+http://www.bashoneliners.com/oneliners/84/, Get the octal, hexadecimal and decimal codes of the ASCII character set, man ascii
+http://www.bashoneliners.com/oneliners/81/, List or edit and re-execute commands from the history list, fc -l
+http://www.bashoneliners.com/oneliners/80/, Find the most recently modified files in a directory and all subdirectories, find /path/to/dir -type f -mtime -7 -print0 | xargs -0 ls -lt | head
+http://www.bashoneliners.com/oneliners/79/, List open files, lsof -n
+http://www.bashoneliners.com/oneliners/78/, Set a colorful bash prompt per dev test prod environments, PS1='\[\e[1;31m\][\u@\h \W]\$\[\e[0m\] '
+http://www.bashoneliners.com/oneliners/72/, Calculate the total disk space used by a list of files or directories, du -c
+http://www.bashoneliners.com/oneliners/69/, Print the lines of file2 that are missing in file1, grep -vxFf file1 file2
+http://www.bashoneliners.com/oneliners/64/, Find in files, recursively, find /etc -type f -print0 2>/dev/null | xargs -0 grep --color=AUTO -Hn 'nameserver' 2>/dev/null
+http://www.bashoneliners.com/oneliners/56/, Concatenate PDF files using GhostScript, gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=output.pdf -dBATCH file1.pdf file2.pdf file3.pdf
+http://www.bashoneliners.com/oneliners/55/, Format text with long lines to text with fixed width, fmt -s -w80 file.txt
+http://www.bashoneliners.com/oneliners/54/, Come back quickly to the current directory after doing some temporary work somewhere else, pushd /some/where/else; work; cd /somewhere; work; cd /another/place; popd
+http://www.bashoneliners.com/oneliners/53/, Export a git project to a directory, git archive master | tar x -C /path/to/dir/to/export
+http://www.bashoneliners.com/oneliners/52/, Delete all tables of a mysql database, mysql --defaults-file=my.cnf -e 'show tables' | while read t; do mysql --defaults-file=my.cnt  -e 'drop table '$t; done
+http://www.bashoneliners.com/oneliners/51/, Run remote X11 applications with ssh, ssh -X servername
+http://www.bashoneliners.com/oneliners/50/, Calculate the total disk space used by a list of files or directories, du -s file1 dir1 | awk '{sum += $1} END {print sum}'
+http://www.bashoneliners.com/oneliners/47/, Check the performance of a script by re-running many times while measuring the running time, for i in {1..10}; do time curl http://localhost:8000 >/dev/null; done 2>&1 | grep real
+http://www.bashoneliners.com/oneliners/45/, Put an ssh session in the background, ~^z
+http://www.bashoneliners.com/oneliners/43/, Recursively remove all empty sub-directories from a directory tree, find . -type d | tac | xargs rmdir 2>/dev/null
+http://www.bashoneliners.com/oneliners/42/, Remove all the versioned-but-empty directories from a Subversion checkout, find . -name .svn -type d | while read ss; do dir=$(dirname "$ss"); test $(ls -a "$dir" | wc -l) == 3 && echo "svn rm \"$dir\""; done
+http://www.bashoneliners.com/oneliners/41/, Create a sequence of integer numbers, echo {4..-9}
+http://www.bashoneliners.com/oneliners/40/, Redirect the output of the time builtin command, { time command; } > out.out 2> time+err.out
+http://www.bashoneliners.com/oneliners/39/, Copy a directory with a large number of files to another server, tar cp -C /path/to/dir . | ssh server2 'tar x -C /path/to/target'
+http://www.bashoneliners.com/oneliners/38/, Redirect the output of multiple commands , { cmd1 ; cmd2 ; cmd3 ; } > out.out 2> err.out
+http://www.bashoneliners.com/oneliners/37/, View a file with line numbers, grep -n ^ /path/to/file | less
+http://www.bashoneliners.com/oneliners/36/, Print the n-th and m-th line of a file, sed -ne '101 p' -e '106 p' /path/to/the/file
+http://www.bashoneliners.com/oneliners/35/, Repeat the previous command but with a string replacement, ^geomtry^geometry
+http://www.bashoneliners.com/oneliners/33/, Do not save command history of current bash session, HISTFILE=
+http://www.bashoneliners.com/oneliners/32/, Use rsync instead of cp to get a progress indicator when copying large files, rsync --progress largefile.gz somewhere/else/
+http://www.bashoneliners.com/oneliners/31/, Unpack all of the .tar.bz2  files in current directory, for FILE in *; do tar -jxf $FILE; done
+http://www.bashoneliners.com/oneliners/30/, Create and restore backups using cpio, find . -xdev -print0 | cpio -oa0V | gzip > path_to_save.cpio.gz
+http://www.bashoneliners.com/oneliners/29/, Alert me by email when a disconnected or unreachable server comes back online, while ! ping -c1 the_host_down; do sleep 1; done && date | mail -s 'the host is back!' me@example.com
+http://www.bashoneliners.com/oneliners/28/, Add timestamp to the output of ping, ping some_host | while read LINE; do echo $(date): $LINE; done
+http://www.bashoneliners.com/oneliners/27/, Test a one-liner with echo commands first, pipe to bash when ready, paste <(ls) <(ls | tr A-Z a-z) | while read OLD NEW; do echo mv -v $OLD $NEW; done | sh
+http://www.bashoneliners.com/oneliners/26/, Find the most recently modified files in a directory and all subdirectories, find /path/to/dir -type f | perl -ne 'chomp(@files = <>); my $p = 9; foreach my $f (sort { (stat($a))[$p] <=> (stat($b))[$p] } @files) { print scalar localtime((stat($f))[$p]), "\t", $f, "\n" }' | tail
+http://www.bashoneliners.com/oneliners/24/, Delete unversioned files in a Subversion checkout directory and all subdirectories, svn st | grep ^? | sed -e 's/^? *//' | xargs -i{} echo rm -fr "{}"
+http://www.bashoneliners.com/oneliners/23/, Get the available space on a partition as a single numeric value, df /path/to/dir | sed -ne 2p | awk '{print $4}'
+http://www.bashoneliners.com/oneliners/22/, Schedule a one-time task using "at" command and intuitive date specifications, at now + 30 minutes
+http://www.bashoneliners.com/oneliners/21/, Aliases the ls command to display the way I like it, alias ls='ls -lhGpt --color=always'
+http://www.bashoneliners.com/oneliners/18/, The first command you should run right after you login to a remote server ;-), screen
+http://www.bashoneliners.com/oneliners/17/, Find video files cached by the flash plugin in browsers, file /proc/*/fd/* 2>/dev/null | grep Flash | cut -f1 -d:
+http://www.bashoneliners.com/oneliners/16/, Force the preferred language when downloading a web page with wget, wget -–header='Accept-Language: en-us' http://www.timeanddate.com/calendar/index.html?year=2008&country=26 -O calendar.html
+http://www.bashoneliners.com/oneliners/15/, Burn the contents of a directory to dvd without needing a gui application, growisofs -dvd-compat -Z /dev/scd0 -R -J -pad /path/to/dir
+http://www.bashoneliners.com/oneliners/14/, Convert all flac files in the current directory to mp3 format using "lame", for i in *.flac; do flac -c -d "$i" | lame -m j -b 192 -s 44.1 - "${i%.flac}.mp3"; done
+http://www.bashoneliners.com/oneliners/13/, Halt the system in Linux without the halt command or gui, echo o > /proc/sysrq-trigger
+http://www.bashoneliners.com/oneliners/12/, Change to the previous directory, a shortcut for "cd $OLDPWD", cd -
+http://www.bashoneliners.com/oneliners/11/, Create an encrypted tar file with openssl, tar c paths_to_files_and_dirs | gzip -c | openssl des3 > encrypted.tar.gz
+http://www.bashoneliners.com/oneliners/5/, Make another user superuser in Ubuntu, for i in $(grep :boss /etc/group | cut -f1 -d:); do adduser wife $i; done
+http://www.bashoneliners.com/oneliners/4/, Change the label of a USB drive in Linux without a gui, sudo mlabel -i /dev/sdd1 ::NewLabel
+http://www.bashoneliners.com/oneliners/3/, Mirror from one Subversion repository to another Subversion repository, bzr co https://repo1/proj1/trunk proj1 && cd proj1 && bzr push https://repo2/vendor/proj1/trunk
+http://www.bashoneliners.com/oneliners/1/, Find Flash videos stored by browsers on a Mac, find /private/ 2>/dev/null | grep /Flash
