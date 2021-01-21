@@ -22,3 +22,5 @@ tags
 *.tar*
 
 experiment_design/.ipynb_checkpoints/
+
+.vscode/
