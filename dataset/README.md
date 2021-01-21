@@ -34,7 +34,7 @@ The web scraping and SQL query are based on available webpages for each site:
 # Data
 The collected data from the previous paragraph is stored in the folder `data-collected`. This data is unclean and unfiltered. It totals 2287 records (Bash One-Liners has only 287 records for the entire website). We verified that the most popular questions have at score of at least 0.
 
-## Reconstrucing URLs
+## Reconstructing URLs
 For CommandLineFu and Bash One-Liners: 
 * `sed -e 's#^#http://www.bashoneliners.com#' data-collected/bashoneliners-top500.csv > bashoneliners-top500-clean.csv`
 * `sed -e 's#^#https://www.commandlinefu.com#' data-collected/commandlinefu-top500.csv > commandlinefu-top500-clean.csv`
