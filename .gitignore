@@ -24,3 +24,7 @@ tags
 experiment_design/.ipynb_checkpoints/
 
 .vscode/
+
+dataset/Pipfile
+
+dataset/Pipfile.lock

@@ -1,6 +1,5 @@
 # User Study Dataset
-This folder contains the various scripts and datasets to produce or replicate the taskset used by the user study.
-[`pipenv`](https://docs.pipenv.org/) is used to manage package dependency and virtual environment for the Python scripts. They are declared in the file `Pipfile`.
+This folder contains the various scripts and datasets to produce or replicate the taskset used by the user study. `requirements.txt` contains the python dependencies for the scripts.
 
 # Sources
 The tasks are sourced from StackOverflow, SuperUser, Unix&Linux, CommandLineFu, and Bash One-Liners. 
