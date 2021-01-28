@@ -1,0 +1,25 @@
+https://www.commandlinefu.com/commands/view/1556/currently-mounted-filesystems-in-nice-layout, currently mounted filesystems in nice layout, mount | column -t
+https://www.commandlinefu.com/commands/view/5427/get-your-external-ip-address, Get your external IP address, curl ifconfig.me
+https://www.commandlinefu.com/commands/view/1798/quick-access-to-the-ascii-table., Quick access to the ascii table., man ascii
+https://www.commandlinefu.com/commands/view/2829/query-wikipedia-via-console-over-dns, Query Wikipedia via console over DNS, dig +short txt <keyword>.wp.dg.cx
+https://www.commandlinefu.com/commands/view/224/mount-a-temporary-ram-partition, Mount a temporary ram partition, mount -t tmpfs tmpfs /mnt -o size=1024m
+https://www.commandlinefu.com/commands/view/901/download-an-entire-website, Download an entire website, wget --random-wait -r -p -e robots=off -U mozilla http://www.example.com
+https://www.commandlinefu.com/commands/view/47/compare-a-remote-file-with-a-local-file, Compare a remote file with a local file, ssh [email protected] cat /path/to/remotefile | diff /path/to/localfile -
+https://www.commandlinefu.com/commands/view/1339/ssh-connection-through-host-in-the-middle, SSH connection through host in the middle, ssh -t reachable_host ssh unreachable_host
+https://www.commandlinefu.com/commands/view/176/update-twitter-via-curl, Update twitter via curl, curl -u user:pass -d status="Tweeting from the shell" http://twitter.com/statuses/update.xml
+https://www.commandlinefu.com/commands/view/1024/make-less-behave-like-tail-f., Make 'less' behave like 'tail -f'., less +F somelogfile
+https://www.commandlinefu.com/commands/view/1341/set-audible-alarm-when-an-ip-address-comes-online, Set audible alarm when an IP address comes online, ping -i 60 -a IP_address
+https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file, quickly rename a file, mv filename.{old,new}
+https://www.commandlinefu.com/commands/view/3/display-the-top-ten-running-processes-sorted-by-memory-usage, Display the top ten running processes - sorted by memory usage, ps aux | sort -nk +4 | tail
+https://www.commandlinefu.com/commands/view/5351/delete-all-files-in-a-folder-that-dont-match-a-certain-file-extension, Delete all files in a folder that don't match a certain file extension, rm !(*.foo|*.bar|*.baz)
+https://www.commandlinefu.com/commands/view/50/diff-two-unsorted-files-without-creating-temporary-files, diff two unsorted files without creating temporary files, diff <(sort file1) <(sort file2)
+https://www.commandlinefu.com/commands/view/4671/show-file-system-hierarchy, Show File System Hierarchy, man hier
+https://www.commandlinefu.com/commands/view/3555/find-duplicate-files-based-on-size-first-then-md5-hash, Find Duplicate Files (based on size first, then MD5 hash), find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate
+https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed, Display which distro is installed, cat /etc/issue
+https://www.commandlinefu.com/commands/view/2997/find-the-process-you-are-looking-for-minus-the-grepped-one, Find the process you are looking for minus the grepped one, ps aux | grep [p]rocess-name
+https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving, Extract tarball from internet without local saving, wget -qO - "http://www.tarball.com/tarball.gz" | tar zxvf -
+https://www.commandlinefu.com/commands/view/2518/replace-spaces-in-filenames-with-underscores, replace spaces in filenames with underscores, rename 'y/ /_/' *
+https://www.commandlinefu.com/commands/view/9000/mkdir-cd-into-it-as-single-command, mkdir & cd into it as single command, mkdir /home/foo/doc/bar && cd $_
+https://www.commandlinefu.com/commands/view/305/make-directory-including-intermediate-directories, Make directory including intermediate directories, mkdir -p a/long/directory/path
+https://www.commandlinefu.com/commands/view/6652/remove-all-but-one-specific-file, Remove all but one specific file, rm -f !(survivior.txt)
+https://www.commandlinefu.com/commands/view/3573/search-for-a-string-inside-all-files-in-the-current-directory, Search for a <pattern> string inside all files in the current directory, grep -RnisI <pattern> *

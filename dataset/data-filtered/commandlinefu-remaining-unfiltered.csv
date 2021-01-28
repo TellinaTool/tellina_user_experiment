@@ -1,0 +1,337 @@
+https://www.commandlinefu.com/commands/view/1894/convert-seconds-to-human-readable-format, Convert seconds to human-readable format, date [email protected]
+https://www.commandlinefu.com/commands/view/65/get-the-10-biggest-filesfolders-for-the-current-direcotry, Get the 10 biggest files/folders for the current direcotry, du -s * | sort -n | tail
+https://www.commandlinefu.com/commands/view/5131/recursively-remove-all-empty-directories, Recursively remove all empty directories, find . -type d -empty -delete
+https://www.commandlinefu.com/commands/view/2473/display-a-cool-clock-on-your-terminal, Display a cool clock on your terminal, watch -t -n1 "date +%T|figlet"
+https://www.commandlinefu.com/commands/view/772/processor-memory-bandwidthd-in-gbs, Processor / memory bandwidthd? in GB/s, dd if=/dev/zero of=/dev/null bs=1M count=32768
+https://www.commandlinefu.com/commands/view/4345/remove-security-limitations-from-pdf-documents-using-ghostscript, Remove security limitations from PDF documents using ghostscript, gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=OUTPUT.pdf -c .setpdfwrite -f INPUT.pdf
+https://www.commandlinefu.com/commands/view/3086/search-commandlinefu.com-from-the-command-line-using-the-api, Search commandlinefu.com from the command line using the API, cmdfu(){ curl "http://www.commandlinefu.com/commands/matching/[email protected]/$(echo -n [email protected] | openssl base64)/plaintext"; }
+https://www.commandlinefu.com/commands/view/2041/send-pop-up-notifications-on-gnome, Send pop-up notifications on Gnome, notify-send ["<title>"] "<body>"
+https://www.commandlinefu.com/commands/view/6663/pretend-to-be-busy-in-office-to-enjoy-a-cup-of-coffee, pretend to be busy in office to enjoy a cup of coffee, cat /dev/urandom | hexdump -C | grep "ca fe"
+https://www.commandlinefu.com/commands/view/5233/makes-the-permissions-of-file2-the-same-as-file1, Makes the permissions of file2 the same as file1, chmod --reference file1 file2
+https://www.commandlinefu.com/commands/view/1947/debianubuntu-discover-what-package-a-file-belongs-to, (Debian/Ubuntu) Discover what package a file belongs to, dpkg -S /usr/bin/ls
+https://www.commandlinefu.com/commands/view/152/mount-a-.iso-file-in-unixlinux, Mount a .iso file in UNIX/Linux, mount /path/to/file.iso /mnt/cdrom -oloop
+https://www.commandlinefu.com/commands/view/6057/remove-a-line-in-a-text-file.-useful-to-fix, Remove a line in a text file. Useful to fix, ssh-keygen -R <the_offending_host>
+https://www.commandlinefu.com/commands/view/2395/open-finder-from-the-current-terminal-location, Open Finder from the current Terminal location, open .
+https://www.commandlinefu.com/commands/view/1233/create-a-persistent-connection-to-a-machine, Create a persistent connection to a machine, ssh -MNf <user>@<host>
+https://www.commandlinefu.com/commands/view/17709/nice-weather-forecast-on-your-shell, Nice weather forecast on your shell, curl wttr.in/seville
+https://www.commandlinefu.com/commands/view/9721/start-command-and-kill-it-if-still-running-after-5-seconds, Start COMMAND, and kill it if still running after 5 seconds, timeout 5s COMMAND
+https://www.commandlinefu.com/commands/view/2556/show-a-4-way-scrollable-process-tree-with-full-details., Show a 4-way scrollable process tree with full details., ps awwfux | less -S
+https://www.commandlinefu.com/commands/view/18/create-a-quick-back-up-copy-of-a-file, Create a quick back-up copy of a file, cp file.txt{,.bak}
+https://www.commandlinefu.com/commands/view/2731/attach-screen-over-ssh, Attach screen over ssh, ssh -t remote_host screen -r
+https://www.commandlinefu.com/commands/view/49/run-a-command-only-when-load-average-is-below-a-certain-threshold, Run a command only when load average is below a certain threshold, echo "rm -rf /unwanted-but-large/folder" | batch
+https://www.commandlinefu.com/commands/view/10804/list-all-bash-shortcuts, List all bash shortcuts, bind -P
+https://www.commandlinefu.com/commands/view/2573/remove-all-files-previously-extracted-from-a-tar.gz-file., Remove all files previously extracted from a tar(.gz) file., tar -tf <file.tar.gz> | xargs rm -r
+https://www.commandlinefu.com/commands/view/7581/rtfm-function, RTFM function, rtfm() { help [email protected] || man [email protected] || $BROWSER "http://www.google.com/[email protected]"; }
+https://www.commandlinefu.com/commands/view/6788/broadcast-your-shell-thru-ports-5000-5001-5002-..., Broadcast your shell thru ports 5000, 5001, 5002 ..., script -qf | tee >(nc -kl 5000) >(nc -kl 5001) >(nc -kl 5002)
+https://www.commandlinefu.com/commands/view/5068/eavesdrop-on-your-system, Eavesdrop on your system, diff <(lsof -p 1234) <(sleep 10; lsof -p 1234)
+https://www.commandlinefu.com/commands/view/3220/directly-ssh-to-host-b-that-is-only-accessible-through-host-a, directly ssh to host B that is only accessible through host A, ssh -t hostA ssh hostB
+https://www.commandlinefu.com/commands/view/12327/retry-the-previous-command-until-it-exits-successfully, Retry the previous command until it exits successfully, until !!; do :; done
+https://www.commandlinefu.com/commands/view/6213/what-is-my-public-ip-address, What is my public IP-address?, curl ifconfig.me
+https://www.commandlinefu.com/commands/view/5888/edit-a-google-doc-with-vim, Edit a google doc with vim, google docs edit --title "To-Do List" --editor vim
+https://www.commandlinefu.com/commands/view/3931/run-a-file-system-check-on-your-next-boot., Run a file system check on your next boot., sudo touch /forcefsck
+https://www.commandlinefu.com/commands/view/3739/list-only-the-directories, List only the directories, ls -d */
+https://www.commandlinefu.com/commands/view/1922/which-program-is-this-port-belongs-to-, which program is this port belongs to ?, lsof -i tcp:80
+https://www.commandlinefu.com/commands/view/1700/share-a-terminal-screen-with-others, Share a terminal screen with others, % screen -r someuser/
+https://www.commandlinefu.com/commands/view/9153/synchronize-date-and-time-with-a-server-over-ssh, Synchronize date and time with a server over ssh, date --set="$(ssh [email protected]erver date)"
+https://www.commandlinefu.com/commands/view/8044/google-text-to-speech-in-mp3-format, Google text-to-speech in mp3 format, wget -q -U Mozilla -O output.mp3 "http://translate.google.com/translate_tts?ie=UTF-8&tl=en&q=hello+world
+https://www.commandlinefu.com/commands/view/3969/binary-clock, Binary Clock, watch -n 1 'echo "obase=2;`date +%s`" | bc'
+https://www.commandlinefu.com/commands/view/1079/sort-the-size-usage-of-a-directory-tree-by-gigabytes-kilobytes-megabytes-then-bytes., Sort the size usage of a directory tree by gigabytes, kilobytes, megabytes, then bytes., du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
+https://www.commandlinefu.com/commands/view/10007/duplicate-installed-packages-from-one-machine-to-the-other-rpm-based-systems, Duplicate installed packages from one machine to the other (RPM-based systems), ssh [email protected] "rpm -qa" | xargs yum -y install
+https://www.commandlinefu.com/commands/view/9775/draw-kernel-module-dependancy-graph., Draw kernel module dependancy graph., lsmod | perl -e 'print "digraph \"lsmod\" {";<>;while(<>){@_=split/\s+/; print "\"$_[0]\" -> \"$_\"\n" for split/,/,$_[3]}print "}"' | dot -Tpng | display -
+https://www.commandlinefu.com/commands/view/5253/get-your-outgoing-ip-address, Get your outgoing IP address, dig +short myip.opendns.com @resolver1.opendns.com
+https://www.commandlinefu.com/commands/view/2251/compare-two-directory-trees., Compare two directory trees., diff <(cd dir1 && find | sort) <(cd dir2 && find | sort)
+https://www.commandlinefu.com/commands/view/1870/bring-the-word-under-the-cursor-on-the-ex-line-in-vim, Bring the word under the cursor on the :ex line in Vim, :<C-R><C-W>
+https://www.commandlinefu.com/commands/view/1476/remind-yourself-to-leave-in-15-minutes, Remind yourself to leave in 15 minutes, leave +15
+https://www.commandlinefu.com/commands/view/877/make-directory-tree, make directory tree, mkdir -p work/{d1,d2}/{src,bin,bak}
+https://www.commandlinefu.com/commands/view/29/download-all-images-from-a-site, Download all images from a site, wget -r -l1 --no-parent -nH -nd -P/tmp -A".gif,.jpg" http://example.com/images
+https://www.commandlinefu.com/commands/view/9701/convert-youtube-videos-to-mp3, Convert Youtube videos to MP3, youtube-dl -t --extract-audio --audio-format mp3 YOUTUBE_URL_HERE
+https://www.commandlinefu.com/commands/view/9105/find-out-how-much-data-is-waiting-to-be-written-to-disk, Find out how much data is waiting to be written to disk, grep ^Dirty /proc/meminfo
+https://www.commandlinefu.com/commands/view/3543/show-apps-that-use-internet-connection-at-the-moment., Show apps that use internet connection at the moment., lsof -P -i -n | cut -f 1 -d " "| uniq | tail -n +2
+https://www.commandlinefu.com/commands/view/2785/port-knocking, Port Knocking!, knock <host> 3000 4000 5000 && ssh -p <port> [email protected] && knock <host> 5000 4000 3000
+https://www.commandlinefu.com/commands/view/2158/add-timestamp-to-history, Add timestamp to history, export HISTTIMEFORMAT="%F %T "
+https://www.commandlinefu.com/commands/view/1981/recursively-change-permissions-on-files-leave-directories-alone., Recursively change permissions on files, leave directories alone., find ./ -type f -exec chmod 644 {} \;
+https://www.commandlinefu.com/commands/view/1293/find-files-that-have-been-modified-on-your-system-in-the-past-60-minutes, Find files that have been modified on your system in the past 60 minutes, sudo find / -mmin 60 -type f
+https://www.commandlinefu.com/commands/view/9327/using-to-referance-backward-word, using `!#$' to referance backward-word, cp /work/host/phone/ui/main.cpp !#$:s/host/target
+https://www.commandlinefu.com/commands/view/6334/use-tee-to-process-a-pipe-with-two-or-more-processes, Use tee to process a pipe with two or more processes, echo "tee can split a pipe in two"|tee >(rev) >(tr ' ' '_')
+https://www.commandlinefu.com/commands/view/2108/search-recursively-to-find-a-word-or-phrase-in-certain-file-types-such-as-c-code, Search recursively to find a word or phrase in certain file types, such as C code, find . -name "*.[ch]" -exec grep -i -H "search pharse" {} \;
+https://www.commandlinefu.com/commands/view/1077/intercept-monitor-and-manipulate-a-tcp-connection., Intercept, monitor and manipulate a TCP connection., mkfifo /tmp/fifo; cat /tmp/fifo | nc -l -p 1234 | tee -a to.log | nc machine port | tee -a from.log > /tmp/fifo
+https://www.commandlinefu.com/commands/view/111/check-site-ssl-certificate-dates, check site ssl certificate dates, echo | openssl s_client -connect www.google.com:443 2>/dev/null |openssl x509 -dates -noout
+https://www.commandlinefu.com/commands/view/10109/quick-access-to-ascii-code-of-a-key, Quick access to ASCII code of a key, showkey -a
+https://www.commandlinefu.com/commands/view/8721/find-files-in-a-date-range, find files in a date range, find . -type f -newermt "2010-01-01" ! -newermt "2010-06-01"
+https://www.commandlinefu.com/commands/view/8665/control-ssh-connection, Control ssh connection, [enter]~?
+https://www.commandlinefu.com/commands/view/5772/run-complex-remote-shell-cmds-over-ssh-without-escaping-quotes, run complex remote shell cmds over ssh, without escaping quotes, ssh host -l user $(<cmd.txt)
+https://www.commandlinefu.com/commands/view/3613/create-a-directory-and-change-into-it-at-the-same-time, Create a directory and change into it at the same time, md () { mkdir -p "[email protected]" && cd "[email protected]"; }
+https://www.commandlinefu.com/commands/view/2248/colorized-grep-in-less, Colorized grep in less, grep --color=always | less -R
+https://www.commandlinefu.com/commands/view/6191/ls-not-pattern, ls not pattern, ls !(*.gz)
+https://www.commandlinefu.com/commands/view/4888/output-your-microphone-to-a-remote-computers-speaker, output your microphone to a remote computer's speaker, arecord -f dat | ssh -C [email protected] aplay -f dat
+https://www.commandlinefu.com/commands/view/4373/analyze-traffic-remotely-over-ssh-w-wireshark, analyze traffic remotely over ssh w/ wireshark, ssh [email protected] 'tshark -f "port !22" -w -' | wireshark -k -i -
+https://www.commandlinefu.com/commands/view/5147/save-a-file-you-edited-in-vim-without-the-needed-permissions-no-echo, Save a file you edited in vim without the needed permissions (no echo), :w !sudo tee > /dev/null %
+https://www.commandlinefu.com/commands/view/2011/delete-a-line-from-your-shell-history, delete a line from your shell history, history -d
+https://www.commandlinefu.com/commands/view/7637/get-the-ip-of-the-host-your-coming-from-when-logged-in-remotely, Get the IP of the host your coming from when logged in remotely, echo ${SSH_CLIENT%% *}
+https://www.commandlinefu.com/commands/view/6267/random-number-between-1-and-x, Random Number Between 1 And X, echo $[RANDOM%X+1]
+https://www.commandlinefu.com/commands/view/5795/lists-all-listening-ports-together-with-the-pid-of-the-associated-process, Lists all listening ports together with the PID of the associated process, lsof -Pan -i tcp -i udp
+https://www.commandlinefu.com/commands/view/5175/easily-find-megabyte-eating-files-or-directories, easily find megabyte eating files or directories, alias dush="du -sm *|sort -n|tail"
+https://www.commandlinefu.com/commands/view/3632/remove-blank-lines-from-a-file-using-grep-and-save-output-to-new-file, Remove blank lines from a file using grep and save output to new file, grep . filename > newfilename
+https://www.commandlinefu.com/commands/view/1748/exit-without-saving-history, exit without saving history, kill -9 $$
+https://www.commandlinefu.com/commands/view/1123/how-to-establish-a-remote-gnu-screen-session-that-you-can-re-connect-to, How to establish a remote Gnu screen session that you can re-connect to, ssh -t [email protected] /usr/bin/screen -xRR
+https://www.commandlinefu.com/commands/view/887/copy-a-mysql-database-to-a-new-server-via-ssh-with-one-command, Copy a MySQL Database to a new Server via SSH with one command, mysqldump --add-drop-table --extended-insert --force --log-error=error.log -uUSER -pPASS OLD_DB_NAME | ssh -C [email protected] "mysql -uUSER -pPASS NEW_DB_NAME"
+https://www.commandlinefu.com/commands/view/7416/find-usb-device, Find usb device, diff <(lsusb) <(sleep 3s && lsusb)
+https://www.commandlinefu.com/commands/view/6984/find-all-file-larger-than-500m, find all file larger than 500M, find / -type f -size +500M
+https://www.commandlinefu.com/commands/view/5653/notify-yourself-when-a-long-running-command-which-has-already-started-is-finished, notify yourself when a long-running command which has ALREADY STARTED is finished, <ctrl+z> fg; notify_me
+https://www.commandlinefu.com/commands/view/5177/create-colorized-html-file-from-vim-or-vimdiff, Create colorized html file from Vim or Vimdiff, :TOhtml
+https://www.commandlinefu.com/commands/view/4434/live-ssh-network-throughput-test, live ssh network throughput test, yes | pv | ssh $host "cat > /dev/null"
+https://www.commandlinefu.com/commands/view/2353/create-a-nifty-overview-of-the-hardware-in-your-computer, Create a nifty overview of the hardware in your computer, lshw -html > hardware.html
+https://www.commandlinefu.com/commands/view/1226/save-your-sessions-in-vim-to-resume-later, Save your sessions in vim to resume later, :mksession! <filename>
+https://www.commandlinefu.com/commands/view/8453/tell-local-debian-machine-to-install-packages-used-by-remote-debian-machine, Tell local Debian machine to install packages used by remote Debian machine, ssh remotehost 'dpkg --get-selections' | dpkg --set-selections && dselect install
+https://www.commandlinefu.com/commands/view/7384/bind-a-key-with-a-command, Bind a key with a command, bind -x '"\C-l":ls -l'
+https://www.commandlinefu.com/commands/view/6913/take-screenshot-through-ssh, Take screenshot through SSH, DISPLAY=:0.0 import -window root /tmp/shot.png
+https://www.commandlinefu.com/commands/view/5710/intersection-between-two-files, intersection between two files, grep -Fx -f file1 file2
+https://www.commandlinefu.com/commands/view/4853/grep-a-pdf-file., GREP a PDF file., pdftotext [file] - | grep 'YourPattern'
+https://www.commandlinefu.com/commands/view/4273/prints-line-numbers, prints line numbers, nl
+https://www.commandlinefu.com/commands/view/3188/convert-unixtime-to-human-readable, convert unixtime to human-readable, date -d @1234567890
+https://www.commandlinefu.com/commands/view/2945/a-fun-thing-to-do-with-ram-is-actually-open-it-up-and-take-a-peek.-this-command-will-show-you-all-the-string-plain-text-values-in-ram, A fun thing to do with ram is actually open it up and take a peek. This command will show you all the string (plain text) values in ram, sudo strings /dev/mem
+https://www.commandlinefu.com/commands/view/2662/diff-on-two-variables, Diff on two variables, diff <(echo "$a") <(echo "$b")
+https://www.commandlinefu.com/commands/view/203/prettify-an-xml-file, Prettify an XML file, tidy -xml -i -m [file]
+https://www.commandlinefu.com/commands/view/9541/convert-seconds-into-minutes-and-seconds, Convert seconds into minutes and seconds, bc <<< 'obase=60;299'
+https://www.commandlinefu.com/commands/view/5312/alias-head-for-automatic-smart-output, Alias HEAD for automatic smart output, alias head='head -n $((${LINES:-`tput lines 2>/dev/null||echo -n 12`} - 2))'
+https://www.commandlinefu.com/commands/view/4479/colorful-man, Colorful man, apt-get install most && update-alternatives --set pager /usr/bin/most
+https://www.commandlinefu.com/commands/view/2202/manually-pauseunpause-firefox-process-with-posix-signals, Manually Pause/Unpause Firefox Process with POSIX-Signals, killall -STOP -m firefox
+https://www.commandlinefu.com/commands/view/1506/use-lynx-to-run-repeating-website-actions, Use lynx to run repeating website actions, lynx -accept_all_cookies -cmd_script=/your/keystroke-file
+https://www.commandlinefu.com/commands/view/11666/check-the-status-of-dd-in-progress-os-x, check the status of 'dd' in progress (OS X), CTRL + T
+https://www.commandlinefu.com/commands/view/11584/encrypted-archive-with-openssl-and-tar, Encrypted archive with openssl and tar, tar --create --file - --posix --gzip -- <dir> | openssl enc -e -aes256 -out <file>
+https://www.commandlinefu.com/commands/view/7614/a-child-process-which-survives-the-parents-death-for-sure, A child process which survives the parent's death (for sure), ( command & )
+https://www.commandlinefu.com/commands/view/6952/prevent-accidents-while-using-wildcards, prevent accidents while using wildcards, rm *.txt <TAB> <TAB>
+https://www.commandlinefu.com/commands/view/5456/opens-vivim-at-pattern-in-file, Opens vi/vim at pattern in file, vi +/pattern [file]
+https://www.commandlinefu.com/commands/view/5240/april-fools-day-prank, April Fools' Day Prank, PROMPT_COMMAND='if [ $RANDOM -le 3200 ]; then printf "\0337\033[%d;%dH\033[4%dm \033[m\0338" $((RANDOM%LINES+1)) $((RANDOM%COLUMNS+1)) $((RANDOM%8)); fi'
+https://www.commandlinefu.com/commands/view/4180/pipe-stdout-and-stderr-etc.-to-separate-commands, Pipe stdout and stderr, etc., to separate commands, some_command > >(/bin/cmd_for_stdout) 2> >(/bin/cmd_for_stderr)
+https://www.commandlinefu.com/commands/view/3890/list-installed-deb-packages-by-size, List installed deb packages by size, dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
+https://www.commandlinefu.com/commands/view/3464/send-echo-to-socket-network, send echo to socket network, echo "foo" > /dev/tcp/192.168.1.2/25
+https://www.commandlinefu.com/commands/view/3115/schedule-a-script-or-command-in-x-num-hours-silently-run-in-the-background-even-if-logged-out, Schedule a script or command in x num hours, silently run in the background even if logged out, ( ( sleep 2h; your-command your-args ) & )
+https://www.commandlinefu.com/commands/view/2917/go-to-parent-directory-of-filename-edited-in-last-command, Go to parent directory of filename edited in last command, cd !$:h
+https://www.commandlinefu.com/commands/view/2589/draw-a-sierpinski-triangle, Draw a Sierpinski triangle, perl -e 'print "P1\n256 256\n", map {$_&($_>>8)?1:0} (0..0xffff)' | display
+https://www.commandlinefu.com/commands/view/2078/make-anything-more-awesome, Make anything more awesome, command | figlet
+https://www.commandlinefu.com/commands/view/1932/list-all-files-opened-by-a-particular-command, List all files opened by a particular command, lsof -c dhcpd
+https://www.commandlinefu.com/commands/view/1873/nicely-display-permissions-in-octal-format-with-filename, Nicely display permissions in octal format with filename, stat -c '%A %a %n' *
+https://www.commandlinefu.com/commands/view/1608/gets-a-random-futurama-quote-from-., Gets a random Futurama quote from /., curl -Is slashdot.org | egrep '^X-(F|B|L)' | cut -d \- -f 2
+https://www.commandlinefu.com/commands/view/1333/shut-of-the-screen., shut of the screen., xset dpms force standby
+https://www.commandlinefu.com/commands/view/1292/create-a-single-use-tcp-or-udp-proxy, Create a single-use TCP (or UDP) proxy, nc -l -p 2000 -c "nc example.org 3000"
+https://www.commandlinefu.com/commands/view/1210/runs-a-bash-script-in-debugging-mode, runs a bash script in debugging mode, bash -x ./post_to_commandlinefu.sh
+https://www.commandlinefu.com/commands/view/1183/read-manpage-of-a-unix-command-as-pdf-in-preview-os-x, read manpage of a unix command as pdf in preview (Os X), man -t UNIX_COMMAND | open -f -a preview
+https://www.commandlinefu.com/commands/view/1117/instead-of-writing-a-multiline-ifthenelsefi-construct-you-can-do-that-by-one-line, Instead of writing a multiline if/then/else/fi construct you can do that by one line, [[ test_condition ]] && if_true_do_this || otherwise_do_that
+https://www.commandlinefu.com/commands/view/1091/switch-2-characters-on-a-command-line., Switch 2 characters on a command line., ctrl-t
+https://www.commandlinefu.com/commands/view/7441/use-file1-to-view-device-information, Use file(1) to view device information, file -s /dev/sd*
+https://www.commandlinefu.com/commands/view/4631/insert-the-last-argument-of-the-previous-command, Insert  the  last  argument  of  the previous command, <ESC> .
+https://www.commandlinefu.com/commands/view/4167/view-the-newest-xkcd-comic., View the newest xkcd comic., xkcd(){ wget -qO- http://xkcd.com/|tee >(feh $(grep -Po '(?<=")http://imgs[^/]+/comics/[^"]+\.\w{3}'))|grep -Po '(?<=(\w{3})" title=").*(?=" alt)';}
+https://www.commandlinefu.com/commands/view/3992/press-any-key-to-continue, Press Any Key to Continue, read -sn 1 -p "Press any key to continue..."
+https://www.commandlinefu.com/commands/view/2543/throttle-bandwidth-with-cstream, throttle bandwidth with cstream, tar -cj /backup | cstream -t 777k | ssh host 'tar -xj -C /backup'
+https://www.commandlinefu.com/commands/view/2119/run-a-long-job-and-notify-me-when-its-finished, Run a long job and notify me when it's finished, ./my-really-long-job.sh && notify-send "Job finished"
+https://www.commandlinefu.com/commands/view/1951/when-feeling-down-this-command-helps, When feeling down, this command helps, sl
+https://www.commandlinefu.com/commands/view/299/speed-up-launch-of-firefox, Speed up launch of firefox, find ~ -name '*.sqlite' -exec sqlite3 '{}' 'VACUUM;' \;
+https://www.commandlinefu.com/commands/view/9159/format-txt-as-table-not-joining-empty-columns, format txt as table not joining empty columns, column -tns: /etc/passwd
+https://www.commandlinefu.com/commands/view/7687/shell-recorder-with-replay, Shell recorder with replay, script -t /tmp/mylog.out 2>/tmp/mylog.time; <do your work>; <CTRL-D>; scriptreplay /tmp/mylog.time /tmp/mylog.out
+https://www.commandlinefu.com/commands/view/7107/bind-a-key-with-a-command, Bind a key with a command, bind '"\C-l":"ls -l\n"'
+https://www.commandlinefu.com/commands/view/6867/exclude-a-column-with-cut, exclude a column with cut, cut -f5 --complement
+https://www.commandlinefu.com/commands/view/6371/recover-a-deleted-file, Recover a deleted file, grep -a -B 25 -A 100 'some string in the file' /dev/sda1 > results.txt
+https://www.commandlinefu.com/commands/view/6347/list-files-with-quotes-around-each-filename, List files with quotes around each filename, ls -Q
+https://www.commandlinefu.com/commands/view/4331/duplicate-several-drives-concurrently, Duplicate several drives concurrently, dd if=/dev/sda | tee >(dd of=/dev/sdb) | dd of=/dev/sdc
+https://www.commandlinefu.com/commands/view/4070/listen-to-bbc-radio-from-the-command-line., Listen to BBC Radio from the command line., bbcradio() { local s PS3="Select a station: ";select s in 1 1x 2 3 4 5 6 7 "Asian Network an" "Nations & Local lcl";do break;done;s=($s);mplayer -playlist "http://www.bbc.co.uk/radio/listen/live/r"${s[@]: -1}".asx";}
+https://www.commandlinefu.com/commands/view/3949/get-your-external-ip-address, Get your external IP address, curl ip.appspot.com
+https://www.commandlinefu.com/commands/view/3887/monitor-bandwidth-by-pid, Monitor bandwidth by pid, nethogs -p eth0
+https://www.commandlinefu.com/commands/view/3592/execute-a-command-with-a-timeout, Execute a command with a timeout, timeout 10 sleep 11
+https://www.commandlinefu.com/commands/view/2985/use-vim-to-get-colorful-diff-output, use vim to get colorful diff output, svn diff | view -
+https://www.commandlinefu.com/commands/view/2244/find-files-containing-text, find files containing text, grep -lir "some text" *
+https://www.commandlinefu.com/commands/view/2075/quickly-graph-a-list-of-numbers, Quickly graph a list of numbers, gnuplot -persist <(echo "plot '<(sort -n listOfNumbers.txt)' with lines")
+https://www.commandlinefu.com/commands/view/1827/perform-a-branching-conditional, Perform a branching conditional, true && { echo success;} || { echo failed; }
+https://www.commandlinefu.com/commands/view/1818/resume-scp-of-a-big-file, Resume scp of a big file, rsync --partial --progress --rsh=ssh  $file_source [email protected]$host:$destination_file
+https://www.commandlinefu.com/commands/view/849/use-tee-process-substitution-to-split-stdout-to-multiple-commands, Use tee + process substitution to split STDOUT to multiple commands, some_command | tee >(command1) >(command2) >(command3) ... | command4
+https://www.commandlinefu.com/commands/view/9760/create-strong-but-easy-to-remember-password, Create strong, but easy to remember password, read -s pass; echo $pass | md5sum | base64 | cut -c -16
+https://www.commandlinefu.com/commands/view/8833/repoint-an-existing-symlink-to-a-new-location, Repoint an existing symlink to a new location, ln -nsf <TARGET> <LINK>
+https://www.commandlinefu.com/commands/view/8275/grub2-set-super-mario-as-startup-tune, GRUB2: set Super Mario as startup tune, echo "GRUB_INIT_TUNE=\"1000 334 1 334 1 0 1 334 1 0 1 261 1 334 1 0 1 392 2 0 4 196 2\"" | sudo tee -a /etc/default/grub > /dev/null && sudo update-grub
+https://www.commandlinefu.com/commands/view/7930/find-duplicate-files-based-on-size-first-then-md5-hash, Find Duplicate Files (based on size first, then MD5 hash), fdupes -r .
+https://www.commandlinefu.com/commands/view/6856/diff-remote-webpages-using-wget, Diff remote webpages using wget, diff <(wget -q -O - URL1) <(wget -q -O - URL2)
+https://www.commandlinefu.com/commands/view/6523/close-a-hanging-ssh-session, Close a hanging ssh session, ~.
+https://www.commandlinefu.com/commands/view/5480/processes-per-user-counter, processes per user counter, ps hax -o user | sort | uniq -c
+https://www.commandlinefu.com/commands/view/3764/convert-filenames-in-current-directory-to-lowercase, convert filenames in current directory to lowercase, rename 'y/A-Z/a-z/' *
+https://www.commandlinefu.com/commands/view/3270/find-files-that-were-modified-by-a-given-command, Find files that were modified by a given command, touch /tmp/file ; $EXECUTECOMMAND ; find /path -newer /tmp/file
+https://www.commandlinefu.com/commands/view/1499/cut-out-a-piece-of-film-from-a-file.-choose-an-arbitrary-length-and-starting-time., Cut out a piece of film from a file. Choose an arbitrary length and starting time., ffmpeg -vcodec copy -acodec copy -i orginalfile -ss 00:01:30 -t 0:0:20 newfile
+https://www.commandlinefu.com/commands/view/12357/prevent-large-files-from-being-cached-in-memory-backups, prevent large files from being cached in memory (backups!), nocache <I/O-heavy-command>
+https://www.commandlinefu.com/commands/view/11648/check-if-system-is-32bit-or-64bit, Check if system is 32bit or 64bit, getconf LONG_BIT
+https://www.commandlinefu.com/commands/view/9743/limit-the-cpu-usage-of-a-process, Limit the cpu usage of a process, sudo cpulimit -p pid -l 50
+https://www.commandlinefu.com/commands/view/8990/generate-an-xkcd-936-style-4-word-password, Generate an XKCD #936 style 4 word password, shuf -n4 /usr/share/dict/words | tr -d '\n'
+https://www.commandlinefu.com/commands/view/7448/single-use-vnc-over-ssh-connection, Single use vnc-over-ssh connection, ssh -f -L 5900:localhost:5900 your.ssh.server "x11vnc -safer -localhost -nopw -once -display :0"; vinagre localhost:5900
+https://www.commandlinefu.com/commands/view/5778/list-alive-hosts-in-specific-subnet, List alive hosts in specific subnet, nmap -sP 192.168.1.0/24
+https://www.commandlinefu.com/commands/view/4788/your-terminal-sings, your terminal sings, echo {1..199}" bottles of beer on the wall, cold bottle of beer, take one down, pass it around, one less bottle of beer on the wall,, " | espeak -v english -s 140
+https://www.commandlinefu.com/commands/view/4110/make-sure-a-script-is-run-in-a-terminal., Make sure a script is run in a terminal., [ -t 0 ] || exit 1
+https://www.commandlinefu.com/commands/view/2847/quickly-soft-reboot-skipping-hardware-checks, Quickly (soft-)reboot skipping hardware checks, /sbin/kexec -l /boot/$KERNEL --append="$KERNELPARAMTERS" --initrd=/boot/$INITRD; sync; /sbin/kexec -e
+https://www.commandlinefu.com/commands/view/2586/pipe-output-of-a-command-to-your-clipboard, pipe output of a command to your clipboard, some command|xsel --clipboard
+https://www.commandlinefu.com/commands/view/2369/find-broken-symlinks-and-delete-them, Find broken symlinks and delete them, find -L /path/to/check -type l -delete
+https://www.commandlinefu.com/commands/view/1568/ls-hog-a-more-compact-ls-l, ls -hog --> a more compact ls -l, ls -hog
+https://www.commandlinefu.com/commands/view/13326/silently-ensures-that-a-fs-is-mounted-on-the-given-mount-point-checks-if-its-ok-otherwise-unmount-create-dir-and-mount, Silently ensures that a FS is mounted on the given mount point (checks if it's OK, otherwise unmount, create dir and mount), (mountpoint -q "/media/mpdr1" && df /media/mpdr1/* > /dev/null 2>&1) || ((sudo umount "/media/mpdr1" > /dev/null 2>&1 || true) && (sudo mkdir "/media/mpdr1" > /dev/null 2>&1 || true) && sudo mount "/dev/sdd1" "/media/mpdr1")
+https://www.commandlinefu.com/commands/view/9900/create-a-local-compressed-tarball-from-remote-host-directory, Create a local compressed tarball from remote host directory, ssh [email protected] "tar -zcf - /path/to/dir" > dir.tar.gz
+https://www.commandlinefu.com/commands/view/8372/rapidly-invoke-an-editor-to-write-a-long-complex-or-tricky-command, Rapidly invoke an editor to write a long, complex, or tricky command, <ESC> v or ctrl-x ctrl-e
+https://www.commandlinefu.com/commands/view/8268/df-without-line-wrap-on-long-fs-name, df without line wrap on long FS name, df -P | column -t
+https://www.commandlinefu.com/commands/view/7450/send-a-circular, send a circular, wall <<< "Broadcast This"
+https://www.commandlinefu.com/commands/view/6167/i-finally-found-out-how-to-use-notify-send-with-at-or-cron, I finally found out how to use notify-send with at or cron, echo "export DISPLAY=:0; export XAUTHORITY=~/.Xauthority; notify-send test" | at now+1minute
+https://www.commandlinefu.com/commands/view/5930/see-udev-at-work, See udev at work, udevadm monitor
+https://www.commandlinefu.com/commands/view/3324/ultimate-current-directory-usage-command, Ultimate current directory usage command, ncdu
+https://www.commandlinefu.com/commands/view/3181/bash-hotkey-to-put-current-commandline-to-text-editor, bash: hotkey to put current commandline to text-editor, bash-hotkey: <CTRL+x+e>
+https://www.commandlinefu.com/commands/view/2999/show-current-working-directory-of-a-process, Show current working directory of a process, pwdx pid
+https://www.commandlinefu.com/commands/view/2819/have-an-ssh-session-open-forever, Have an ssh session open forever, autossh -M50000 -t server.example.com 'screen -raAd mysession'
+https://www.commandlinefu.com/commands/view/2382/recursively-compare-two-directories-and-output-their-differences-on-a-readable-format, Recursively compare two directories and output their differences on a readable format, diff -urp /originaldirectory /modifieddirectory
+https://www.commandlinefu.com/commands/view/1674/base-conversions-with-bc, Base conversions with bc, echo "obase=2; 27" | bc -l
+https://www.commandlinefu.com/commands/view/1562/put-readline-into-vi-mode, Put readline into vi mode, set -o vi
+https://www.commandlinefu.com/commands/view/1526/transfer-ssh-public-key-to-another-machine-in-one-step, Transfer SSH public key to another machine in one step, ssh-keygen; ssh-copy-id [email protected]; ssh [email protected]
+https://www.commandlinefu.com/commands/view/1278/start-a-command-on-only-one-cpu-core, Start a command on only one CPU core, taskset -c 0 your_command
+https://www.commandlinefu.com/commands/view/1159/convert-uppercase-files-to-lowercase-files, convert uppercase files to lowercase files, rename 'y/A-Z/a-z/' *
+https://www.commandlinefu.com/commands/view/17722/return-external-ip, return external ip, curl ipinfo.io
+https://www.commandlinefu.com/commands/view/13460/simple-multi-user-encrypted-chat-server-for-5-users, Simple multi-user encrypted chat server for 5 users, ncat -vlm 5 --ssl --chat 9876
+https://www.commandlinefu.com/commands/view/13142/check-if-your-isp-is-intercepting-dns-queries, Check if your ISP is intercepting DNS queries, dig +short which.opendns.com txt @208.67.220.220
+https://www.commandlinefu.com/commands/view/11537/display-current-time-in-requested-time-zones., Display current time in requested time zones., zdump Japan America/New_York
+https://www.commandlinefu.com/commands/view/9984/stamp-a-text-line-on-top-of-the-pdf-pages., Stamp a text line on top of the pdf pages., echo "This text gets stamped on the top of the pdf pages." | enscript -B -f Courier-Bold16 -o- | ps2pdf - | pdftk input.pdf stamp - output output.pdf
+https://www.commandlinefu.com/commands/view/9343/bypass-any-aliases-and-functions-for-the-command, bypass any aliases and functions for the command, \foo
+https://www.commandlinefu.com/commands/view/9209/share-your-terminal-session-real-time, Share your terminal session real-time, mkfifo foo; script -f foo
+https://www.commandlinefu.com/commands/view/7039/vi-config-to-save-files-with-x-when-a-shebang-is-found-on-line-1, VI config to save files with +x when a shebang is found on line 1, au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
+https://www.commandlinefu.com/commands/view/6785/create-a-single-pdf-from-multiple-images-with-imagemagick, Create a single PDF from multiple images with ImageMagick, convert *.jpg output.pdf
+https://www.commandlinefu.com/commands/view/6177/dd-with-progress-bar-and-statistics, dd with progress bar and statistics, sudo dd if=/dev/sdc bs=4096 | pv -s 2G | sudo dd bs=4096 of=~/USB_BLACK_BACKUP.IMG
+https://www.commandlinefu.com/commands/view/5109/delete-all-empty-lines-from-a-file-with-vim, Delete all empty lines from a file with vim, :g/^$/d
+https://www.commandlinefu.com/commands/view/4201/perl-one-liner-to-get-the-current-week-number, perl one-liner to get the current week number, date +%V
+https://www.commandlinefu.com/commands/view/2370/delete-all-those-duplicate-files-but-one-based-on-md5-hash-comparision-in-the-current-directory-tree, DELETE all those duplicate files but one based on md5 hash comparision in the current directory tree, find . -type f -print0|xargs -0 md5sum|sort|perl -ne 'chomp;$ph=$h;($h,$f)=split(/\s+/,$_,2);print "$f"."\x00" if ($h eq $ph)'|xargs -0 rm -v --
+https://www.commandlinefu.com/commands/view/1217/get-all-the-keyboard-shortcuts-in-screen, Get all the keyboard shortcuts in screen, ^A ?
+https://www.commandlinefu.com/commands/view/611/get-list-of-servers-with-a-specific-port-open, Get list of servers with a specific port open, nmap -sT -p 80 -oG - 192.168.1.* | grep open
+https://www.commandlinefu.com/commands/view/12161/notepad-in-a-browser-type-this-in-the-url-bar, Notepad in a browser (type this in the URL bar), data:text/html, <html contenteditable>
+https://www.commandlinefu.com/commands/view/10044/extract-audio-from-flash-video-.flv-as-mp3-file, Extract audio from Flash video (*.flv) as mp3 file, ffmpeg -i video.flv -vn -ar 44100 -ac 2 -ab 192k -f mp3 audio.mp3
+https://www.commandlinefu.com/commands/view/9171/cat-a-bunch-of-small-files-with-file-indication, cat a bunch of small files with file indication, grep . *
+https://www.commandlinefu.com/commands/view/6818/list-all-open-ports-and-their-owning-executables, List all open ports and their owning executables, lsof -i -P | grep -i "listen"
+https://www.commandlinefu.com/commands/view/6576/purge-configuration-files-of-removed-packages-on-debian-based-systems, Purge configuration files of removed packages on  debian based systems, aptitude purge '~c'
+https://www.commandlinefu.com/commands/view/4943/convert-text-to-picture, Convert text to picture, echo -e "Some Text Line1\nSome Text Line 2" | convert -background none -density 196  -resample 72 -unsharp 0x.5 -font "Courier" text:- -trim +repage -bordercolor white -border 3  text.gif
+https://www.commandlinefu.com/commands/view/4881/remote-screenshot, Remote screenshot, DISPLAY=":0.0" import -window root screenshot.png
+https://www.commandlinefu.com/commands/view/4722/define-words-and-phrases-with-google., Define words and phrases with google., define(){ local y="[email protected]";curl -sA"Opera" "http://www.google.com/search?q=define:${y// /+}"|grep -Po '(?<=<li>)[^<]+'|nl|perl -MHTML::Entities -pe 'decode_entities($_)' 2>/dev/null;}
+https://www.commandlinefu.com/commands/view/4480/track-flights-from-the-command-line, track flights from the command line, flight_status() { if [[ $# -eq 3 ]];then offset=$3; else offset=0; fi; curl "http://mobile.flightview.com/TrackByRoute.aspx?view=detail&al="$1"&fn="$2"&dpdat=$(date +%Y%m%d -d ${offset}day)" 2>/dev/null |html2text |grep ":"; }
+https://www.commandlinefu.com/commands/view/4350/harder-faster-stronger-ssh-clients, Harder, Faster, Stronger SSH clients, ssh -4 -C -c blowfish-cbc
+https://www.commandlinefu.com/commands/view/3671/clean-up-poorly-named-tv-shows., Clean up poorly named TV shows., rename -v 's/.*[s,S](\d{2}).*[e,E](\d{2}).*\.avi/SHOWNAME\ S$1E$2.avi/' poorly.named.file.s01e01.avi
+https://www.commandlinefu.com/commands/view/3622/pretty-print-a-simple-csv-in-the-command-line, Pretty Print a simple csv in the command line, column -s, -t <tmp.csv
+https://www.commandlinefu.com/commands/view/3277/cleanup-firefoxs-database., Cleanup firefox's database., find ~/.mozilla/firefox/ -type f -name "*.sqlite" -exec sqlite3 {} VACUUM \;
+https://www.commandlinefu.com/commands/view/3166/mount-the-first-ntfs-partition-inside-a-vdi-file-virtualbox-disk-image, Mount the first NTFS partition inside a VDI file (VirtualBox Disk Image), mount -t ntfs-3g -o ro,loop,uid=user,gid=group,umask=0007,fmask=0117,offset=0x$(hd -n 1000000  image.vdi | grep "eb 52 90 4e 54 46 53" | cut -c 1-8) image.vdi /mnt/vdi-ntfs
+https://www.commandlinefu.com/commands/view/3136/check-open-ports, check open ports, lsof -Pni4 | grep LISTEN
+https://www.commandlinefu.com/commands/view/2863/find-duplicate-files-based-on-md5-hash, Find Duplicate Files (based on MD5 hash), find -type f -exec md5sum '{}' ';' | sort | uniq --all-repeated=separate -w 33 | cut -c 35-
+https://www.commandlinefu.com/commands/view/2849/triple-monitoring-in-screen, Triple monitoring in screen, tmpfile=$(mktemp) && echo -e 'startup_message off\nscreen -t top htop\nsplit\nfocus\nscreen -t nethogs nethogs wlan0\nsplit\nfocus\nscreen -t iotop iotop' > $tmpfile && sudo screen -c $tmpfile
+https://www.commandlinefu.com/commands/view/2528/smiley-face-bash-prompt, Smiley Face Bash Prompt, PS1="\`if [ \$? = 0 ]; then echo \e[33\;40m\\\^\\\_\\\^\e[0m; else echo \e[36\;40m\\\-\e[0m\\\_\e[36\;40m\\\-\e[0m; fi\` \u \w:\h)"
+https://www.commandlinefu.com/commands/view/2485/create-a-list-of-binary-numbers, Create a list of binary numbers, echo {0..1}{0..1}{0..1}{0..1}
+https://www.commandlinefu.com/commands/view/2477/create-a-system-overview-dashboard-on-f12-key, Create a system overview dashboard on F12 key, bind '"\e[24~"':"\"ps -elF;df -h;free -mt;netstat -lnpt;who -a\C-m"""
+https://www.commandlinefu.com/commands/view/2378/save-an-html-page-and-covert-it-to-a-.pdf-file, Save an HTML page, and covert it to a .pdf file, wget $URL | htmldoc --webpage -f "$URL".pdf - ; xpdf "$URL".pdf &
+https://www.commandlinefu.com/commands/view/2308/create-an-emergency-swapfile-when-the-existing-swap-space-is-getting-tight, create an emergency swapfile when the existing swap space is getting tight, sudo dd if=/dev/zero of=/swapfile bs=1024 count=1024000;sudo mkswap /swapfile; sudo swapon /swapfile
+https://www.commandlinefu.com/commands/view/2286/relocate-a-file-or-directory-but-keep-it-accessible-on-the-old-location-throug-a-simlink., Relocate a file or directory, but keep it accessible on the old location throug a simlink., mv $1 $2 && ln -s $2/$(basename $1) $(dirname $1)
+https://www.commandlinefu.com/commands/view/2237/disable-history-for-current-shell-session, disable history for current shell session, unset HISTFILE
+https://www.commandlinefu.com/commands/view/1976/a-short-counter, a short counter, yes '' | cat -n
+https://www.commandlinefu.com/commands/view/1816/how-to-run-x-without-any-graphics-hardware, How to run X without any graphics hardware, startx -- `which Xvfb` :1 -screen 0 800x600x24 && DISPLAY=:1 x11vnc
+https://www.commandlinefu.com/commands/view/1692/rsync-remote-data-as-root-using-sudo, Rsync remote data as root using sudo, rsync --rsync-path 'sudo rsync' [email protected]:/folder/ /local/
+https://www.commandlinefu.com/commands/view/1199/pipe-stdout-to-vim, Pipe STDOUT to vim, tail -1000 /some/file | vim -
+https://www.commandlinefu.com/commands/view/919/copy-stdin-to-your-x11-buffer, Copy stdin to your X11 buffer, ssh [email protected] cat /path/to/some/file | xclip
+https://www.commandlinefu.com/commands/view/917/get-info-about-remote-host-ports-and-os-detection, Get info about remote host ports and OS detection, nmap -sS -P0 -sV -O <target>
+https://www.commandlinefu.com/commands/view/630/copy-a-file-structure-without-files, Copy a file structure without files, find * -type d -exec mkdir /where/you/wantem/\{\} \;
+https://www.commandlinefu.com/commands/view/103/get-http-headers-for-an-url, Get http headers for an url, curl -I www.commandlinefu.com
+https://www.commandlinefu.com/commands/view/90/start-a-new-command-in-a-new-screen-window, Start a new command in a new screen window, alias s='screen -X screen'; s top; s vi; s man ls;
+https://www.commandlinefu.com/commands/view/13028/generate-qr-code-for-a-wifi-hotspot, Generate QR code for a WiFi hotspot, qrencode -s 7 -o qr-wifi.png "WIFI:S:$(zenity --entry --text="Network name (SSID)" --title="Create WiFi QR");T:WPA;P:$(zenity --password --title="Wifi Password");;"
+https://www.commandlinefu.com/commands/view/11567/vi-a-remote-file, vi a remote file, vi scp://[email protected]//path/to/somefile
+https://www.commandlinefu.com/commands/view/9822/convert-from-hexidecimal-or-octal-to-decimal, convert from hexidecimal or octal to decimal, echo $((0x1fe)) $((033))
+https://www.commandlinefu.com/commands/view/9538/convert-seconds-into-minutes-and-seconds, Convert seconds into minutes and seconds, echo 'obase=60;299' | bc
+https://www.commandlinefu.com/commands/view/9177/list-by-size-all-of-the-directories-in-a-given-tree., List by size all of the directories in a given tree., du -h /path | sort -h
+https://www.commandlinefu.com/commands/view/9031/list-files-accessed-by-a-command, List files accessed by a command, strace -ff -e trace=file my_command 2>&1 | perl -ne 's/^[^"]+"(([^\\"]|\\[\\"nt])*)".*/$1/ && print'
+https://www.commandlinefu.com/commands/view/8354/find-all-the-links-to-a-file, Find all the links to a file, find -L / -samefile /path/to/file -exec ls -ld {} +
+https://www.commandlinefu.com/commands/view/7841/rsync-instead-of-scp, rsync instead of scp, rsync --progress --partial --rsh="ssh -p 8322" --bwlimit=100 --ipv4 [email protected]:~/file.tgz .
+https://www.commandlinefu.com/commands/view/7411/send-a-circular, send a circular, echo "dear admin, please ban eribsskog" | wall
+https://www.commandlinefu.com/commands/view/7269/visit-wikileaks.com, Visit wikileaks.com, echo 213.251.145.96 wikileaks.com >>/etc/hosts
+https://www.commandlinefu.com/commands/view/6726/make-sudo-forget-password-instantly, Make sudo forget password instantly, sudo -K
+https://www.commandlinefu.com/commands/view/5632/mirror-a-directory-structure-from-websites-with-an-apache-generated-file-indexes, Mirror a directory structure from websites with an Apache-generated file indexes, lftp -e "mirror -c" http://example.com/foobar/
+https://www.commandlinefu.com/commands/view/5458/quickly-share-code-or-text-from-vim-to-others., Quickly share code or text from vim to others., :w !curl -F "sprunge=<-" http://sprunge.us | xclip
+https://www.commandlinefu.com/commands/view/5282/print-a-row-of-characters-across-the-terminal, Print a row of characters across the terminal, printf "%`tput cols`s"|tr ' ' '#'
+https://www.commandlinefu.com/commands/view/4855/download-and-unpack-tarball-without-leaving-it-sitting-on-your-hard-drive, download and unpack tarball without leaving it sitting on your hard drive, wget -qO - http://example.com/path/to/blah.tar.gz | tar xzf -
+https://www.commandlinefu.com/commands/view/4502/colored-diff-via-vim-on-2-remotes-files-on-your-local-computer., Colored diff ( via vim ) on 2 remotes files on your local computer., vimdiff scp://[email protected]//etc/snmp/snmpd.conf scp://[email protected]r.com//etc/snmp/snmpd.conf
+https://www.commandlinefu.com/commands/view/4043/split-a-tarball-into-multiple-parts, Split a tarball into multiple parts, tar cf - <dir>|split -b<max_size>M - <name>.tar.
+https://www.commandlinefu.com/commands/view/4014/remove-executable-bit-from-all-files-in-the-current-directory-recursively-excluding-other-directories, Remove executable bit from all files in the current directory recursively, excluding other directories, chmod -R -x+X *
+https://www.commandlinefu.com/commands/view/3722/more-precise-bash-debugging, More precise BASH debugging, env PS4=' ${BASH_SOURCE}:${LINENO}(${FUNCNAME[0]}) ' sh -x /etc/profile
+https://www.commandlinefu.com/commands/view/3258/get-all-pdf-and-zips-from-a-website-using-wget, get all pdf and zips from a website using wget, wget --reject html,htm --accept pdf,zip -rl1 url
+https://www.commandlinefu.com/commands/view/2344/coloured-tail, coloured tail, tail -f FILE | perl -pe 's/KEYWORD/\e[1;31;43m$&\e[0m/g'
+https://www.commandlinefu.com/commands/view/2173/search-for-commands-from-the-command-line, Search for commands from the command line, clfu-seach <search words>
+https://www.commandlinefu.com/commands/view/1760/install-a-firefox-add-ontheme-to-all-users, Install a Firefox add-on/theme to all users, sudo firefox -install-global-extension /path/to/add-on
+https://www.commandlinefu.com/commands/view/1583/clear-current-line, clear current line, CTRL+u
+https://www.commandlinefu.com/commands/view/1523/quickly-generate-an-md5-hash-for-a-text-string-using-openssl, Quickly generate an MD5 hash for a text string using OpenSSL, echo -n 'text to be encrypted' | openssl md5
+https://www.commandlinefu.com/commands/view/1179/terminate-a-frozen-ssh-session, Terminate a frozen SSH-session, RETURN~.
+https://www.commandlinefu.com/commands/view/979/backup-a-remote-database-to-your-local-filesystem, Backup a remote database to your local filesystem, ssh [email protected] 'mysqldump dbname | gzip' > /path/to/backups/db-backup-`date +%Y-%m-%d`.sql.gz
+https://www.commandlinefu.com/commands/view/764/download-an-entire-static-website-to-your-local-machine, Download an entire static website to your local machine, wget --recursive  --page-requisites --convert-links www.moyagraphix.co.za
+https://www.commandlinefu.com/commands/view/629/batch-convert-files-to-utf-8, Batch convert files to utf-8, find . -name "*.php" -exec iconv -f ISO-8859-1 -t UTF-8 {} -o ../newdir_utf8/{} \;
+https://www.commandlinefu.com/commands/view/4/count-files-beneath-current-directory-including-subfolders, Count files beneath current directory (including subfolders), find . -type f | wc -l
+https://www.commandlinefu.com/commands/view/11710/check-if-system-is-32bit-or-64bit, Check if system is 32bit or 64bit, arch
+https://www.commandlinefu.com/commands/view/11037/show-permissions-of-current-directory-and-all-directories-upwards-to-, Show permissions of current directory and all directories upwards to /, namei -m $(pwd)
+https://www.commandlinefu.com/commands/view/10508/move-you-up-one-directory-quickly, move you up one directory quickly, shopt -s autocd
+https://www.commandlinefu.com/commands/view/10156/hide-the-name-of-a-process-listed-in-the-ps-output, Hide the name of a process listed in the `ps` output, exec -a "/sbin/getty 38400 tty7" your_cmd -erase_all_files
+https://www.commandlinefu.com/commands/view/10055/remove-a-line-from-a-file-using-sed-useful-for-updating-known-ssh-server-keys-when-they-change, Remove a line from a file using sed (useful for updating known SSH server keys when they change), ssh-keygen -R <thehost>
+https://www.commandlinefu.com/commands/view/9911/show-what-pid-is-listening-on-port-80-on-linux, Show what PID is listening on port 80 on Linux, fuser -v 80/tcp
+https://www.commandlinefu.com/commands/view/9023/short-and-elegant-way-to-backup-a-single-file-before-you-change-it., Short and elegant way to backup a single file before you change it., cp httpd.conf{,.bk}
+https://www.commandlinefu.com/commands/view/9015/find-the-most-recently-changed-files-recursively, Find the most recently changed files (recursively), find . -type f -printf '%TY-%Tm-%Td %TT %p\n' | sort
+https://www.commandlinefu.com/commands/view/7808/figure-out-what-shell-youre-running, Figure out what shell you're running, echo $0
+https://www.commandlinefu.com/commands/view/7680/download-a-file-and-uncompress-it-while-it-downloads, Download a file and uncompress it while it downloads, wget http://URL/FILE.tar.gz -O - | tar xfz -
+https://www.commandlinefu.com/commands/view/7037/rename-all-.jpeg-and-.jpg-files-to-have-.jpg-extension, Rename all .jpeg and .JPG files to have .jpg extension, rename 's/\.jpe?g$/.jpg/i' *
+https://www.commandlinefu.com/commands/view/6689/stream-youtube-url-directly-to-mplayer, Stream YouTube URL directly to MPlayer, yt () mplayer -fs -quiet $(youtube-dl -g "$1")
+https://www.commandlinefu.com/commands/view/6358/remove-thumbs.db-files-from-folders, Remove Thumbs.db files from folders, find ./ -name Thumbs.db -delete
+https://www.commandlinefu.com/commands/view/6083/list-open-files-that-have-no-links-to-them-on-the-filesystem, List open files that have no links to them on the filesystem, lsof +L1
+https://www.commandlinefu.com/commands/view/5979/display-bios-information, Display BIOS Information, # dd if=/dev/mem bs=1k skip=768 count=256 2>/dev/null | strings -n 8
+https://www.commandlinefu.com/commands/view/5947/open-path-with-your-default-program-on-linuxbsd, open path with your default program (on Linux/*BSD), xdg-open [path]
+https://www.commandlinefu.com/commands/view/5833/copy-an-element-from-the-previous-command, Copy an element from the previous command, !:1-3
+https://www.commandlinefu.com/commands/view/5822/view-user-activity-per-directory., View user activity per directory., sudo lsof -u someuser -a +D /etc
+https://www.commandlinefu.com/commands/view/5678/use-the-previous-commands-params-in-the-current-command, use the previous commands params in the current command, !!:[position]
+https://www.commandlinefu.com/commands/view/5377/copy-from-host1-to-host2-through-your-host, copy from host1 to host2, through your host, ssh [email protected] "cd /somedir/tocopy/ && tar -cf - ." | ssh [email protected] "cd /samedir/tocopyto/ && tar -xf -"
+https://www.commandlinefu.com/commands/view/5112/limit-bandwidth-usage-by-apt-get, Limit bandwidth usage by apt-get, sudo apt-get -o Acquire::http::Dl-Limit=30 upgrade
+https://www.commandlinefu.com/commands/view/4019/clean-your-broken-terminal, Clean your broken terminal, stty sane
+https://www.commandlinefu.com/commands/view/3877/grep-v-with-multiple-patterns., grep -v with multiple patterns., grep 'test' somefile | grep -vE '(error|critical|warning)'
+https://www.commandlinefu.com/commands/view/3499/redirect-stdout-and-stderr-each-to-separate-files-and-print-both-to-the-screen, redirect stdout and stderr each to separate files and print both to the screen, (some_command 2>&1 1>&3 | tee /path/to/errorlog ) 3>&1 1>&2 | tee /path/to/stdoutlog
+https://www.commandlinefu.com/commands/view/2885/use-all-the-cores-or-cpus-when-compiling, Use all the cores or CPUs when compiling, make -j 4
+https://www.commandlinefu.com/commands/view/2420/colored-svn-diff, Colored SVN diff, svn diff <file> | vim -R -
+https://www.commandlinefu.com/commands/view/2368/run-a-command-store-the-output-in-a-pastebin-on-the-internet-and-place-the-url-on-the-xclipboard, Run a command, store the output in a pastebin on the internet and place the URL on the xclipboard, ls | curl -F 'sprunge=<-' http://sprunge.us | xclip
+https://www.commandlinefu.com/commands/view/2299/find-if-the-command-has-an-alias, Find if the command has an alias, type -all command
+https://www.commandlinefu.com/commands/view/2220/find-last-reboot-time, Find last reboot time, who -b
+https://www.commandlinefu.com/commands/view/2155/show-a-config-file-without-comments, Show a config file without comments, egrep -v "^$|^[[:space:]]*#" /etc/some/file
+https://www.commandlinefu.com/commands/view/2024/start-screen-in-detached-mode, Start screen in detached mode, screen -d -m [<command>]
+https://www.commandlinefu.com/commands/view/1498/iso-8859-1-to-utf-8-safe-recursive-rename, iso-8859-1 to utf-8 safe recursive rename, detox -r -s utf_8 /path/to/old/win/files/dir
+https://www.commandlinefu.com/commands/view/1466/create-dir-tree, create dir tree, mkdir -p doc/{text/,img/{wallpaper/,photos/}}
+https://www.commandlinefu.com/commands/view/1431/run-any-gui-program-remotely, Run any GUI program remotely, ssh -fX <user>@<host> <program>
+https://www.commandlinefu.com/commands/view/1324/delete-all-empty-lines-from-a-file-with-vim, Delete all empty lines from a file with vim, :g!/\S/d
+https://www.commandlinefu.com/commands/view/1298/list-the-files-any-process-is-using, List the files any process is using, lsof +p xxxx
+https://www.commandlinefu.com/commands/view/885/change-directory-to-actual-path-instead-of-symlink-path, change directory to actual path instead of symlink path, cd `pwd -P`
+https://www.commandlinefu.com/commands/view/161/recursively-remove-.svn-directories-from-the-current-location, Recursively remove .svn directories from the current location, find . -type d -name '.svn' -print0 | xargs -0 rm -rdf
+https://www.commandlinefu.com/commands/view/14406/read-and-write-to-tcp-or-udp-sockets-with-common-bash-tools, Read and write to TCP or UDP sockets with common bash tools, exec 5<>/dev/tcp/time.nist.gov/13; cat <&5 & cat >&5; exec 5>&-
+https://www.commandlinefu.com/commands/view/11692/commandline-document-conversion-with-libreoffice, Commandline document conversion with Libreoffice, soffice --headless -convert-to odt:"writer8" somefile.docx
+https://www.commandlinefu.com/commands/view/10934/use-top-to-monitor-only-all-processes-with-the-same-name-fragment-foo, Use top to monitor only all processes with the same name fragment 'foo', top -p $(pgrep -d , foo)
+https://www.commandlinefu.com/commands/view/10577/delete-command-line-last-word, delete command line last word, ctrl+w
+https://www.commandlinefu.com/commands/view/9530/color-man-pages, Color man pages, echo "export LESS_TERMCAP_mb=$'\E[01;31m'" >> ~/.bashrc
+https://www.commandlinefu.com/commands/view/9457/print-without-executing-the-last-command-that-starts-with..., Print without executing the last command that starts with..., !ssh:p
+https://www.commandlinefu.com/commands/view/9065/what-is-the-use-of-this-switch-, What is the use of this switch ?, manswitch () { man $1 | less -p "^ +$2"; }
+https://www.commandlinefu.com/commands/view/8730/save-the-list-of-all-available-commands-in-your-box-to-a-file, Save the list of all available commands in your box to a file, compgen -c | sort -u > commands
+https://www.commandlinefu.com/commands/view/8448/protect-directory-from-an-overzealous-rm-rf-, Protect directory from an overzealous rm -rf *, cd <directory>; touch ./-i
+https://www.commandlinefu.com/commands/view/8013/rapidly-invoke-an-editor-to-write-a-long-complex-or-tricky-command, Rapidly invoke an editor to write a long, complex, or tricky command, <ESC> v
+https://www.commandlinefu.com/commands/view/7183/list-10-largest-directories-in-current-directory, List 10 largest directories in current directory, du -hs */ | sort -hr | head
+https://www.commandlinefu.com/commands/view/7178/reuse-last-parameter, Reuse last parameter, !$
+https://www.commandlinefu.com/commands/view/6915/blink-led-port-of-nic-card, Blink LED Port of NIC Card, ethtool -p eth0
+https://www.commandlinefu.com/commands/view/6411/running-scripts-after-a-reboot-for-non-root-users-., Running scripts after a reboot for non-root users ., @reboot <yourscript.sh>
+https://www.commandlinefu.com/commands/view/6383/run-command-on-a-group-of-nodes-in-parallel, run command on a group of nodes in parallel, echo "uptime" | pee "ssh host1" "ssh host2" "ssh host3"
+https://www.commandlinefu.com/commands/view/5440/check-the-status-of-dd-in-progress-os-x, check the status of 'dd' in progress (OS X), killall -INFO dd
+https://www.commandlinefu.com/commands/view/5220/convert-a-nero-image-file-to-iso, Convert a Nero Image File to ISO, dd bs=1k if=image.nrg of=image.iso skip=300
+https://www.commandlinefu.com/commands/view/5073/view-network-activity-of-any-application-or-user-in-realtime, View network activity of any application or user in realtime, lsof -r 2 -p PID -i -a
+https://www.commandlinefu.com/commands/view/4946/copy-with-progress, Copy with progress, rsync --progress file1 file2
+https://www.commandlinefu.com/commands/view/4561/print-a-list-of-standard-error-codes-and-descriptions., Print a list of standard error codes and descriptions., perl -le 'print $!+0, "\t", $!++ for 0..127'
+https://www.commandlinefu.com/commands/view/4190/generate-random-password, generate random password, pwgen -Bs 10 1
+https://www.commandlinefu.com/commands/view/4170/a-function-to-output-a-man-page-as-a-pdf-file, A function to output a man page as a pdf file, function man2pdf(){ man -t ${1:?Specify man as arg} | ps2pdf -dCompatibility=1.3 - - > ${1}.pdf; }
+https://www.commandlinefu.com/commands/view/3550/search-back-through-previous-commands, Search back through previous commands, Ctrl-R <search-text>
+https://www.commandlinefu.com/commands/view/3395/show-directories-in-the-path-one-per-line, Show directories in the PATH, one per line, echo $PATH | tr \: \\n
+https://www.commandlinefu.com/commands/view/2735/follow-tail-by-name-fix-for-rolling-logs-with-tail-f, Follow tail by name (fix for rolling logs with tail -f), tail -F file
+https://www.commandlinefu.com/commands/view/2417/convert-man-page-to-text-file, Convert "man page" to text file, man ls | col -b > ~/Desktop/man_ls.txt
+https://www.commandlinefu.com/commands/view/2058/display-current-bandwidth-statistics, Display current bandwidth statistics, ifstat -nt
+https://www.commandlinefu.com/commands/view/1962/restoring-some-data-from-a-corrupted-text-file, restoring some data from a corrupted text file, ( cat badfile.log ; tac badfile.log | tac ) > goodfile.log
+https://www.commandlinefu.com/commands/view/1909/view-the-system-console-remotely, view the system console remotely, sudo cat /dev/vcs1 | fold -w 80
+https://www.commandlinefu.com/commands/view/1884/look-up-the-definition-of-a-word, Look up the definition of a word, curl dict://dict.org/d:something
+https://www.commandlinefu.com/commands/view/1849/diff-files-on-two-remote-hosts., Diff files on two remote hosts., diff <(ssh alice cat /etc/apt/sources.list) <(ssh bob cat /etc/apt/sources.list)
+https://www.commandlinefu.com/commands/view/1829/ctrls-ctrlq-terminal-output-lock-and-unlock, Ctrl+S Ctrl+Q terminal output lock and unlock, Ctrl+S Ctrl+Q
+https://www.commandlinefu.com/commands/view/1769/redirect-stdin, Redirect STDIN, < /path/to/file.txt grep foo
+https://www.commandlinefu.com/commands/view/1749/i-hate-echo-x-y, I hate `echo X | Y`, base64 -d <<< aHR0cDovL3d3dy50d2l0dGVyc2hlZXAuY29tL3Jlc3VsdHMucGhwP3U9Y29tbWFuZGxpbmVmdQo=
+https://www.commandlinefu.com/commands/view/1564/send-keypresses-to-an-x-application, Send keypresses to an X application, xvkbd -xsendevent -text "Hello world"
+https://www.commandlinefu.com/commands/view/1502/add-calendar-to-desktop-wallpaper, Add calendar to desktop wallpaper, convert -font -misc-fixed-*-*-*-*-*-*-*-*-*-*-*-* -fill black -draw "text 270,260 \" `cal` \"" testpic.jpg newtestpic.jpg
