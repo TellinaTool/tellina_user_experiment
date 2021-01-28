@@ -1,0 +1,74 @@
+http://www.bashoneliners.com/oneliners/230/, Get the HTTP status code of a URL, curl -Lw '%{http_code}' -s -o /dev/null -I SOME_URL
+http://www.bashoneliners.com/oneliners/210/, Print the window title of current mpv session to display what is playing, wmctrl -pl | grep $(pidof mpv) | cut -d- -f2-
+http://www.bashoneliners.com/oneliners/204/, Open Windows internet shortcut (*.url) files in firefox, firefox $(grep -i ^url='*' file.url | cut -b 5-)
+http://www.bashoneliners.com/oneliners/183/, Check if a file exists and has a size greater than X, [[ $(find /path/to/file -type f -size +51200c 2>/dev/null) ]] && echo true || echo false
+http://www.bashoneliners.com/oneliners/178/, Add all unknown files in a Subversion checkout, svn add . --force
+http://www.bashoneliners.com/oneliners/177/, Find files that are not executable, find /some/path -type f ! -perm -111 -ls
+http://www.bashoneliners.com/oneliners/169/, Create a heap dump of a Java process, jmap -dump:format=b,file=/var/tmp/dump.hprof 1234
+http://www.bashoneliners.com/oneliners/166/, Check that a directory is a parent of another, is_parent() { [[ "$2" =~ $1/? ]]; }
+http://www.bashoneliners.com/oneliners/163/, Calculate md5sum from an input string, md5sum <<< YOUR_TEXT | cut -f1 -d' '
+http://www.bashoneliners.com/oneliners/153/, Print file owners and permissions of a directory tree, find /path/to/dir1 -printf "%U %G %m %p\n" > /tmp/dir1.txt
+http://www.bashoneliners.com/oneliners/148/, Recreate or update an existing zip file and remove files that do not exist anymore, zip --filesync -r /path/to/out.zip /path/to/dir
+http://www.bashoneliners.com/oneliners/141/, Make the output of the `time` builtin easier to parse, TIMEFORMAT=%R
+http://www.bashoneliners.com/oneliners/135/, Remove EXIF data such as orientation from images, mogrify -strip /path/to/image.jpg
+http://www.bashoneliners.com/oneliners/134/, Get the last modification date of a file in any format you want, date -r /etc/motd +%Y%m%d_%H%M%S
+http://www.bashoneliners.com/oneliners/133/, Forget all remembered path locations, hash -r
+http://www.bashoneliners.com/oneliners/131/, Copy or create files with specific permissions and ownership, install -b -m 600 /dev/null NEWFILE
+http://www.bashoneliners.com/oneliners/126/, Clear the swap space forcing everything back to main memory in Linux, sudo swapoff -a; sudo swapon -a
+http://www.bashoneliners.com/oneliners/125/, Redirection operator to override the noclobber option, some_command >| output.txt
+http://www.bashoneliners.com/oneliners/124/, How to set the ip address in Solaris 11, ipadm create-addr -T static -a 192.168.1.10/24 eth0/staticaddr
+http://www.bashoneliners.com/oneliners/117/, `less` is more convenient with the `-F` flag, less -F FILE1
+http://www.bashoneliners.com/oneliners/116/, Append to a file text, a blank line, and the last line of another file, { echo some text; echo; tail -n1 /var/log/apache2/error.log; } >> /path/to/file
+http://www.bashoneliners.com/oneliners/115/, Append to a file text, a blank line, and the last line of another file, echo -e "From: me\n\n$(tail -n1 /var/log/apache2/error.log)" >> file
+http://www.bashoneliners.com/oneliners/112/, Execute different commands with find depending on file type, find /path/to/dir -type d -exec chmod 0755 '{}' \; -o -type f -exec chmod 0644 '{}' \;
+http://www.bashoneliners.com/oneliners/111/, Convert m4a files to mp3 using faad and lame, faad -o tmp.wav music.m4a && lame -b 192 tmp.wav music.mp3
+http://www.bashoneliners.com/oneliners/110/, Write both stdout and stderr to the same file, do_something.sh &> out.log
+http://www.bashoneliners.com/oneliners/109/, Create or mount an encrypted directory using encfs, encfs -i 5 $PWD/raw $PWD/content
+http://www.bashoneliners.com/oneliners/107/, Run a never-ending process in the background in a way that you can check on its status anytime, screen -d -m -S some_name ping my_router
+http://www.bashoneliners.com/oneliners/106/, Make a hexdump or do the reverse with the xxd command, xxd /path/to/binary/file
+http://www.bashoneliners.com/oneliners/105/, Really lazy way to print the first instance of $foo that occurs after $bar, ifconfig | grep ^en1 -A5 | grep inet | head -n 1
+http://www.bashoneliners.com/oneliners/102/, Sort du output in Human-readable format, du -hsx * | sort -rh
+http://www.bashoneliners.com/oneliners/101/, Replace symlinks with the actual files they are pointing at, find /path/to/dir -type l -exec sh -c 'cp --remove-destination "$(readlink "{}")" "{}"' \; 
+http://www.bashoneliners.com/oneliners/100/, Expire a user's password immediately, chage -d 0 USERNAME
+http://www.bashoneliners.com/oneliners/99/, Convert any 16:9 video to play on a QHD widescreen Android phone, ffmpeg -i $1 -y -threads 0 -subq 6 -deinterlace -level 30 -f mp4 -acodec libfaac -ab 160k -ar 24000 -ac 2 -vcodec libx264 -b 1000k -maxrate 1000k -bufsize 2000k -rc_eq 'blurCplx^(1-qComp)' -qcomp 0.6 -qmin 10 -qmax 51 -qdiff 4 -coder 0 -refs 2 -flags +loop -vol 256 -trellis 1 -me_method umh -async 1 $2
+http://www.bashoneliners.com/oneliners/93/, Convert a decimal number to octal, hexadecimal, binary, or anything, echo 'obase=2;1234' | bc
+http://www.bashoneliners.com/oneliners/92/, Convert from avi format to mp4 encoding, ffmpeg -i file.avi file.mp4
+http://www.bashoneliners.com/oneliners/91/, Format input into multiple columns, like a table, useful or pretty-printing, mount | column -t
+http://www.bashoneliners.com/oneliners/89/, Resize an image proportionally to some specified width or height, mogrify -geometry x31 path/to/image.gif
+http://www.bashoneliners.com/oneliners/88/, Do something in another directory without going there, (cd /path/to/somewhere; tar c .) > somewhere.tar
+http://www.bashoneliners.com/oneliners/87/, Remove carriage return '\r' character in many files, without looping and intermediary files, recode pc..l1 file1 file2 file3
+http://www.bashoneliners.com/oneliners/86/, Find the target path a symlink is pointing to, readlink a_symbolic_link_to_somewhere
+http://www.bashoneliners.com/oneliners/84/, Get the octal, hexadecimal and decimal codes of the ASCII character set, man ascii
+http://www.bashoneliners.com/oneliners/81/, List or edit and re-execute commands from the history list, fc -l
+http://www.bashoneliners.com/oneliners/80/, Find the most recently modified files in a directory and all subdirectories, find /path/to/dir -type f -mtime -7 -print0 | xargs -0 ls -lt | head
+http://www.bashoneliners.com/oneliners/79/, List open files, lsof -n
+http://www.bashoneliners.com/oneliners/78/, Set a colorful bash prompt per dev test prod environments, PS1='\[\e[1;31m\][\u@\h \W]\$\[\e[0m\] '
+http://www.bashoneliners.com/oneliners/69/, Print the lines of file2 that are missing in file1, grep -vxFf file1 file2
+http://www.bashoneliners.com/oneliners/64/, Find in files, recursively, find /etc -type f -print0 2>/dev/null | xargs -0 grep --color=AUTO -Hn 'nameserver' 2>/dev/null
+http://www.bashoneliners.com/oneliners/56/, Concatenate PDF files using GhostScript, gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=output.pdf -dBATCH file1.pdf file2.pdf file3.pdf
+http://www.bashoneliners.com/oneliners/55/, Format text with long lines to text with fixed width, fmt -s -w80 file.txt
+http://www.bashoneliners.com/oneliners/54/, Come back quickly to the current directory after doing some temporary work somewhere else, pushd /some/where/else; work; cd /somewhere; work; cd /another/place; popd
+http://www.bashoneliners.com/oneliners/51/, Run remote X11 applications with ssh, ssh -X servername
+http://www.bashoneliners.com/oneliners/45/, Put an ssh session in the background, ~^z
+http://www.bashoneliners.com/oneliners/43/, Recursively remove all empty sub-directories from a directory tree, find . -type d | tac | xargs rmdir 2>/dev/null
+http://www.bashoneliners.com/oneliners/41/, Create a sequence of integer numbers, echo {4..-9}
+http://www.bashoneliners.com/oneliners/40/, Redirect the output of the time builtin command, { time command; } > out.out 2> time+err.out
+http://www.bashoneliners.com/oneliners/39/, Copy a directory with a large number of files to another server, tar cp -C /path/to/dir . | ssh server2 'tar x -C /path/to/target'
+http://www.bashoneliners.com/oneliners/38/, Redirect the output of multiple commands , { cmd1 ; cmd2 ; cmd3 ; } > out.out 2> err.out
+http://www.bashoneliners.com/oneliners/37/, View a file with line numbers, grep -n ^ /path/to/file | less
+http://www.bashoneliners.com/oneliners/35/, Repeat the previous command but with a string replacement, ^geomtry^geometry
+http://www.bashoneliners.com/oneliners/33/, Do not save command history of current bash session, HISTFILE=
+http://www.bashoneliners.com/oneliners/32/, Use rsync instead of cp to get a progress indicator when copying large files, rsync --progress largefile.gz somewhere/else/
+http://www.bashoneliners.com/oneliners/30/, Create and restore backups using cpio, find . -xdev -print0 | cpio -oa0V | gzip > path_to_save.cpio.gz
+http://www.bashoneliners.com/oneliners/22/, Schedule a one-time task using "at" command and intuitive date specifications, at now + 30 minutes
+http://www.bashoneliners.com/oneliners/21/, Aliases the ls command to display the way I like it, alias ls='ls -lhGpt --color=always'
+http://www.bashoneliners.com/oneliners/18/, The first command you should run right after you login to a remote server ;-), screen
+http://www.bashoneliners.com/oneliners/17/, Find video files cached by the flash plugin in browsers, file /proc/*/fd/* 2>/dev/null | grep Flash | cut -f1 -d:
+http://www.bashoneliners.com/oneliners/16/, Force the preferred language when downloading a web page with wget, wget -–header='Accept-Language: en-us' http://www.timeanddate.com/calendar/index.html?year=2008&country=26 -O calendar.html
+http://www.bashoneliners.com/oneliners/15/, Burn the contents of a directory to dvd without needing a gui application, growisofs -dvd-compat -Z /dev/scd0 -R -J -pad /path/to/dir
+http://www.bashoneliners.com/oneliners/13/, Halt the system in Linux without the halt command or gui, echo o > /proc/sysrq-trigger
+http://www.bashoneliners.com/oneliners/12/, Change to the previous directory, a shortcut for "cd $OLDPWD", cd -
+http://www.bashoneliners.com/oneliners/11/, Create an encrypted tar file with openssl, tar c paths_to_files_and_dirs | gzip -c | openssl des3 > encrypted.tar.gz
+http://www.bashoneliners.com/oneliners/4/, Change the label of a USB drive in Linux without a gui, sudo mlabel -i /dev/sdd1 ::NewLabel
+http://www.bashoneliners.com/oneliners/3/, Mirror from one Subversion repository to another Subversion repository, bzr co https://repo1/proj1/trunk proj1 && cd proj1 && bzr push https://repo2/vendor/proj1/trunk
+http://www.bashoneliners.com/oneliners/1/, Find Flash videos stored by browsers on a Mac, find /private/ 2>/dev/null | grep /Flash

@@ -1,0 +1,25 @@
+http://www.bashoneliners.com/oneliners/214/, Generate a sequence of numbers, echo {01..10}
+http://www.bashoneliners.com/oneliners/212/, Nmap scan every interface that is assigned an IP, ifconfig -a | grep -Po '\b(?!255)(?:\d{1,3}\.){3}(?!255)\d{1,3}\b' | xargs nmap -A -p0-
+http://www.bashoneliners.com/oneliners/142/, Show dd status every so often, watch --interval 5 killall -USR1 dd
+http://www.bashoneliners.com/oneliners/213/, Run a command and copy its output to clipboard (Mac OSX), echo "Here comes the output of my failing code" | tee >(pbcopy)
+http://www.bashoneliners.com/oneliners/193/, Find all files recursively with specified string in the filename and output any lines found containing a different string., find . -name *conf* -exec grep -Hni 'matching_text' {} \; > matching_text.conf.list
+http://www.bashoneliners.com/oneliners/186/, Extract your external IP address using dig, dig +short myip.opendns.com @resolver1.opendns.com
+http://www.bashoneliners.com/oneliners/184/, Remove offending key from known_hosts file with one swift move, ssh-keygen -R <hostname>
+http://www.bashoneliners.com/oneliners/292/, Find files/dirs modified within a given period, find . -type d -newermt "2019-01-01" \! -newermt "2019-02-01" -exec ls -ld {} \;
+http://www.bashoneliners.com/oneliners/198/, Find recent logs that contain the string "Exception", find . -name '*.log' -mtime -2 -exec grep -Hc Exception {} \; | grep -v :0$
+http://www.bashoneliners.com/oneliners/76/, Send HTTP POST to a website with a file input field, curl -L -v -F "value=@myfile" "http://domain.tld/whatever.php"
+http://www.bashoneliners.com/oneliners/272/, Inspect the HTTP headers of a website, curl -I amazon.com
+http://www.bashoneliners.com/oneliners/174/, Md5sum the last 5 files in a folder, find /directory1/directory2/ -maxdepth 1 -type f | sort | tail -n 5 | xargs md5sum
+http://www.bashoneliners.com/oneliners/152/, Get only the latest version of a file from across mutiple directories., find . -name 'filename' | xargs -r ls -tc | head -n1
+http://www.bashoneliners.com/oneliners/151/, Sort and remove duplicate lines from two (or more files). Display only uniq lines from files., sort file1 file2 | uniq -u
+http://www.bashoneliners.com/oneliners/130/, Redirect stdout to a file you don't have write permission on, echo hello | sudo tee -a /path/to/file
+http://www.bashoneliners.com/oneliners/127/, Recording SSH sessions, ssh -l USER HOST | tee -a /path/to/file
+http://www.bashoneliners.com/oneliners/82/, Show files containing "foo" and "bar" and "baz", grep -l 'baz' $(grep -l 'bar' $(grep -lr 'foo' *) )
+http://www.bashoneliners.com/oneliners/77/, Find in files, recursively, grep -rn 'nameserver' /etc
+http://www.bashoneliners.com/oneliners/70/, Print the lines of file2 that are missing in file1, comm -23 file2 file1
+http://www.bashoneliners.com/oneliners/61/, Recursively remove all empty sub-directories from a directory tree, find . -depth  -type d  -empty -exec rmdir {} \;
+http://www.bashoneliners.com/oneliners/58/, How to find all hard links to a file, find /home -xdev -samefile file1
+http://www.bashoneliners.com/oneliners/304/, Generate a sequence of numbers, seq 1 10
+http://www.bashoneliners.com/oneliners/311/, Find with invert match - e.g. find every file that is not mp3, find . -name '*' -type f -not -path '*.mp3'
+http://www.bashoneliners.com/oneliners/308/, Recursively remove all "node_modules" folders, find . -name "node_modules" -exec rm -rf '{}' +
+http://www.bashoneliners.com/oneliners/240/, Remove new lines from files and folders, rename 's/[\r\n]//g' *
