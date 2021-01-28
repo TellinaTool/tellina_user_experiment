@@ -1,0 +1,8 @@
+1. I/O redirection <, <<
+2. Variable assignment =
+3. Compound statements:
+- if, for, while, util statements
+- functions
+4. Non-bash program strings nested with
+language interpreters such as awk, sed,
+python, java, git, iconv, ffmpeg, jar, perl, python, svn, docker

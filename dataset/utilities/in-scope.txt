@@ -1,0 +1,6 @@
+1. Single command
+2. Logical connectives: &&, ||, parentheses ()
+3. Nested commands:
+- pipeline |
+- command substitution $()
+- process substitution <()
