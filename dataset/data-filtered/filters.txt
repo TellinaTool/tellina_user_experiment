@@ -1,0 +1,8 @@
+sed -i '' -E '/^http.+,.+,.*awk.*$/' file.csv
+sed -i '' '/sed/d' file.csv
+grep -v "^.*,.*,.*for.*in.*do.*done.*$" file.csv
+grep -v "^.*,.*,.*while.*do.*done.*$" file.csv
+sed -i '' -E '/^http.+,.+,.*git.*$/d'
+
+grep -E '^http.+,.+,.*(?:sed|awk|git|svn|python|java|perl)' file.csv
+sed -E '/^http.+,.+,.*(?:sed|awk|git|svn|python|java|perl)/d' file.csv
