@@ -24,7 +24,7 @@ def main():
 
     name, ext = os.path.splitext(input_file)
     output_file = "{name}-clean{ext}".format(name=name, ext=ext)
-    dataset[['Link', 'Text', 'Code']].to_csv(output_file)
+    dataset[['Link', 'Title', 'Text', 'Code']].to_csv(output_file)
 
 if __name__ == "__main__":
     main()
