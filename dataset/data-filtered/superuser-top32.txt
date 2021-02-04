@@ -28,3 +28,5 @@ https://superuser.com/questions/276487/
 https://superuser.com/questions/298081/
 https://superuser.com/questions/312348/
 https://superuser.com/questions/437663/
+https://superuser.com/questions/397307/how-to-ignore-certain-filenames-using-find
+https://superuser.com/questions/222395/copy-a-directory-on-unix
