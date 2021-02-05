@@ -6,3 +6,5 @@ sed -i '' -E '/^http.+,.+,.*git.*$/d'
 
 grep -E '^http.+,.+,.*(?:sed|awk|git|svn|python|java|perl)' file.csv
 sed -E '/^http.+,.+,.*(?:sed|awk|git|svn|python|java|perl)/d' file.csv
+
+if it's not in the accepted answer, don't include it.
