@@ -1,17 +1,17 @@
-Post
-https://superuser.com/questions/362235/
-http://www.bashoneliners.com/oneliners/58/
-https://www.commandlinefu.com/commands/view/1339/ssh-connection-through-host-in-the-middle
-https://superuser.com/questions/344877/
-http://www.bashoneliners.com/oneliners/198/
-https://superuser.com/questions/400714/
-https://www.commandlinefu.com/commands/view/305/make-directory-including-intermediate-directories
-https://www.commandlinefu.com/commands/view/3573/search-for-a-string-inside-all-files-in-the-current-directory
-http://www.bashoneliners.com/oneliners/70/
-https://stackoverflow.com/questions/4997693/
-https://stackoverflow.com/questions/604864/
-https://superuser.com/questions/332356/
-https://stackoverflow.com/questions/2264428/
-http://www.bashoneliners.com/oneliners/151/
-https://superuser.com/questions/554319/
-https://superuser.com/questions/140461/
+Post,Title,Oneliner
+http://www.bashoneliners.com/oneliners/70/, Print the lines of file2 that are missing in file1, comm -23 file2 file1
+https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed, Display which distro is installed, cat /etc/issue
+https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file, quickly rename a file, mv filename.{old
+https://superuser.com/questions/140461/,,
+https://stackoverflow.com/questions/3137094/,,
+https://superuser.com/questions/482435/,,
+https://stackoverflow.com/questions/4997693/,,
+https://unix.stackexchange.com/questions/144208/,,
+https://superuser.com/questions/392872/,,
+http://www.bashoneliners.com/oneliners/193/, Find all files recursively with specified string in the filename and output any lines found containing a different string., find . -name *conf* -exec grep -Hni 'matching_text' {} \; > matching_text.conf.list
+https://www.commandlinefu.com/commands/view/1798/quick-access-to-the-ascii-table., Quick access to the ascii table., man ascii
+https://unix.stackexchange.com/questions/93323/,,
+https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving, Extract tarball from internet without local saving," wget -qO - ""http://www.tarball.com/tarball.gz"" | tar zxvf -"
+https://superuser.com/questions/633605/,,
+http://www.bashoneliners.com/oneliners/61/, Recursively remove all empty sub-directories from a directory tree, find . -depth  -type d  -empty -exec rmdir {} \;
+https://superuser.com/questions/243460/,,
