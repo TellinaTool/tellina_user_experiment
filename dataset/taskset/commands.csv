@@ -1,0 +1,17 @@
+Post,Commands
+http://www.bashoneliners.com/oneliners/70/,comm
+https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed,cat
+https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file,mv
+https://superuser.com/questions/140461/,watch tail grep
+https://stackoverflow.com/questions/3137094/,wc
+https://superuser.com/questions/482435/,find rm
+https://stackoverflow.com/questions/4997693/,diff
+https://unix.stackexchange.com/questions/144208/,find
+https://superuser.com/questions/392872/,ls grep xargs rm
+http://www.bashoneliners.com/oneliners/193/,find grep
+https://www.commandlinefu.com/commands/view/1798/quick-access-to-the-ascii-table.,man
+https://unix.stackexchange.com/questions/93323/,find basename
+https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving,wget tar
+https://superuser.com/questions/633605/,ln
+http://www.bashoneliners.com/oneliners/61/,find rmdir
+https://superuser.com/questions/243460/,kill
