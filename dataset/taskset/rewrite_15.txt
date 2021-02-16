@@ -1,0 +1,2 @@
+Delete recursively all subdirectories that are empty using find.
+~ 2min

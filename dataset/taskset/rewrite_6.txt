@@ -1,0 +1,2 @@
+Delete all the files starting with 'PREFIX' in a directory
+~ 2min
