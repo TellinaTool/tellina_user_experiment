@@ -6,9 +6,9 @@ This repository contains the infrastructure for formally conducting user experim
 
 - [**server_side**](https://github.com/TellinaTool/tellina_user_experiment/tree/master/client_side): the code used for the server side of the experiment, this
   includes both the post handler and the post-processor.
-- [**client_side**](https://github.com/TellinaTool/tellina_user_experiment/tree/master/server_side): this is the directory that contains the files to be distributed
+- [**client_side**](https://github.com/TellinaTool/tellina_user_experiment/tree/master/server_side): this directory contains the files to be distributed
   to the users of the experiment.
-- [**experiment_design**](https://github.com/TellinaTool/tellina_user_experiment/tree/master/experiment_design): this directory contains scripts and documentation about the experiment design.
+- [**dataset**](https://github.com/TellinaTool/tellina_user_experiment/tree/master/dataset): this directory contains the dataset of the tasks and the scripts that made it.
 - [**experiment_design_doc.md**](https://github.com/TellinaTool/tellina_user_experiment/blob/master/experiment_design_doc.md): instructions for setting up and conducting the user experiments.
 
 ## Distributing experiment
