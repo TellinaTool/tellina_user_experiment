@@ -1,17 +1,17 @@
-Post,Commands
-http://www.bashoneliners.com/oneliners/70/,comm
-https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed,cat
-https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file,mv
-https://superuser.com/questions/140461/,watch tail grep
-https://stackoverflow.com/questions/3137094/,wc
-https://superuser.com/questions/482435/,find rm
-https://stackoverflow.com/questions/4997693/,diff
-https://unix.stackexchange.com/questions/144208/,find
-https://superuser.com/questions/392872/,ls grep xargs rm
-http://www.bashoneliners.com/oneliners/193/,find grep
-https://www.commandlinefu.com/commands/view/1798/quick-access-to-the-ascii-table.,man
-https://unix.stackexchange.com/questions/93323/,find basename
-https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving,wget tar
-https://superuser.com/questions/633605/,ln
-http://www.bashoneliners.com/oneliners/61/,find rmdir
-https://superuser.com/questions/243460/,kill
+Id, Post,Commands
+1, http://www.bashoneliners.com/oneliners/70/,comm
+2, https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed,cat
+3, https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file,mv
+4, https://superuser.com/questions/140461/,watch tail grep
+5, https://stackoverflow.com/questions/3137094/,wc
+6, https://superuser.com/questions/482435/,find rm
+7, https://stackoverflow.com/questions/4997693/,diff
+8, https://unix.stackexchange.com/questions/144208/,find
+9, https://superuser.com/questions/392872/,ls grep xargs rm
+10, http://www.bashoneliners.com/oneliners/193/,find grep
+11, https://www.commandlinefu.com/commands/view/1798/quick-access-to-the-ascii-table.,man
+12, https://unix.stackexchange.com/questions/93323/,find basename
+13, https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving,wget tar
+14, https://superuser.com/questions/633605/,ln
+15, http://www.bashoneliners.com/oneliners/61/,find rmdir
+16, https://superuser.com/questions/243460/,kill

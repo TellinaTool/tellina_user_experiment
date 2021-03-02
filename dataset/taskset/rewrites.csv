@@ -1,0 +1,17 @@
+Id, Rewrite (* Means that the task has been adapted for the context of the experiment.)
+1, Print the lines that are missing from a file compared to another file.
+2, * Display main styling sheet file for website.
+3, Rename README.md to README.txt 
+4, ?
+5, Get the number of lines for `index.html`
+6, Delete all the files starting with '2013' in a <directory>
+7, Show the differences between files in a <directory> and <sub-directories>
+8, List the files that do not have a file type in <directory>
+9, Using a regular expression, delete all the minimized javascript and css files.
+10, For each file named <file>, Show the filename and line number matching text <text>
+11, Save manual page for <entry of `man`> in <entry of `man`>.txt
+12, List three-level deep subdirectories of <directory> 
+13, Download and extract <tar ball on user experiment website> without an intermediary file.
+14, For each file with the extension <extension> in directory <directory>, create a symbolic link in the current directory.
+15, Delete recursively all subdirectories that are empty using find.
+16, Force process <some innocuous process (the process could be launched (i.e., watch) for the task> to terminate
