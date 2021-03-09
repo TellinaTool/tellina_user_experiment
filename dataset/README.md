@@ -37,3 +37,13 @@ The collected data from the previous paragraph is stored in the folder `data-col
 For CommandLineFu and Bash One-Liners: 
 * `sed -e 's#^#http://www.bashoneliners.com#' data-collected/bashoneliners-top500.csv > bashoneliners-top500-clean.csv`
 * `sed -e 's#^#https://www.commandlinefu.com#' data-collected/commandlinefu-top500.csv > commandlinefu-top500-clean.csv`
+
+# Future Improvements
+While converting sampled posts to tasks, we encountered some posts that were not translatable to actionable tasks for the user study:
+
+
+- Questions or posts that are environment specific cannot be tested in a user study with the test harness because each participant will have a system slightly different, even while using a VM (e.g., process or shell name)
+- Commands or utilities that affect processes or system (e.g. `kill`) can be dangerous on the participants' system and are not reproducible.
+- Commands or utilities that do not terminate cannot be evaluated (e.g., `watch`).
+
+Thus, we recommend an additional filtering step before sampling to weed out questions and utilities that are not translatable into actionable tasks and incompatible with our user study harness.

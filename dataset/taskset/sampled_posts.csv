@@ -2,7 +2,7 @@ Post,Title,Oneliner
 http://www.bashoneliners.com/oneliners/70/, Print the lines of file2 that are missing in file1, comm -23 file2 file1
 https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed, Display which distro is installed, cat /etc/issue
 https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file, quickly rename a file, mv filename.{old
-https://superuser.com/questions/140461/, Using watch with pipes, watch -n 1 'tail -n 200 log/site_dev.log | fgrep Doctrine'
+https://stackoverflow.com/questions/1529946/, Linux: copy and create destination dir if it does not exist, mkdir -p "$d" && cp file "$d"
 https://stackoverflow.com/questions/3137094/, How to count lines in a document?, wc -l <filename>
 https://superuser.com/questions/482435/, How to remove all files starting with a certain string in Linux, find  . -name 'name*' -exec rm {} \;
 https://stackoverflow.com/questions/4997693/, Given two directory trees, how can I find out which files differ by content?, diff --brief --recursive dir1/ dir2/
@@ -14,4 +14,5 @@ https://unix.stackexchange.com/questions/93323/, List subdirectories only n leve
 https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving, Extract tarball from internet without local saving," wget -qO - ""http://www.tarball.com/tarball.gz"" | tar zxvf -"
 https://superuser.com/questions/633605/, How to create symbolic links to all files (class of files) in a directory?, ln -s ../source/*.bar .
 http://www.bashoneliners.com/oneliners/61/, Recursively remove all empty sub-directories from a directory tree, find . -depth  -type d  -empty -exec rmdir {} \;
-https://superuser.com/questions/243460/, What to do when Ctrl + C can't kill a process?, kill -9 PID
+https://www.commandlinefu.com/commands/view/6652, Remove all but one specific file, 
+rm -f !(survivior.txt)
