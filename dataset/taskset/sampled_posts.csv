@@ -1,7 +1,7 @@
 Post,Title,Oneliner
 http://www.bashoneliners.com/oneliners/70/, Print the lines of file2 that are missing in file1, comm -23 file2 file1
 https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed, Display which distro is installed, cat /etc/issue
-https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file, quickly rename a file, mv filename.{old
+https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file, quickly rename a file, mv filename.{old,new}
 https://stackoverflow.com/questions/1529946/, Linux: copy and create destination dir if it does not exist, mkdir -p "$d" && cp file "$d"
 https://stackoverflow.com/questions/3137094/, How to count lines in a document?, wc -l <filename>
 https://superuser.com/questions/482435/, How to remove all files starting with a certain string in Linux, find  . -name 'name*' -exec rm {} \;
