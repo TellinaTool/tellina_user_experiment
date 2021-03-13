@@ -1,8 +1,12 @@
+Shortlist reminder of out-of-scope elements for one-liners. 
+See https://github.com/TellinaTool/nl2bash for the exhaustive list.
+===================================================================
+
 1. I/O redirection <, <<
-2. Variable assignment =
+2. Variable assignment a=b
 3. Compound statements:
-- if, for, while, util statements
-- functions
+    - if, for, while, until, case, select statements
+    - functions
 4. Non-bash program strings nested with
 language interpreters such as awk, sed,
 python, java, git, iconv, ffmpeg, jar, perl, python, svn, docker
