@@ -1,42 +1,64 @@
-# User Study Dataset
-This folder contains the various scripts and datasets to produce or replicate the taskset used by the user study. `requirements.txt` contains the python dependencies for the scripts.
+# User Experiment Data Set
+This folder contains the scripts used to produce the data set for the user experiment (referenced as _taskset_). 
+The data set goes through intermediate steps before its final form. The process is described in [Data Process](#data-process).
 
-# Sources
-The tasks are sourced from StackOverflow, SuperUser, Unix&Linux, CommandLineFu, and Bash One-Liners. 
-For each source, we retrieve the most popular questions or one-liners up to 500 items.
-We retrieve the data from the StackExchange websites (i.e., StackOverflow, SuperUser, Unix&Linux) using the [Stack Exchange Data Explorer](https://data.stackexchange.com/). For CommandLineFu and Bash One-Liners, we use the web scraping scripts developed in `web-scrapers/`.
+## Contents
+- `data-collected/`: Contains the raw posts data parsed from the web.
+- `data-clean/`: Contains the raw posts data that have been cleaned up (referenced as _candidate posts_).
+- `data-filtered/`: Contains the posts that have been filtered from the raw posts data (referenced as _compatible posts_). In most case, only the first top 30 compatible posts have been extracted.
+- `taskset/`: Contains the final set of posts that are going to be used in the user experiment (referenced as _sampled posts_).
+- `web-scrapers/`: Contains the web scrapping scripts to extract the posts information from the websites.
+- `utilities/`: Contains information about Tellina's training set.
+- `clean_stackexchange.py`: Python script that cleans raw post data for one stack exchange website.
+- `clean_stackexchanges.sh`: Bash script that calls `clean_stackexchange.py` for all stack exchange websites.
+- `sample_tasks.ipynb`: Jupyter Notebook that randomly samples _compatible posts_ located in `data-filtered/` to build the taskset.
+- `interactive_filter_stackexchange.py` Interactive python script that filters _candidate posts_ into _compatible posts_.
 
-## SQL Query
-The SQL query used for retrieving the data from the stack exchange website is given below. 
 
-```sql
-SELECT TOP 500 q.Title, q.Id, q.Tags, q.Score, a.Body
-FROM Posts q
-INNER JOIN PostTags pt ON q.Id = pt.PostId
-INNER JOIN Tags t ON pt.TagId = t.Id
-INNER JOIN Posts a ON a.Id = q.AcceptedAnswerId 
-WHERE t.TagName LIKE 'bash' 
-AND q.AcceptedAnswerId is not NULL
-ORDER BY q.Score DESC
-```
+## Data Process
+### 1. Post Acquisition
+The posts is collected through via web-scrapping on five source websites: 
+- [StackOverflow](https://stackoverflow.com/)
+- [SuperUser](https://superuser.com/)
+- [Unix&Linux](https://unix.stackexchange.com/)
+- [CommandLineFu](https://www.commandlinefu.com/)
+- [Bash One-Liners](http://www.bashoneliners.com/)
 
-The query will return a quintuplet of the question's title, id (used to create a link to the question), tags, score, and raw html body. The `INNER JOIN` on `PostTags` and `Tags` enable to filter questions that are tagged with 'bash' and the last `INNER JOIN` on Posts enable to filter questions that have an accepted answer for the top 500 questions ordered by score.
+The web-scrapping scripts for CommandLineFu and Bash One-Liners are located in the `web-scrapers/` folder. For the stack exchange websites (StackOverflow, SuperUser, and Unix&Linux), the posts are obtained using the [Stack Exchange Data Explorer](https://data.stackexchange.com/). See `web-scrapers/` for more details.
 
-## Manual exploration
-The web scraping and SQL query are based on available webpages for each site:
-* Stack Overflow: https://stackoverflow.com/search?tab=Votes&q=%5bbash%5d%20hasaccepted%3ayes
-* Super User: https://superuser.com/search?tab=votes&q=%5bbash%5d%20hasaccepted%3ayes
-* Unix & Linux: https://unix.stackexchange.com/questions/tagged/bash?tab=Votes
-* CommandLineFu: https://www.commandlinefu.com/commands/browse/sort-by-votes
-* Bash One-Liners: http://www.bashoneliners.com/oneliners/popular/
+The data obtained from this step is stored in the `data-collected` folder. We refer to this data set as _raw posts_.
 
-# Data
-The collected data from the previous paragraph is stored in the folder `data-collected`. This data is unclean and unfiltered. It totals 2287 records (Bash One-Liners has only 287 records for the entire website). We verified that the most popular questions have at score of at least 0.
+The _raw posts_ totals 2287 posts (Bash One-Liners has only 287 records for the entire website). We verified that the most popular questions have a score of at least 0.
 
-## Reconstructing URLs
-For CommandLineFu and Bash One-Liners: 
+### 2. Post Cleaning
+This step cleans the data obtained from the previous step into something that can be parsed and automated easily.
+
+For CommandLineFu and Bash One-Liners, the process is minimal: We prepend each line with the base URL of the website using the following commands:
 * `sed -e 's#^#http://www.bashoneliners.com#' data-collected/bashoneliners-top500.csv > bashoneliners-top500-clean.csv`
 * `sed -e 's#^#https://www.commandlinefu.com#' data-collected/commandlinefu-top500.csv > commandlinefu-top500-clean.csv`
+
+For the stack exchange websites, we clean them using the Bash script `clean_stackexchanges.sh`. This script will call `clean_stackexchange.py` for each stack exchange website.
+
+The data obtained from this step is stored in the `data-clean` folder. We refer to this data set as _candidate posts_.
+
+### 3. Post Filtering
+The goal of this step is too filter the _candidate posts_ that are compatible with Tellina and our user experiment.
+
+For CommandLineFu and Bash One-Liners, the process uses various RegExps that are stored in `data-filtered/filters.txt`. Each command is called manually to gradually remove incompatible posts from the _candidate posts_.
+
+For the stack exchange websites, the process is semi-automatic due to the more complex format of Questions and Answer websites like StackOverflow. We built `interactive_filter_stackexchange.py` to eliminate most of the noise automatically and help the user select the top compatible questions and answers posts.
+
+For all the websites, we used the scoping specification from the [NL2Bash paper](https://github.com/TellinaTool/nl2bash) to inform each decision to either include or reject a post. We have conveniently copied a summary in `utilities/in-scope.txt` and `utilities/out-of-scope.txt`.
+
+The data obtained from this step is stored in the `data-filtered` folder. We refer to this data set as _compatible posts_.
+
+### 4. Post Sampling
+This is the last step where we sample our _compatible posts_ to the number needed for the user experiment.
+
+We use the Jupyter notebook `sample_tasks.ipynb` to sample the _compatible posts_ in `data-filtered/` to the `taskset/` directory. The refer to these as _sampled posts_.
+
+## Requirements
+The scripts in this folder structure use `Python` and `Bash`. The required python modules are declared in `requirements.txt`.
 
 # Future Improvements
 While converting sampled posts to tasks, we encountered some posts that were not translatable to actionable tasks for the user study:
