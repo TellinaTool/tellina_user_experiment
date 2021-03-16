@@ -1,15 +1,15 @@
 # Tellina sanity check
 Sanity check to ensure that the current version of Tellina can handle this representative set of tasks. Each task is verified against the original prompt (tagged as 'prompt') and an 'adapted prompt'. The original prompt is simply the title of the original post from which the task was derived from. The adapted prompt aims to be closer to how someone would solve a specific problem in this context.
 
-A set of suggestions were tagged as 'helpful` if it contains the answer or a part of the answer. If the suggestions were nonsensical or unusable to solve the task, it was tagged as 'unhelpful'.
+A set of suggestions were tagged as 'helpful' if it contains the answer or a part of the answer. If the suggestions were nonsensical or unusable to solve the task, it was tagged as 'unhelpful'.
 
 - Using original prompts: 8 helpful, 8 unhelpful
 - Adapted prompts: 15 helpful, 1 unhelpful
 
-Tellina has often trouble with vague sentences or ones that have no context, which is why with no modifications, the original prompts do so poorly: They do not represent how programmers would use Tellina. Indeed, with the adapted prompts that are closer to the prompts participants would input in Tellina, we observe much more helpful results.
+Tellina often has trouble with vague sentences or ones that have no context, which is why with no modifications, the original prompts do so poorly: They do not represent how programmers would use Tellina. Indeed, with the adapted prompts that are closer to the prompts participants would input in Tellina, we observe much more helpful results.
 
 # Details
-For each sampled post, we try the original prompt as well as an adaptation that's closer on how Tellina will be used during the user experiment.
+For each sampled post, we try the original prompt as well as an adaptation that's closer to how Tellina will be used during the user experiment.
 
 For each prompt, we report the top 3 suggestions for traceability.
 
