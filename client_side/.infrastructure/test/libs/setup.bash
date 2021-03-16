@@ -9,7 +9,7 @@ setup() {
   INFRA_DIR="${BATS_TEST_DIRNAME}/../.."
   TASKS_DIR="${INFRA_DIR}/tasks"
 
-  TASKS_SIZE=$(ls - 1 ${TASKS_DIR} | wc -l)
+  TASKS_SIZE=$(ls -1 "${TASKS_DIR}" | wc -l)
 
   FS_DIR=$(mktemp -d)
   FS_SYNC_DIR="${INFRA_DIR}/file_system"
