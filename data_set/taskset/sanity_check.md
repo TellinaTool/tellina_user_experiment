@@ -1,5 +1,5 @@
 # Tellina sanity check
-Sanity check to ensure that the current version of Tellina can handle this representative set of tasks.
+Sanity check to ensure that the current version of Tellina can handle this representative set of tasks. Each task is verified against the original prompt (tagged as 'prompt') and an 'adapted prompt'. The original prompt is simply the title of the original post from which the task was derived from. The adapted prompt aims to be closer to how someone would solve a specific problem in this context.
 
 A set of suggestions were tagged as 'helpful` if it contains the answer or a part of the answer. If the suggestions were nonsensical or unusable to solve the task, it was tagged as 'unhelpful'.
 
