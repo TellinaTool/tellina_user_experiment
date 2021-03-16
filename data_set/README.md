@@ -2,6 +2,7 @@
 This folder contains the scripts used to produce the data set for the user experiment (referenced as _taskset_). 
 The data set goes through intermediate steps before its final form. The process is described in [Data Process](#data-process).
 
+We describe as 'posts' the questions & answers posted on the stack exchange website or the commands and their description for the other websites. For example, one 'post' on StackOverflow consist of the pair formed by the original question and the accepted answer.
 ## Contents
 - `data_collected/`: Contains the raw posts data parsed from the web.
 - `data_clean/`: Contains the raw posts data that have been cleaned up (referenced as _candidate posts_).
