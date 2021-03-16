@@ -23,14 +23,14 @@ One-liner: `comm -23 file2 file1`
 
 Helpful
 
-### Adapted prompt: Print the lines in foo.txt that do are not in bar.txt
+### Adapted prompt: Print the lines in foo.txt that are not in bar.txt
 - `comm -1 -3 foo.txt bar.txt`
 - `comm -1 -3 foo.txt foo.txt`
 - `join -v 1 foo.txt`
 
 Helpful
 
-## 2. https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed (Prompt Display which distro is installed) 
+## 2. https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed (Display which distro is installed) 
 One-liner: `cat <file>`
 
 ### Prompt: Display which distro is installed
@@ -79,9 +79,8 @@ Helpful (Copy directory)
 
 Helpful (`mkdir -p`)
 
-## 5. https://stackoverflow.com/questions/3137094/
+## 5. https://stackoverflow.com/questions/3137094/ (How to count lines in a document?)
 One-liner: `wc -l <filename>`
-How to count lines in a document?
 
 ### Prompt: How to count lines in a document?
 - `cat /dev/urandom | tr -d -c '[0-9]+' | wc -c`
@@ -97,7 +96,7 @@ Unhelpful
 
 Helpful
 
-## 6. https://superuser.com/questions/482435/
+## 6. https://superuser.com/questions/482435/ (How to remove all files starting with a certain string in Linux)
 One-liner: `find  . -name 'name*' -exec rm {} \;`
 
 ### Prompt: How to remove all files starting with a certain string in Linux
@@ -114,7 +113,7 @@ Helpful
 
 Helpful
 
-## 7. https://stackoverflow.com/questions/4997693/
+## 7. https://stackoverflow.com/questions/4997693/ (Given two directory trees, how can I find out which files differ by content?)
 One-liner: `diff --brief --recursive dir1/ dir2/`
 
 ### Prompt: Given two directory trees, how can I find out which files differ by content?
@@ -131,24 +130,24 @@ Not helpful
 
 Helpful
 
-## 8. https://unix.stackexchange.com/questions/144208/
+## 8. https://unix.stackexchange.com/questions/144208/ (find files without extension)
 One-liner: `find . -type f ! -name "*.*"`
 
-### Prompt: find files without extension
+### Prompt: Find files without extension
 - `find . -type f -printf "%f\n"`
 - `find . -type f -name "*.pl"`
 - `find . -type f -name "*.find"`
 
 Helpful
 
-### Adapted prompt:
+### Adapted prompt: Find files with no extensions
 - `find . -type f -name "*.extension"`
 - `find . -type f -name "*.Z"`
 - `find . -type f -name "*.pl"`
 
 Helpful
 
-## 9. https://superuser.com/questions/392872/
+## 9. https://superuser.com/questions/392872/ (Delete files with regular expression)
 One-liner: `ls | grep -P "^A.*[0-9]{2}$" | xargs -d"\n" rm`
 
 ### Prompt: Delete files with regular expression
@@ -156,12 +155,12 @@ One-liner: `ls | grep -P "^A.*[0-9]{2}$" | xargs -d"\n" rm`
 
 Unhelpful
 
-### Adapted prompt: 
+### Adapted prompt: Delete files matching a regexp
 - `find /tmp -type f -name "*.txt" -exec rm -f {} \;`
 
 Unhelpful
 
-## 10. http://www.bashoneliners.com/oneliners/193/
+## 10. http://www.bashoneliners.com/oneliners/193/ (Find all files recursively with specified string in the filename and output any lines found containing a different string.)
 One-liner: `find . -name *conf* -exec grep -Hni 'matching_text' {} \; > matching_text.conf.list`
 
 ### Prompt: Find all files recursively with specified string in the filename and output any lines found containing a different string.
@@ -176,41 +175,41 @@ Helpful
 
 Helpful
 
-## 11. https://www.commandlinefu.com/commands/view/1798/quick-access-to-the-ascii-table.
+## 11. https://www.commandlinefu.com/commands/view/1798/quick-access-to-the-ascii-table. (Quick access to the ascii table)
 One-liner: `man ascii`
 
-### Quick access to the ascii table
+### Prompt: Quick access to the ascii table
 - `su username`
 - `apropos -r ( date '+%Y-%m-%d %l:%l:%M:%S' )`
 - `apropos -r ( date '+%Y-%m-%d %l:%M:%S' )`
 
 Unhelpful
 
-### Show manual for ascii command
+### Adapted prompt: Show manual for ascii command
 - `man ascii`
 - `echo "$ascii" | xargs -I {} dirname {} | xargs -I {} dirname {} | xargs -I {} dirname {} | xargs -I {} file {}`
 
 Helpful
 
 
-## 12. https://unix.stackexchange.com/questions/93323/
+## 12. https://unix.stackexchange.com/questions/93323/ (List subdirectories only n level deep)
 One-liner: `find /usr/share/festival/lib/voices -maxdepth 2 -mindepth 2 -type d -exec basename {} \;`
 
-### List subdirectories only n level deep
+### Prompt: List subdirectories only n level deep
 - `jobs -l`
 - `ls -d /path/to/dir`
 - `echo "$n" | cut -d '/' -f 2 | xargs -I {} ls -l {}`
 
 Unhelpful
 
-### List two level deep subdirectories in dir
+### Adapted prompt: List two level deep subdirectories in dir
 - `find dir -mindepth 2 -maxdepth 2 -type d -exec ls -l {} \;`
 - `find dir -mindepth 2 -maxdepth 2 -type d -exec ls -l -d {} \;`
 - `find dir -maxdepth 2 -type d -exec ls -l -d {} \;`
 
 Helpful
 
-## 13. https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving
+## 13. https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving (Extract tarball from internet without local saving)
 One-liner: `wget -qO - ""http://www.tarball.com/tarball.gz"" | tar zxvf -"`
 
 ### Prompt: Extract tarball from internet without local saving
@@ -227,7 +226,7 @@ Unhelpful
 
 Helpful
 
-## 14. https://superuser.com/questions/633605/
+## 14. https://superuser.com/questions/633605/ (How to create symbolic links to all files (class of files) in a directory?)
 One-liner: `ln -s ../source/*.bar .`
 
 ### Prompt: How to create symbolic links to all files (class of files) in a directory?
@@ -244,8 +243,9 @@ Helpful
 
 Helpful
 
-## 15. http://www.bashoneliners.com/oneliners/61/
+## 15. http://www.bashoneliners.com/oneliners/61/ (Recursively remove all empty sub-directories from a directory tree)
 One-liner: `find . -depth  -type d  -empty -exec rmdir {} \;`
+
 ### Prompt: Recursively remove all empty sub-directories from a directory tree
 - `find . -depth -empty -type d -exec rmdir {} \;`
 - `find . -depth -type d -empty -exec rmdir {} \;`
@@ -259,8 +259,9 @@ Helpful
 
 Helpful
 
-## 16. https://www.commandlinefu.com/commands/view/6652
+## 16. https://www.commandlinefu.com/commands/view/6652 (Remove all but one specific file1)
 One-liner: `rm -f !(survivior.txt)`
+
 ### Prompt: Remove all but one specific file1
 - `find . -type f -name "*.specific" -exec rm -f {} \;`
 - `find . -type f -name "*.txt" -exec rm -f {} \;`
