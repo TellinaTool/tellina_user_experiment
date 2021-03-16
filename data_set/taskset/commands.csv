@@ -1,8 +1,8 @@
-Id, Post,Commands
+Id,Post,Commands
 1, http://www.bashoneliners.com/oneliners/70/,comm
 2, https://www.commandlinefu.com/commands/view/42/display-which-distro-is-installed,cat
 3, https://www.commandlinefu.com/commands/view/1295/quickly-rename-a-file,mv
-4, https://stackoverflow.com/questions/1529946, mkdir cp
+4, https://stackoverflow.com/questions/1529946,mkdir cp
 5, https://stackoverflow.com/questions/3137094/,wc
 6, https://superuser.com/questions/482435/,find rm
 7, https://stackoverflow.com/questions/4997693/,diff
@@ -14,4 +14,4 @@ Id, Post,Commands
 13, https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving,wget tar
 14, https://superuser.com/questions/633605/,ln
 15, http://www.bashoneliners.com/oneliners/61/,find rmdir
-16, https://www.commandlinefu.com/commands/view/6652/, rm
+16, https://www.commandlinefu.com/commands/view/6652/,rm
