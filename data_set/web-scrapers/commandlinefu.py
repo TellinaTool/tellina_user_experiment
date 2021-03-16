@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
-TOTAL_COMMANDS = 14042
-TOP_COMMANDS = 500
+TOTAL_COMMANDS = 14042 # Obtained automatically by running the parser until nothing is returned.
+TOP_COMMANDS = 500 # We don't need all the commands on the website to sample from, only the 500 most popular.
 command = 0
 
 with open("commandlinefu.csv", 'x') as file:

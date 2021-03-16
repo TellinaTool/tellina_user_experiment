@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 
 page = 1
-TOTAL_PAGES = 12
+TOTAL_PAGES = 12 # Obtained looking at the maximum number of pages on their website.
 count = 0
 
 with open("bashoneliners.csv", 'x') as file:
