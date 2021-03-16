@@ -1,4 +1,7 @@
 #!/bin/bash
-python clean_stackexchange.py data_collected/stackoverflow_top500.csv https://stackoverflow.com/questions/
-python clean_stackexchange.py data_collected/unixlinux_top500.csv https://unix.stackexchange.com/questions/
-python clean_stackexchange.py data_collected/superuser_top500.csv https://superuser.com/questions/
+DATA_DIR="data_collected"
+SITES="stackoverflow|unix.stackexchange|superuser"
+SITE_TRAILER="questions"
+IFS='|' for site in "$SITES"; do
+    python clean_stackexchange.py "$DATA_DIR"/"${site}-top500.csv" 'https://'"${site}.com/$SITE_TRAILER"
+done
