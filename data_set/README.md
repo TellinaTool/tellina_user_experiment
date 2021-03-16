@@ -3,15 +3,15 @@ This folder contains the scripts used to produce the data set for the user exper
 The data set goes through intermediate steps before its final form. The process is described in [Data Process](#data-process).
 
 ## Contents
-- `data-collected/`: Contains the raw posts data parsed from the web.
-- `data-clean/`: Contains the raw posts data that have been cleaned up (referenced as _candidate posts_).
-- `data-filtered/`: Contains the posts that have been filtered from the raw posts data (referenced as _compatible posts_). In most case, only the first top 30 compatible posts have been extracted.
+- `data_collected/`: Contains the raw posts data parsed from the web.
+- `data_clean/`: Contains the raw posts data that have been cleaned up (referenced as _candidate posts_).
+- `data_filtered/`: Contains the posts that have been filtered from the raw posts data (referenced as _compatible posts_). In most case, only the first top 30 compatible posts have been extracted.
 - `taskset/`: Contains the final set of posts that are going to be used in the user experiment (referenced as _sampled posts_).
-- `web-scrapers/`: Contains the web scrapping scripts to extract the posts information from the websites.
+- `web_scrapers/`: Contains the web scrapping scripts to extract the posts information from the websites.
 - `utilities/`: Contains information about Tellina's training set.
 - `clean_stackexchange.py`: Python script that cleans raw post data for one stack exchange website.
 - `clean_stackexchanges.sh`: Bash script that calls `clean_stackexchange.py` for all stack exchange websites.
-- `sample_tasks.ipynb`: Jupyter Notebook that randomly samples _compatible posts_ located in `data-filtered/` to build the taskset.
+- `sample_tasks.ipynb`: Jupyter Notebook that randomly samples _compatible posts_ located in `data_filtered/` to build the taskset.
 - `interactive_filter_stackexchange.py` Interactive python script that filters _candidate posts_ into _compatible posts_.
 
 
@@ -24,9 +24,9 @@ The posts is collected through via web-scrapping on five source websites:
 - [CommandLineFu](https://www.commandlinefu.com/)
 - [Bash One-Liners](http://www.bashoneliners.com/)
 
-The web-scrapping scripts for CommandLineFu and Bash One-Liners are located in the `web-scrapers/` folder. For the stack exchange websites (StackOverflow, SuperUser, and Unix&Linux), the posts are obtained using the [Stack Exchange Data Explorer](https://data.stackexchange.com/). See `web-scrapers/` for more details.
+The web-scrapping scripts for CommandLineFu and Bash One-Liners are located in the `web_scrapers/` folder. For the stack exchange websites (StackOverflow, SuperUser, and Unix&Linux), the posts are obtained using the [Stack Exchange Data Explorer](https://data.stackexchange.com/). See `web_scrapers/` for more details.
 
-The data obtained from this step is stored in the `data-collected` folder. We refer to this data set as _raw posts_.
+The data obtained from this step is stored in the `data_collected` folder. We refer to this data set as _raw posts_.
 
 The _raw posts_ totals 2287 posts (Bash One-Liners has only 287 records for the entire website). We verified that the most popular questions have a score of at least 0.
 
@@ -34,28 +34,28 @@ The _raw posts_ totals 2287 posts (Bash One-Liners has only 287 records for the 
 This step cleans the data obtained from the previous step into something that can be parsed and automated easily.
 
 For CommandLineFu and Bash One-Liners, the process is minimal: We prepend each line with the base URL of the website using the following commands:
-* `sed -e 's#^#http://www.bashoneliners.com#' data-collected/bashoneliners-top500.csv > bashoneliners-top500-clean.csv`
-* `sed -e 's#^#https://www.commandlinefu.com#' data-collected/commandlinefu-top500.csv > commandlinefu-top500-clean.csv`
+* `sed -e 's#^#http://www.bashoneliners.com#' data_collected/bashoneliners_top500.csv > bashoneliners_top500_clean.csv`
+* `sed -e 's#^#https://www.commandlinefu.com#' data_collected/commandlinefu_top500.csv > commandlinefu_top500_clean.csv`
 
 For the stack exchange websites, we clean them using the Bash script `clean_stackexchanges.sh`. This script will call `clean_stackexchange.py` for each stack exchange website.
 
-The data obtained from this step is stored in the `data-clean` folder. We refer to this data set as _candidate posts_.
+The data obtained from this step is stored in the `data_clean` folder. We refer to this data set as _candidate posts_.
 
 ### 3. Post Filtering
 The goal of this step is too filter the _candidate posts_ that are compatible with Tellina and our user experiment.
 
-For CommandLineFu and Bash One-Liners, the process uses various RegExps that are stored in `data-filtered/filters.txt`. Each command is called manually to gradually remove incompatible posts from the _candidate posts_.
+For CommandLineFu and Bash One-Liners, the process uses various RegExps that are stored in `data_filtered/filters.txt`. Each command is called manually to gradually remove incompatible posts from the _candidate posts_.
 
 For the stack exchange websites, the process is semi-automatic due to the more complex format of Questions and Answer websites like StackOverflow. We built `interactive_filter_stackexchange.py` to eliminate most of the noise automatically and help the user select the top compatible questions and answers posts.
 
-For all the websites, we used the scoping specification from the [NL2Bash paper](https://github.com/TellinaTool/nl2bash) to inform each decision to either include or reject a post. We have conveniently copied a summary in `utilities/in-scope.txt` and `utilities/out-of-scope.txt`.
+For all the websites, we used the scoping specification from the [NL2Bash paper](https://github.com/TellinaTool/nl2bash) to inform each decision to either include or reject a post. We have conveniently copied a summary in `utilities/in_scope.txt` and `utilities/out_of_scope.txt`.
 
-The data obtained from this step is stored in the `data-filtered` folder. We refer to this data set as _compatible posts_.
+The data obtained from this step is stored in the `data_filtered` folder. We refer to this data set as _compatible posts_.
 
 ### 4. Post Sampling
 This is the last step where we sample our _compatible posts_ to the number needed for the user experiment.
 
-We use the Jupyter notebook `sample_tasks.ipynb` to sample the _compatible posts_ in `data-filtered/` to the `taskset/` directory. The refer to these as _sampled posts_.
+We use the Jupyter notebook `sample_tasks.ipynb` to sample the _compatible posts_ in `data_filtered/` to the `taskset/` directory. The refer to these as _sampled posts_.
 
 ## Requirements
 The scripts in this folder structure use `Python` and `Bash`. The required python modules are declared in `requirements.txt`.

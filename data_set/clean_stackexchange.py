@@ -23,7 +23,7 @@ def main():
     dataset['Text'] = dataset['Body'].apply(lambda cell: [item.get_text() for item in BeautifulSoup(cell, 'html.parser').find_all('p')])
 
     name, ext = os.path.splitext(input_file)
-    output_file = "{name}-clean{ext}".format(name=name, ext=ext)
+    output_file = "{name}_clean{ext}".format(name=name, ext=ext)
     dataset[['Link', 'Title', 'Text', 'Code']].to_csv(output_file)
 
 if __name__ == "__main__":
