@@ -1,5 +1,5 @@
 Id,Rewrite (* Means that the task has been adapted for the context of the experiment.)
-1,Print the lines that are missing from a file compared to another file.
+1,Show the lines that are missing from `content/lessons/2013/2.md` compared to `content/lessons/2013/1.md`
 2,* Display main styling sheet file for website.
 3,Rename README.md to README.txt 
 4,Copy <file> in <nested non existing destination>
