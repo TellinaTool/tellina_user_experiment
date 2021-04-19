@@ -49,7 +49,8 @@ EXPECTED_FILE = os.path.join('/tmp', 'expected')
 
 # There are two types of tasks: those that expect output, and
 # those that expect a modification to the file system.
-FILESYSTEM_TASKS = {'b', 'c', 'd', 'e', 'f', 'k', 'l', 'o', 'q', 't', 'v'}
+# FILESYSTEM_TASKS = {'b', 'c', 'd', 'e', 'f', 'k', 'l', 'o', 'q', 't', 'v'}
+FILESYSTEM_TASKS = {'v'}
 
 def main():
     class cd:
@@ -150,32 +151,32 @@ def verify(normalized_output_file, task_code, check_fs):
         os.environ['TASKS_DIR'], "{task}/{task}.{out_type}.out"
             .format(task=task, out_type="fs" if check_fs else "select"))
 
-    # special verification for task b
-    if task_code == 'b':
-        files_in_tar = set()
-        try:
-            tar = tarfile.open(os.path.join(os.environ['FS_DIR'], 'html.tar'))
-            for member in tar.getmembers():
-                files_in_tar.add(os.path.basename(member.name))
-            if files_in_tar != {'index.html', 'home.html', 'labs.html',
-                                'lesson.html', 'menu.html', 'navigation.html'}:
-                print('-------------------------------------------')
-                print('html.tar does not contain the correct files')
-                print('contains: ' + str(files_in_tar))
-                print('should be: ' + str({'index.html',
-                                           'home.html',
-                                           'labs.html',
-                                           'lesson.html',
-                                           'menu.html',
-                                           'navigation.html'}))
-                return False
-        except tarfile.ReadError:
-            # valid tar file does not exist on the target path
-            print('--------------------------------')
-            print('html.tar is not a valid tar file')
-            return False
-        except IOError:
-            pass
+    # # special verification for task b
+    # if task_code == 'b':
+    #     files_in_tar = set()
+    #     try:
+    #         tar = tarfile.open(os.path.join(os.environ['FS_DIR'], 'html.tar'))
+    #         for member in tar.getmembers():
+    #             files_in_tar.add(os.path.basename(member.name))
+    #         if files_in_tar != {'index.html', 'home.html', 'labs.html',
+    #                             'lesson.html', 'menu.html', 'navigation.html'}:
+    #             print('-------------------------------------------')
+    #             print('html.tar does not contain the correct files')
+    #             print('contains: ' + str(files_in_tar))
+    #             print('should be: ' + str({'index.html',
+    #                                        'home.html',
+    #                                        'labs.html',
+    #                                        'lesson.html',
+    #                                        'menu.html',
+    #                                        'navigation.html'}))
+    #             return False
+    #     except tarfile.ReadError:
+    #         # valid tar file does not exist on the target path
+    #         print('--------------------------------')
+    #         print('html.tar is not a valid tar file')
+    #         return False
+    #     except IOError:
+    #         pass
 
     # compare normalized output file and task verification file
     files_match = filecmp.cmp(normalized_output_file, task_verify_file)
