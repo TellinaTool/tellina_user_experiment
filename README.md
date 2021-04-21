@@ -22,6 +22,7 @@ This repository contains the infrastructure for formally conducting user experim
 6. Update the permission of `$HOST/$HOST_DIR/backend/log.csv` with `chmod 666 log.csv`
 
 ### Requirements
+- Linux Environment (MacOS or Windows is not compatible)
 - [Bats](https://github.com/bats-core/bats-core)
 - [zip](https://linux.die.net/man/1/zip) (if it's not already installed on your system)
 
