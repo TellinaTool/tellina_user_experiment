@@ -1,4 +1,4 @@
 {
    "task_id": "1",
-   "description": "Show the lines that are missing from `content/lessons/2013/2.md` compared to `content/lessons/2013/1.md"
+   "description": "Show the lines of `content/review/review2.md` that are not in `content/review/review1.md`"
 }
