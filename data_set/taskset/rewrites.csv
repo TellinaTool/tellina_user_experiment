@@ -1,6 +1,6 @@
 Id,Rewrite (* Means that the task has been adapted for the context of the experiment.),Solution
 1,Show the lines of `content/review/review2.md` that are not in `content/review/review1.md`,comm -23 content/review/review2.md content/review/review1.md
-2,* Display main styling sheet file for website.
+2,Display the content of the main stylesheet inside the 'css' folder, cat css/app.css
 3,Rename README.md to README.txt 
 4,Copy <file> in <nested non existing destination>
 5,Get the number of lines for `index.html`

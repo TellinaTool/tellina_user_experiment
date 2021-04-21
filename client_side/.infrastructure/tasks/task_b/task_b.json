@@ -1,4 +1,4 @@
 {
-   "task_id": "1",
-   "description": "Show the lines that are missing from `content/lessons/2013/2.md` compared to `content/lessons/2013/1.md"
+   "task_id": "2",
+   "description": "Display the content of the main stylesheet inside the 'css' folder"
 }
