@@ -6,7 +6,7 @@ Id,Rewrite (* Means that the task has been adapted for the context of the experi
 5,Print the number of lines in the syllabus file,wc -l content/syllabus.md
 6,Delete all the files containing 'glyph' in their filename,find . -name 'glyph*'
 7,"Show which file diff between in 'content/labs' and 'content/lessons', including their subdirectories",diff -qr content/labs/ content/lessons/
-8,List the files that do not have a file type in <directory>
+8,List all the non-markdown files,find . -type f ! -name "*.md"
 9,Using a regular expression, delete all the minimized javascript and css files.
 10,For each file named <file>, Show the filename and line number matching text <text>
 11,Save manual page for <entry of `man`> in <entry of `man`>.txt
