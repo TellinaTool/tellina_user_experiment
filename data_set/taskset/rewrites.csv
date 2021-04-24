@@ -14,4 +14,4 @@ Id,Rewrite (* Means that the task has been adapted for the context of the experi
 13,Download and extract <tar baFor each file named <file>, Sholl on user experiment website> without an intermediary file.
 14,Create a symbolic link in the current directory for each markdown file at the root of 'content/',ln -s content/*.md .
 15,Delete all empty subdirectories,find . -depth  -type d  -empty -exec rmdir {} \;
-16,Remove all files except <survivor file> in <directory>  
+16,Remove all files except 'tips.md' in directory 'content/',find content/ -maxdepth 1 ! -name "tips.md" -type f -delete
