@@ -4,7 +4,7 @@ Id,Rewrite (* Means that the task has been adapted for the context of the experi
 3,Rename README.md to README.txt,mv filename.{old,new}
 4,Copy 'content/tips.md' in new directory 'content/backup/',mkdir -p "content/backup" && cp content/tips.md "content/backup"
 5,Print the number of lines in the syllabus file,wc -l content/syllabus.md
-6,Delete all the files starting with '2013' in a <directory>
+6,Delete all the files containing 'glyph' in their filename,find . -name 'glyph*'
 7,Show the differences between files in a <directory> and <sub-directories>
 8,List the files that do not have a file type in <directory>
 9,Using a regular expression, delete all the minimized javascript and css files.
