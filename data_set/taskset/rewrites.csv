@@ -8,9 +8,9 @@ Id,Rewrite (* Means that the task has been adapted for the context of the experi
 7,"Show which file diff between in 'content/labs' and 'content/lessons', including their subdirectories",diff -qr content/labs/ content/lessons/
 8,List all the non-markdown files,find . -type f ! -name "*.md"
 9,Delete all markdown files starting with a number,find . -type f -name "[[:digit:]]*.md"
-10,Find all lines containing "why" in files containing "review" in their filename,
+10,Find all lines containing "why" in files containing "review" in their filename,find . -name *review* -exec grep -Hni 'why' {} \;
 11,Save manual page for <entry of `man`> in <entry of `man`>.txt
-12,List three-level deep subdirectories of <directory> 
+12,List the name of the immediate subfolders contained in the folders at the root of 'content/', find content/ -mindepth 2 -maxdepth 2 -type d -exec basename {} \;
 13,Download and extract <tar baFor each file named <file>, Sholl on user experiment website> without an intermediary file.
 14,For each file with the extension <extension> in directory <directory>, create a symbolic link in the current directory.
 15,Delete recursively all subdirectories that are empty using find.
