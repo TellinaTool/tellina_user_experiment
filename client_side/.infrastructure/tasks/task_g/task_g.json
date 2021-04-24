@@ -1,0 +1,4 @@
+{
+   "task_id": "7",
+   "description": "Show which file diff between in 'content/labs' and 'content/lessons', including their subdirectories"
+}
