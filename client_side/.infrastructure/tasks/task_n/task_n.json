@@ -1,0 +1,4 @@
+{
+   "task_id": "14",
+   "description": "Create a symbolic link in the current directory for each markdown file at the root of 'content/'"
+}
