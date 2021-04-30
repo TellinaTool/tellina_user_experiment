@@ -9,9 +9,9 @@ Id,Post,Commands
 8, https://unix.stackexchange.com/questions/144208/,find
 9, https://superuser.com/questions/392872/,ls grep xargs rm
 10, http://www.bashoneliners.com/oneliners/193/,find grep
-11, https://www.commandlinefu.com/commands/view/1798/quick-access-to-the-ascii-table.,man
+11, https://unix.stackexchange.com/questions/90106/,ls wc
 12, https://unix.stackexchange.com/questions/93323/,find basename
-13, https://www.commandlinefu.com/commands/view/353/extract-tarball-from-internet-without-local-saving,wget tar
+13, https://superuser.com/questions/109537/,ls grep
 14, https://superuser.com/questions/633605/,ln
 15, http://www.bashoneliners.com/oneliners/61/,find rmdir
 16, https://www.commandlinefu.com/commands/view/6652/,rm
