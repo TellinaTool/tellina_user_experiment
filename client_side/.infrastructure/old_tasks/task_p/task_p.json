@@ -1,9 +1,0 @@
-{
-    "task_id": "16",
-    "type": "stdout",
-    "description": "Print a list of the files in the directory \"content/labs/2013/\", with their modification times listed in long-iso format.",
-    "file_attributes": [7],
-    "target_dir": "website/content/labs/2013",
-    "difficulty": 4,
-    "goal_filesystem": {}
-}

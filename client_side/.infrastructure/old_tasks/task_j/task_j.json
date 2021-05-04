@@ -1,9 +1,0 @@
-{
-    "task_id": "10",
-    "type": "stdout",
-    "description": "Sort all the files under the \"content\" directory by their file names (note that the sorting is based on file \"names only\", not based on the full paths).",
-    "file_attributes": [],
-    "target_dir": "website/content",
-    "difficulty": 5,
-    "goal_filesystem": {}
-}
