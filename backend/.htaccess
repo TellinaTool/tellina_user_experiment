@@ -6,4 +6,5 @@ ShibRequestSetting requireSession true
 # REQUIRE CSE login
 ShibRequestSetting entityID https://cas01.cs.washington.edu/idp/shibboleth
 
-Require shib-user ~ @cs.washington.edu$
+# Require user yourself@cs.washington.edu colleague@washington.edu
+Require user tschweiz@cs.washington.edu mernst@cs.washington.edu rjust@cs.washington.edu

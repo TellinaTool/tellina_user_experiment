@@ -39,6 +39,8 @@ EXPERIMENT_HOME_URL="${SERVER_HOST}/research/en2bash-study"
 
 POST_HANDLER="${EXPERIMENT_HOME_URL}/backend/post_handler/post_handler.php"
 
+TELLINA_WEBSITE="https://tellina.rocks"
+
 ### Infrastructure
 
 # The absolute path to the user experiment directory

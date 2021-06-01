@@ -12,54 +12,66 @@
 
 <body>
   <h1>
-    Welcome to the English to Bash study website!
+    Welcome to the English to Bash study!
   </h1>
   <p>
-    Thank you for participating to this study! We are interested in evaluating if translation assistants can help
-    programmers to write Bash scripts using English descriptions.
+    Thank you for participating in this study! We evaluating whether a tool can help
+    programmers to write Bash scripts.
   </p>
 
   <h2>Consent</h2>
   <p>
-    Before we start, please review carefully the <a href="consent.html">consent information</a> and sign
+    Please review the <a href="consent.html">consent information</a> and sign
     at the bottom of the consent page. You <b>must</b> complete this step in order to continue.
   </p>
 
   <h2>Instructions</h2>
-  <p>
-    For the experiment to go as smoothly as possible, please ensure that you have access to a <a
-      href="https://www.cs.washington.edu/lab/software/linuxhomevm">CSE Linux Home VM</a> with <a
-      href="https://meldmerge.org/">Meld</a> installed. You can verify if Meld is installed by using the Meld command in
-    your VM's terminal: <code>$ meld</code>. It should open a GUI window. To install Meld on your CSE Linux Home VM use
-    <code>$ sudo yum install meld</code>.
-  </p>
+  <p>Prerequisites:</p>
+  <ul>
+    <li>
+    Boot up a <a href="https://www.cs.washington.edu/lab/software/linuxhomevm">CSE Linux Home VM</a>.
+    </li>
+    <li>
+      Install <a href="https://meldmerge.org/">Meld</a>.  First, run <code>$ meld</code> in your VM's terminal.  If it opens a GUI window, then Meld is installed; close the window.  Otherwise, run
+    <code>$ sudo yum install meld</code> and then double-check that Meld is installed.
+    </li>
+    </ul>
 
   <p>
-    Once all of those prerequisites are met and you are ready, please follow these step to start the experiment:
-    <ol>
-      <li>Download <a href="experiment.zip">experiment.zip</a> in a convenient folder on your CSE Linux Home VM.</li>
-      <li>Unzip with <code>$ unzip experiment.zip</code></li>
-      <li>Make sure to use a Bash environment <code>$ bash</code></li>
-      <li>Start the experiment <code>$ source experiment/configure</code></li>
-    </ol>
-    When you start the experiment, follow the prompts in your terminal. You will have 2 training questions to familiarize yourself with the tool and then the real tasks.
-  </p>
-
-  <p>
-    You will be presented with a series of file system tasks that can be done within a Bash shell.
-    For each task, you are encouraged to use a variety of tools (man pages, Google, etc.) to help you solve it. Your
-    objective is to solve each task with a Bash one-liner: a bash script that is contained on one line. For example: 
+    In the experiment,
+    you will be presented with a series of file system tasks that can be done within a Bash shell.
+    Your objective is to solve each task with a Bash one-liner: a sequence of bash commands (a mini bash script) that is contained on one line. For example: 
     <code>$ ls | tee file</code>.
+    You may use any tool to help you solve the tasks;
+    for example, you might read man pages or search on Google.
   </p>
+
+  <p>
+    Start the experiment by opening a <em>new</em> terminal (command shell) and pasting the following into it:
+    <pre>
+      cd
+      mkdir eng2bash
+      cd eng2bash
+      wget https://homes.cs.washington.edu/~tschweiz/research/en2bash-study/experiment.zip
+      unzip experiment.zip
+      bash
+      source experiment/configure
+    </pre>
+    Now, follow the prompts in your terminal. You will have 2 training questions to familiarize yourself with the tool and then the real tasks.
+  </p>
+
 
   <h2>Survey</h2>
   When you have finished the experiment, please complete this <a href="https://forms.gle/QieZPezcLSYoX2k26"
     target="_blank"> short survey</a> (5 minutes).
 
   <h2>End</h2>
-  <p>You're all done! Thank you for your participation! We will be sending you the gift card soon at the address you provided in the survey.</p>
+  <p>Remove the experiment files from your Home VM:</p>
+  <pre>rm -rf ~/eng2bash</pre>
+
+  <p>You're all done! Thank you for your participation. We will send you the gift card soon at the address you provided in the survey.</p>
   
-  <p>If you have any questions or concerns, feel free to get in touch with us via the UW CSE Slack (@Thomas Schweizer) or by email (tschweiz AT cs.washington.edu).</p>
+  <p>If you have any questions or concerns, feel free to contact us via the UW CSE Slack (@Thomas Schweizer) or by email (tschweiz AT cs.washington.edu).</p>
 </body>
 
 </html>

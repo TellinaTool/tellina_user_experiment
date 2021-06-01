@@ -90,6 +90,8 @@ dist-backend:
 	cp -r -p $(BACKEND_DIR) $(BUILD_TARGET)
 
 $(ZIP_DIST_NAME): $(DIST_NAME) $(CLIENT_FILES) test
+# Delete Emacs backup files.
+	find . -name '*~' -delete
 	$(ZIP) $@ $<
 
 $(DIST_NAME):
@@ -112,4 +114,3 @@ clean-dist:
 
 clean-fs-dir:
 	$(RM) $(FS_DIR)
-	
